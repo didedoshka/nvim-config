@@ -10,10 +10,14 @@ vim.g.maplocalleader = " "
 -- setting indentation
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
+vim.opt.expandtab = true
 
 -- setting number
 vim.opt.number = true
 vim.opt.relativenumber = true
+
+-- command line only visible in command mode
+vim.opt.cmdheight = 0
 
 -- installing lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -31,24 +35,18 @@ vim.opt.rtp:prepend(lazypath)
 
 -- setting plugins
 require("lazy").setup(
-	-- table of plugins
-	{
-		-- colorscheme
-		require("plugins.ayu"),
+  -- table of plugins
+  {
+    -- colorscheme
+    require("plugins.ayu"),
 
-		-- filetree
-		require("plugins.nerdtree"),
-		-- {
-		-- 	"nvim-tree/nvim-tree.lua",
-		-- 	config = function()
-		-- 		require("nvim-tree").setup()
-		-- 	end
-		-- },
+    -- filetree
+    require("plugins.nerdtree"),
 
-		-- statusline
-		require("plugins.lualine")
-	}
-	
+    -- statusline
+    require("plugins.lualine")
+  }
+  
 
 )
 
