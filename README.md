@@ -12,3 +12,5 @@ My config for neovim.
 ## Todo
 
 1. Rewrite lsp keymaps to on_attach
+2. Add Comment
+3. Add lazygit
