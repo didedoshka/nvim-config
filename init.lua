@@ -1,7 +1,4 @@
--- Created by didedoshka May 24, 11:28 PM
-
-
--- require("check")
+-- Created by didedoshka on May 24
 
 -- setting leader
 vim.g.mapleader = " "
