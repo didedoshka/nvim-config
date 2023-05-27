@@ -17,7 +17,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 -- command line only visible in command mode
-vim.opt.cmdheight = 0
+-- vim.opt.cmdheight = 0
 
 -- installing lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -44,7 +44,10 @@ require("lazy").setup(
     require("plugins.nerdtree"),
 
     -- statusline
-    require("plugins.lualine")
+    -- require("plugins.lualine")
+    
+    -- lspconfig
+    require("plugins.lspconfig"),
   }
   
 
