@@ -45,11 +45,16 @@ require("lazy").setup(
 
     -- statusline
     -- require("plugins.lualine")
-    
+
     -- lspconfig
     require("plugins.lspconfig"),
+
+    -- treesitter
+    require("plugins.treesitter"),
+
+    -- telescope
+    require("plugins.telescope"),
   }
-  
 
 )
 
