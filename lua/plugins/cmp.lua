@@ -2,7 +2,7 @@ return {
   'hrsh7th/nvim-cmp',
   dependencies = {
     'hrsh7th/cmp-nvim-lsp',
-    'hrsh7th/cmp-path',
+    { 'hrsh7th/cmp-path', commit = "d83839a" },
     'L3MON4D3/LuaSnip',
     'saadparwaiz1/cmp_luasnip',
     'rafamadriz/friendly-snippets'
@@ -14,7 +14,7 @@ return {
 
 
     require("luasnip.loaders.from_vscode").lazy_load()
---    require("luasnip").config.setup {}
+    --    require("luasnip").config.setup {}
 
     require('cmp_path')
 
