@@ -3,6 +3,7 @@ return
   "neovim/nvim-lspconfig",
   config = function()
     -- keymaps
+    vim.keymap.set("n", "<leader>li", function() vim.cmd("LspInfo") end)
     vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float)
     vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
     vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
@@ -26,6 +27,8 @@ return
     end)
 
     -- servers
+
+    -- lua_language_server
     require("lspconfig")["lua_ls"].setup({
       settings = {
         Lua = {
@@ -49,6 +52,11 @@ return
         },
       }
     })
+
+    -- pyright
     require("lspconfig")["pyright"].setup({})
+
+    -- clangd
+    require("lspconfig")["clangd"].setup({})
   end,
 }
