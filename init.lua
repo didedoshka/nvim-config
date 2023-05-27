@@ -56,7 +56,10 @@ require("lazy").setup(
     require("plugins.telescope"),
 
     -- flit
-    require("plugins.flit")
+    require("plugins.flit"),
+
+    -- coq (autocompletion)
+    require("plugins.coq")
   }
 
 )
