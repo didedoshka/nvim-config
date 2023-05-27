@@ -54,6 +54,9 @@ require("lazy").setup(
 
     -- telescope
     require("plugins.telescope"),
+
+    -- flit
+    require("plugins.flit")
   }
 
 )
