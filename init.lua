@@ -58,8 +58,6 @@ require("lazy").setup(
     -- flit
     require("plugins.flit"),
 
-    -- coq (autocompletion)
-    require("plugins.coq")
   }
 
 )
