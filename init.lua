@@ -35,31 +35,30 @@ vim.opt.rtp:prepend(lazypath)
 
 -- setting plugins
 require("lazy").setup(
-  -- table of plugins
+-- table of plugins
   {
     -- colorscheme
     require("plugins.ayu"),
 
-    -- filetree
-    require("plugins.nerdtree"),
-
-    -- statusline
-    -- require("plugins.lualine")
-
-    -- lspconfig
-    require("plugins.lspconfig"),
-
-    -- treesitter
-    require("plugins.treesitter"),
+    -- flit
+    require("plugins.flit"),
 
     -- telescope
     require("plugins.telescope"),
 
-    -- flit
-    require("plugins.flit"),
+    -- filetree
+    require("plugins.nerdtree"),
+
+    -- cmp
+    require("plugins.cmp"),
+
+    -- treesitter
+    require("plugins.treesitter"),
+
+    -- lspconfig
+    require("plugins.lspconfig"),
+
 
   }
 
 )
-
-

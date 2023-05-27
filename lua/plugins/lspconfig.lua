@@ -30,6 +30,8 @@ return
 
     -- lua_language_server
     require("lspconfig")["lua_ls"].setup({
+      capabilities = capabilities,
+
       settings = {
         Lua = {
           runtime = {
@@ -54,9 +56,13 @@ return
     })
 
     -- pyright
-    require("lspconfig")["pyright"].setup({})
+    require("lspconfig")["pyright"].setup({
+      capabilities = capabilities
+    })
 
     -- clangd
-    require("lspconfig")["clangd"].setup({})
+    require("lspconfig")["clangd"].setup({
+      capabilities = capabilities
+    })
   end,
 }
