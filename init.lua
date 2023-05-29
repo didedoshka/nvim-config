@@ -55,7 +55,8 @@ require("lazy").setup(
     -- lspconfig
     require("plugins.lspconfig"),
 
-
+    -- comment
+    require("plugins.comment")
   }
 
 )
