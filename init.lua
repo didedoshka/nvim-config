@@ -56,7 +56,10 @@ require("lazy").setup(
     require("plugins.lspconfig"),
 
     -- comment
-    require("plugins.comment")
+    require("plugins.comment"),
+
+    -- lazygit
+    require("plugins.lazygit")
   }
 
 )
