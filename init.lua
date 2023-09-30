@@ -3,7 +3,6 @@
 -- set leader
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
-
 -- set indentation
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
@@ -22,6 +21,11 @@ vim.opt.colorcolumn = "120"
 
 -- set extensions
 vim.filetype.add({ extension = { ["keymap"] = "cpp" } })
+
+-- set russian
+vim.opt.keymap = "russian-yasherty"
+vim.opt.iminsert = 0
+
 
 -- installing lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
