@@ -25,7 +25,6 @@ return
         vim.keymap.set("n", "<leader>f", function()
             vim.lsp.buf.format { async = true }
         end)
-
         -- servers
 
         -- lua_language_server
@@ -51,6 +50,8 @@ return
                     telemetry = {
                         enable = false,
                     },
+
+                    hint = { enable = true }
                 },
             }
         })
@@ -62,14 +63,20 @@ return
 
         -- clangd
         require("lspconfig")["clangd"].setup({
-            filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto", "keymap" },
-            single_file_support = true,
             capabilities = capabilities
         })
+
 
         -- cmake
         require("lspconfig")["cmake"].setup({
             capabilities = capabilities
         })
+
+        vim.api.nvim_create_autocmd('LspAttach', {
+            callback = function(ev)
+                vim.lsp.inlay_hint(0, true)
+            end,
+        })
     end,
+
 }
