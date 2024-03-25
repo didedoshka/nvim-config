@@ -1,5 +1,5 @@
-" Maintainer:	name <email@address>
-" Last Changed:	2001 Jan 1
+" Maintainer:	didedoshka <didedoshka@gmail.com>
+" Last Changed:	2023 Oct 16
 
 let b:keymap_name = "ru-yash"
 
@@ -14,6 +14,9 @@ u у
 i и
 o о
 p п
+[ ж
+] э
+\\ ю
 a а
 s с
 d д
@@ -33,6 +36,33 @@ m м
 < ь
 > ъ
 ` щ
-[ ж
-] э
-\\ ю
+Q Я
+W Ш
+E Е
+R Р
+T Т
+Y Ы
+U У
+I И
+O О
+P П
+{ Ж
+} Э
+| Ю
+A А
+S С
+D Д
+F Ф
+G Г
+H Х
+J Й
+K К
+L Л
+Z З
+X Ч
+C Ц
+V В
+B Б
+N Н
+M М
+~ Щ

@@ -25,7 +25,8 @@ vim.filetype.add({ extension = { ["keymap"] = "cpp" } })
 -- set russian
 vim.opt.keymap = "russian-yasherty"
 vim.opt.iminsert = 0
-
+vim.keymap.set('i', '<C-l>', '<C-^>', { remap = true })
+vim.keymap.set('i', '$', '$<C-l>', { remap = true })
 
 -- installing lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -47,6 +48,11 @@ require("lazy").setup(
     {
         -- colorscheme
         require("plugins.ayu"),
+        -- require("plugins.catppuccin"),
+
+        {
+            "Yggdroot/indentLine"
+        },
 
         -- flit
         require("plugins.flit"),

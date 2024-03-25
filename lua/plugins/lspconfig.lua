@@ -72,9 +72,19 @@ return
             capabilities = capabilities
         })
 
+        require 'lspconfig'.typst_lsp.setup {
+            settings = {
+                exportPdf = "onType" -- Choose onType, onSave or never.
+            },
+            root_dir = function(fname)
+                return require('lspconfig').util.root_pattern 'template.typ' (fname)
+            end,
+            capabilities = capabilities
+        }
+
         vim.api.nvim_create_autocmd('LspAttach', {
             callback = function(ev)
-                vim.lsp.inlay_hint(0, true)
+                vim.lsp.inlay_hint.enable(0, true)
             end,
         })
     end,
