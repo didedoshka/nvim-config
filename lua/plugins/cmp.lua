@@ -3,7 +3,12 @@ return {
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
         { "hrsh7th/cmp-path",  commit = "d83839a" },
-        "L3MON4D3/LuaSnip",
+        {
+            "L3MON4D3/LuaSnip",
+            config = function()
+                require("luasnip").setup({ delete_check_events = { "TextChanged" } })
+            end,
+        },
         "saadparwaiz1/cmp_luasnip",
         "rafamadriz/friendly-snippets",
         {
@@ -25,7 +30,6 @@ return {
 
 
     config = function()
-        capabilities = require("cmp_nvim_lsp").default_capabilities() -- yes, it is global variable used in lua/lspconfig.lua
 
         local ls = require("luasnip")
 
