@@ -69,7 +69,7 @@ return
 
                 -- turn inlay_hint on
                 if client.server_capabilities.inlayHintProvider then
-                    vim.lsp.buf.inlay_hint(bufnr, true)
+                    vim.lsp.inlay_hint.enable(bufnr, true)
                 end
 
                 -- basic keymaps
