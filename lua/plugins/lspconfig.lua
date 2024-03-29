@@ -2,35 +2,14 @@ return
 {
     "neovim/nvim-lspconfig",
     config = function()
-        -- keymaps
+        -- keymap for LspInfo window
         vim.keymap.set("n", "<leader>li", function() vim.cmd("LspInfo") end)
-        vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float)
-        vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
-        vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
-        vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist)
-        vim.keymap.set("n", "gD", vim.lsp.buf.declaration)
-        vim.keymap.set("n", "gd", vim.lsp.buf.definition)
-        vim.keymap.set("n", "K", vim.lsp.buf.hover)
-        vim.keymap.set("n", "gi", vim.lsp.buf.implementation)
-        vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help)
-        vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder)
-        vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder)
-        vim.keymap.set("n", "<leader>wl", function()
-            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        end)
-        vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition)
-        vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename)
-        vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action)
-        vim.keymap.set("n", "gr", vim.lsp.buf.references)
-        vim.keymap.set("n", "<leader>f", function()
-            vim.lsp.buf.format { async = true }
-        end)
+
         -- servers
+        local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
         -- lua_language_server
         require("lspconfig")["lua_ls"].setup({
-            capabilities = capabilities,
-
             settings = {
                 Lua = {
                     runtime = {
@@ -83,8 +62,35 @@ return
         }
 
         vim.api.nvim_create_autocmd('LspAttach', {
-            callback = function(ev)
-                vim.lsp.inlay_hint.enable(0, true)
+            callback = function(args)
+                -- get buffer number and client info
+                local bufnr = args.buf
+                local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+                -- turn inlay_hint on
+                if client.server_capabilities.inlayHintProvider then
+                    vim.lsp.buf.inlay_hint(bufnr, true)
+                end
+
+                -- basic keymaps
+                local opts = { buffer = args.buf }
+                vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+                vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+                vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+                vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+                vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+                vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+                vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+                vim.keymap.set('n', '<space>wl', function()
+                    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+                end, opts)
+                vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+                vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
+                vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
+                vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+                vim.keymap.set('n', '<space>f', function()
+                    vim.lsp.buf.format { async = true }
+                end, opts)
             end,
         })
     end,
