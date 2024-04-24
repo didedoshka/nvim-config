@@ -1,5 +1,19 @@
 -- Created by didedoshka on May 24
 
+-- function to print a table
+local function dump(to_dump)
+    if type(to_dump) == 'table' then
+        local s = '{ '
+        for key, value in pairs(to_dump) do
+            if type(key) ~= 'number' then key = '"' .. key .. '"' end
+            s = s .. '[' .. key .. '] = ' .. dump(value) .. ','
+        end
+        return s .. '} '
+    else
+        return tostring(to_dump)
+    end
+end
+
 -- set leader
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -26,7 +40,28 @@ vim.filetype.add({ extension = { ["keymap"] = "cpp" } })
 vim.opt.keymap = "russian-yasherty"
 vim.opt.iminsert = 0
 vim.keymap.set('i', '<C-l>', '<C-^>', { remap = true })
-vim.keymap.set('i', '$', '$<C-l>', { remap = true })
+
+-- autocommand for wrapping in typst file
+vim.api.nvim_create_autocmd("BufEnter", {
+    callback = function(args)
+        local bufnr = args.buf
+        if vim.bo[bufnr].filetype == "typst" then
+            vim.opt.wrap = true
+        else
+            vim.opt.wrap = false
+        end
+    end
+})
+
+-- autocommand for opening typst file
+vim.api.nvim_create_autocmd("FileType", {
+    callback = function(args)
+        if args['match'] == 'typst' then
+            vim.opt.iminsert = 1
+            vim.keymap.set('i', '$', '$<C-l>', { remap = true, buffer = args.buf })
+        end
+    end
+})
 
 -- installing lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -77,7 +112,7 @@ require("lazy").setup(
             config = function()
                 require("null-ls").setup({
                     sources = require("null-ls").builtins.formatting.autopep8.with({
-                        extra_args = { "--max-line-length", "119" }
+                        extra_args = { "-a", "-a", "--max-line-length", "119" }
                     })
                 })
             end,
