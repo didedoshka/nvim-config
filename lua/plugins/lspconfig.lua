@@ -37,7 +37,17 @@ return
 
         -- pyright
         require("lspconfig")["pyright"].setup({
-            capabilities = capabilities
+            capabilities = capabilities,
+            settings = {
+                python = {
+                    analysis = {
+                        stubPath = "~/.stubs/python-type-stubs/stubs",
+                        autoSearchPaths = true,
+                        diagnosticMode = "openFilesOnly",
+                        useLibraryCodeForTypes = true
+                    }
+                }
+            }
         })
 
         -- clangd

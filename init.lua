@@ -1,4 +1,5 @@
 -- Created by didedoshka on May 24
+-- 
 
 -- function to print a table
 local function dump(to_dump)
@@ -33,6 +34,8 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.wrap = false
 vim.opt.colorcolumn = "120"
 
+vim.opt.undofile = true
+
 -- set extensions
 vim.filetype.add({ extension = { ["keymap"] = "cpp" } })
 
@@ -61,6 +64,11 @@ vim.api.nvim_create_autocmd("FileType", {
             vim.keymap.set('i', '$', '$<C-l>', { remap = true, buffer = args.buf })
         end
     end
+})
+
+vim.api.nvim_create_autocmd({"TextChanged", "TextChangedI"}, {
+    pattern = {"*.py", "*.cpp"},
+    command = "silent update"
 })
 
 -- installing lazy
