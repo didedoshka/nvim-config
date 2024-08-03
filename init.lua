@@ -1,5 +1,4 @@
 -- Created by didedoshka on May 24
--- 
 
 -- function to print a table
 local function dump(to_dump)
@@ -66,8 +65,8 @@ vim.api.nvim_create_autocmd("FileType", {
     end
 })
 
-vim.api.nvim_create_autocmd({"TextChanged", "TextChangedI"}, {
-    pattern = {"*.py", "*.cpp"},
+vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
+    pattern = { "*.py", "*.cpp" },
     command = "silent update"
 })
 
@@ -85,10 +84,33 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- setting plugins
-require("lazy").setup(
--- table of plugins
-    {
+local table_of_plugins = {}
+if vim.g.vscode then
+    vim.keymap.set('n', 'K', function()
+        require('vscode').call('editor.action.showHover')
+    end)
+
+    vim.keymap.set('n', 'gd', function()
+        require('vscode').call('editor.action.revealDefinition')
+    end)
+
+    vim.keymap.set('n', 'gi', function()
+        require('vscode').call('editor.action.goToImplementation')
+    end)
+
+    vim.keymap.set('n', 'gr', function()
+        require('vscode').call('editor.action.goToReferences')
+    end)
+
+    vim.keymap.set('n', 'gD', function()
+        require('vscode').call('editor.action.revealDeclaration')
+    end)
+    table_of_plugins = {
+        -- flit
+        require("plugins.flit"),
+    }
+else
+    table_of_plugins = {
         -- colorscheme
         require("plugins.ayu"),
         -- require("plugins.catppuccin"),
@@ -132,5 +154,9 @@ require("lazy").setup(
         -- lazygit
         require("plugins.lazygit")
     }
+end
 
+-- setting plugins
+require("lazy").setup(
+    table_of_plugins
 )
