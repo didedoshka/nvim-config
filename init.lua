@@ -43,32 +43,6 @@ vim.opt.keymap = "russian-yasherty"
 vim.opt.iminsert = 0
 vim.keymap.set('i', '<C-l>', '<C-^>', { remap = true })
 
--- autocommand for wrapping in typst file
-vim.api.nvim_create_autocmd("BufEnter", {
-    callback = function(args)
-        local bufnr = args.buf
-        if vim.bo[bufnr].filetype == "typst" then
-            vim.opt.wrap = true
-        else
-            vim.opt.wrap = false
-        end
-    end
-})
-
--- autocommand for opening typst file
-vim.api.nvim_create_autocmd("FileType", {
-    callback = function(args)
-        if args['match'] == 'typst' then
-            vim.opt.iminsert = 1
-            vim.keymap.set('i', '$', '$<C-l>', { remap = true, buffer = args.buf })
-        end
-    end
-})
-
-vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
-    pattern = { "*.py", "*.cpp" },
-    command = "silent update"
-})
 
 -- installing lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -110,6 +84,32 @@ if vim.g.vscode then
         require("plugins.flit"),
     }
 else
+    -- autocommand for wrapping in typst file
+    vim.api.nvim_create_autocmd("BufEnter", {
+        callback = function(args)
+            local bufnr = args.buf
+            if vim.bo[bufnr].filetype == "typst" then
+                vim.opt.wrap = true
+            else
+                vim.opt.wrap = false
+            end
+        end
+    })
+
+    -- autocommand for opening typst file
+    vim.api.nvim_create_autocmd("FileType", {
+        callback = function(args)
+            if args['match'] == 'typst' then
+                vim.opt.iminsert = 1
+                vim.keymap.set('i', '$', '$<C-l>', { remap = true, buffer = args.buf })
+            end
+        end
+    })
+
+    vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
+        pattern = { "*.py", "*.cpp" },
+        command = "silent update"
+    })
     table_of_plugins = {
         -- colorscheme
         require("plugins.ayu"),
