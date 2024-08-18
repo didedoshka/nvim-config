@@ -18,7 +18,7 @@ return
         -- search buffers
         vim.keymap.set('n', '<leader>sb', require('telescope.builtin').buffers)
         -- search project files
-        vim.keymap.set('n', '<leader>sp', require('telescope.builtin').find_files)
+        vim.keymap.set('n', '<leader>o', require('telescope.builtin').find_files)
         -- search by grep
         vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep)
     end

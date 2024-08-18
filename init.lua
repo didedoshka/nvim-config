@@ -79,6 +79,15 @@ if vim.g.vscode then
     vim.keymap.set('n', 'gD', function()
         require('vscode').call('editor.action.revealDeclaration')
     end)
+
+    vim.keymap.set('n', '[x', function()
+        require('vscode').call('merge-conflict.previous')
+    end)
+
+    vim.keymap.set('n', ']x', function()
+        require('vscode').call('merge-conflict.next')
+    end)
+
     table_of_plugins = {
         -- flit
         require("plugins.flit"),
