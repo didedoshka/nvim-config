@@ -115,8 +115,8 @@ else
         end
     })
 
-    vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
-        pattern = { "*.py", "*.cpp" },
+    vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
+        pattern = { "*.py", "*.cpp", "*.h" },
         command = "silent update"
     })
     table_of_plugins = {
@@ -161,7 +161,11 @@ else
         require("plugins.comment"),
 
         -- lazygit
-        require("plugins.lazygit")
+        require("plugins.lazygit"),
+
+        {
+            "mbbill/undotree"
+        }
     }
 end
 
