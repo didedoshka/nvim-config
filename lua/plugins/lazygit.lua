@@ -6,10 +6,11 @@ return
     },
 
     config = function()
-        vim.keymap.set("n", "<leader>lg",
+        vim.keymap.set("n", "<leader>c",
             function()
                 vim.cmd("LazyGit")
-            end)
+            end,
+            { desc = "open (c)ommit window (lazygit)" })
     end
 
 }

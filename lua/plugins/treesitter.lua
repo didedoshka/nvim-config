@@ -8,7 +8,15 @@ return
     config = function()
         require("nvim-treesitter").setup()
 
-        require 'nvim-treesitter.configs'.setup {
+        local interesting_objects = {
+            "@class.outer",
+            "@conditional.outer",
+            "@function.outer",
+            "@loop.outer",
+            "@return.outer",
+        }
+
+        require('nvim-treesitter.configs').setup({
             auto_install = true,
             highlight = {
                 enable = true,
@@ -23,6 +31,22 @@ return
                     node_decremental = "<bs>",
                 },
             },
-        }
+            textobjects = {
+                move = {
+                    enable = true,
+                    set_jumps = true, -- whether to set jumps in the jumplist
+                    goto_next_start = {
+                        ["<cr>"] = {
+                            query = interesting_objects
+                        },
+                    },
+                    goto_previous_start = {
+                        ["<bs>"] = {
+                            query = interesting_objects
+                        }
+                    },
+                },
+            },
+        })
     end
 }

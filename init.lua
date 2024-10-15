@@ -119,6 +119,12 @@ else
         pattern = { "*.py", "*.cpp", "*.h" },
         command = "silent update"
     })
+
+    -- working with buffers
+    vim.keymap.set("n", "<leader>q", "<cmd>bp<bar>sp<bar>bn<bar>bd<cr>", { desc = "close buffer" })
+    vim.keymap.set("n", "<Tab>", "<cmd>bnext<cr>", { desc = "next buffer" })
+    vim.keymap.set("n", "<S-Tab>", "<cmd>bprevious<cr>", { desc = "previous buffer" })
+
     table_of_plugins = {
         -- colorscheme
         require("plugins.ayu"),
@@ -166,6 +172,25 @@ else
         { "mbbill/undotree" },
 
         { "ray-x/lsp_signature.nvim" },
+        {
+            "folke/which-key.nvim",
+            lazy = false,
+            opts = {
+                delay = 2000,
+                icons = {
+                    mappings = false,
+                },
+            },
+            keys = {
+                {
+                    "<leader>?",
+                    function()
+                        require("which-key").show({ global = false })
+                    end,
+                    desc = "buffer-local mappings",
+                },
+            },
+        }
     }
 end
 
