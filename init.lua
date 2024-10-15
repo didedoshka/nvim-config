@@ -1,7 +1,7 @@
 -- Created by didedoshka on May 24
 
 -- function to print a table
-local function dump(to_dump)
+function dump(to_dump)
     if type(to_dump) == 'table' then
         local s = '{ '
         for key, value in pairs(to_dump) do
@@ -163,9 +163,9 @@ else
         -- lazygit
         require("plugins.lazygit"),
 
-        {
-            "mbbill/undotree"
-        }
+        { "mbbill/undotree" },
+
+        { "ray-x/lsp_signature.nvim" },
     }
 end
 

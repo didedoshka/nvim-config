@@ -5,8 +5,17 @@ return
         -- keymap for LspInfo window
         vim.keymap.set("n", "<leader>li", function() vim.cmd("LspInfo") end)
 
+        local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+        function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+            opts = opts or {}
+            opts.border = opts.border or "single"
+            return orig_util_open_floating_preview(contents, syntax, opts, ...)
+        end
+
         -- servers
-        local capabilities = require("cmp_nvim_lsp").default_capabilities()
+        -- local capabilities = require("cmp_nvim_lsp").default_capabilities()
+        local capabilities = require("cmp_nvim_lsp").default_capabilities({ snippetSupport = false })
+        -- print(dump(capabilities))
 
         -- lua_language_server
         require("lspconfig")["lua_ls"].setup({
@@ -77,9 +86,24 @@ return
                 local bufnr = args.buf
                 local client = vim.lsp.get_client_by_id(args.data.client_id)
 
+                -- if vim.tbl_contains({ 'null-ls' }, client.name) then -- blacklist lsp
+                --     return
+                -- end
+                require("lsp_signature").on_attach({
+                    max_height = 5,
+                    hint_enable = false,
+                    handler_opts = {
+                        border = "single"
+                    },
+                    hi_parameter = "@markup.strong",
+
+                    -- hint_prefix = "",
+                    -- hint_inline = function() return "inline" end,
+                }, bufnr)
+
                 -- turn inlay_hint on
                 if client.server_capabilities.inlayHintProvider then
-                    vim.lsp.inlay_hint.enable(true, {bufnr = bufnr})
+                    vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
                 end
 
                 -- basic keymaps

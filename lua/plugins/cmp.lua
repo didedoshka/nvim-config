@@ -5,12 +5,12 @@ return {
         { "hrsh7th/cmp-path",  commit = "d83839a" },
         {
             "L3MON4D3/LuaSnip",
-            config = function()
-                require("luasnip").setup({ delete_check_events = { "TextChanged" } })
-            end,
+            -- config = function()
+            --     require("luasnip").setup({ delete_check_events = { "TextChanged" } })
+            -- end,
         },
         "saadparwaiz1/cmp_luasnip",
-        "rafamadriz/friendly-snippets",
+        -- "rafamadriz/friendly-snippets",
         {
             "windwp/nvim-autopairs",
             opts = {
@@ -21,6 +21,15 @@ return {
                 require("nvim-autopairs").setup(opts)
 
                 local cmp_autopairs = require "nvim-autopairs.completion.cmp"
+                -- local function a()
+                --     return function(evt)
+                --         print(dump(evt))
+                --         local entry = evt.entry
+                --         local commit_character = entry:get_commit_characters()
+                --         print(dump(commit_character))
+                --     end
+                -- end
+                -- require("cmp").event:on("confirm_done", a())
                 require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
             end,
         },
@@ -28,52 +37,70 @@ return {
 
     },
 
-
     config = function()
-
-        local ls = require("luasnip")
+        local luasnip = require("luasnip")
+        local cmp = require("cmp")
 
         require("luasnip.loaders.from_vscode").lazy_load()
         require("luasnip.loaders.from_lua").lazy_load()
 
-        -- vim.keymap.set({ "i" }, "<CR>", function() ls.expand() end, { silent = true })
-        vim.keymap.set({ "i", "s" }, " ",
-            function()
-                if ls.locally_jumpable(1) then
-                    ls.jump(1)
-                else
-                    vim.api.nvim_put({ " " }, "", false, true)
-                    print(10)
-                end
-            end
-        )
-
-        local cmp = require("cmp")
         cmp.setup({
             snippet = {
                 expand = function(args)
-                    ls.lsp_expand(args.body)
+                    -- print(dump(args))
+                    vim.api.nvim_paste(args.body, false, -1)
+                    -- luasnip.lsp_expand(args.body)
                 end,
             },
 
             window = {
-                -- completion = cmp.config.window.bordered(),
-                -- documentation = cmp.config.window.bordered(),
+                completion = { winhighlight = "Normal:NormalFloat", border = "single" },
+                documentation = { winhighlight = "Normal:NormalFloat", border = "single" },
             },
 
             mapping = cmp.mapping.preset.insert({
-                ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-                ["<C-f>"] = cmp.mapping.scroll_docs(4),
-                ["<C-e>"] = cmp.mapping.abort(),
-                ["<CR>"] = cmp.mapping.confirm({ select = true }),
+                ['<CR>'] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.confirm({
+                            select = true,
+                        })
+                    else
+                        fallback()
+                    end
+                end),
+
+                ["<Tab>"] = cmp.mapping(function(fallback)
+                    if luasnip.locally_jumpable(1) then
+                        luasnip.jump(1)
+                    else
+                        fallback()
+                    end
+                end, { "i", "s" }),
+
+                ["<S-Tab>"] = cmp.mapping(function(fallback)
+                    if luasnip.locally_jumpable(-1) then
+                        luasnip.jump(-1)
+                    else
+                        fallback()
+                    end
+                end, { "i", "s" }),
             }),
+
+            -- mapping = cmp.mapping.preset.insert({
+            --     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+            --     ["<C-f>"] = cmp.mapping.scroll_docs(4),
+            --     ["<C-e>"] = cmp.mapping.abort(),
+            --     ["<CR>"] = cmp.mapping.confirm({ select = true }),
+            -- }),
 
             sources = {
                 { name = "nvim_lsp" },
                 { name = "luasnip" },
                 { name = "path" },
                 { name = "buffer" },
-            }
+            },
+
+            experimental = { ghost_text = true },
         })
     end
 }

@@ -13,6 +13,12 @@ return
     config = function()
         pcall(require('telescope').load_extension, 'fzf')
 
+        require('telescope').setup {
+            defaults = {
+                layout_strategy = 'vertical',
+                borderchars = { '─', '│', '─', '│', '┌', '┐', '┘', '└' }
+            },
+        }
         -- search recent
         vim.keymap.set('n', '<leader>sr', require('telescope.builtin').oldfiles)
         -- search buffers
