@@ -3,7 +3,7 @@ return
     "neovim/nvim-lspconfig",
     config = function()
         vim.keymap.set("n", "<leader>li", function() vim.cmd("LspInfo") end, { desc = "(l)sp (i)nfo" })
-        vim.keymap.set("n", "<leader>lb", function() vim.cmd("LspStard") end, { desc = "(l)sp (b)egin" })
+        vim.keymap.set("n", "<leader>lb", function() vim.cmd("LspStart") end, { desc = "(l)sp (b)egin" })
         vim.keymap.set("n", "<leader>le", function() vim.cmd("LspStop") end, { desc = "(l)sp (e)nd" })
 
         local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
