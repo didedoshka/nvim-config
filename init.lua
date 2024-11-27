@@ -43,6 +43,9 @@ vim.opt.keymap = "russian-yasherty"
 vim.opt.iminsert = 0
 vim.keymap.set('i', '<C-l>', '<C-^>', { remap = true })
 
+-- set listchars
+vim.opt.list = true
+vim.opt.listchars = { tab = '>\\', eol = '¬', trail = '·' }
 
 -- installing lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -116,7 +119,7 @@ else
     })
 
     vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
-        pattern = { "*.py", "*.cpp", "*.h" },
+        pattern = { "*.py", "*.cpp", "*.h", "*.c", "*.S", "*.txt", "*.lua" },
         command = "silent update"
     })
 
