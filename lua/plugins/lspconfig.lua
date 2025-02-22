@@ -71,13 +71,12 @@ return
             capabilities = capabilities
         })
 
-        require 'lspconfig'.typst_lsp.setup {
+        require("lspconfig")["tinymist"].setup {
             settings = {
-                exportPdf = "onType" -- Choose onType, onSave or never.
+                formatterMode = "typstyle",
+                exportPdf = "onType",
+                semanticTokens = "disable"
             },
-            root_dir = function(fname)
-                return require('lspconfig').util.root_pattern 'template.typ' (fname)
-            end,
             capabilities = capabilities
         }
 

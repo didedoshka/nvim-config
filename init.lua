@@ -119,7 +119,7 @@ else
     })
 
     vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
-        pattern = { "*.py", "*.cpp", "*.h", "*.c", "*.S", "*.txt", "*.lua" },
+        pattern = { "*.py", "*.cpp", "*.h", "*.c", "*.S", "*.txt", "*.lua", "*.typ" },
         command = "silent update"
     })
 
