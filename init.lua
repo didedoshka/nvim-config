@@ -94,6 +94,10 @@ vim.keymap.set("n", "<leader>q", "<cmd>bp<bar>sp<bar>bn<bar>bd<cr>", { desc = "c
 vim.keymap.set("n", "<Tab>", "<cmd>bnext<cr>", { desc = "next buffer" })
 vim.keymap.set("n", "<S-Tab>", "<cmd>bprevious<cr>", { desc = "previous buffer" })
 
+-- running lua
+vim.keymap.set("n", "<bs>l", ":.lua<cr>", { desc = "execute current (l)ua code" })
+vim.keymap.set("v", "<bs>l", ":lua<cr>", { desc = "execute current (l)ua code" })
+
 -- setting plugins
 require("lazy").setup(
     {
