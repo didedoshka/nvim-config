@@ -98,6 +98,8 @@ vim.keymap.set("n", "<S-Tab>", "<cmd>bprevious<cr>", { desc = "previous buffer" 
 vim.keymap.set("n", "<bs>l", ":.lua<cr>", { desc = "execute current (l)ua code" })
 vim.keymap.set("v", "<bs>l", ":lua<cr>", { desc = "execute current (l)ua code" })
 
+require("keymaps_to_buffer")
+
 -- setting plugins
 require("lazy").setup(
     {
