@@ -1,6 +1,11 @@
 return
 {
     "neovim/nvim-lspconfig",
+
+    dependencies = {
+        { "ray-x/lsp_signature.nvim" },
+    },
+
     config = function()
         vim.keymap.set("n", "<leader>li", function() vim.cmd("LspInfo") end, { desc = "(l)sp (i)nfo" })
         vim.keymap.set("n", "<leader>lb", function() vim.cmd("LspStart") end, { desc = "(l)sp (b)egin" })
@@ -20,6 +25,7 @@ return
 
         -- lua_language_server
         require("lspconfig")["lua_ls"].setup({
+            capabilities = capabilities,
             settings = {
                 Lua = {
                     runtime = {
@@ -38,6 +44,9 @@ return
                     -- Do not send telemetry data containing a randomized but unique identifier
                     telemetry = {
                         enable = false,
+                    },
+                    completion = {
+                        keywordSnippet = "Disable",
                     },
 
                     hint = { enable = true }

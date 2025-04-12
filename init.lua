@@ -145,8 +145,6 @@ require("lazy").setup(
 
         { "mbbill/undotree" },
 
-        { "ray-x/lsp_signature.nvim" },
-
         {
             "folke/which-key.nvim",
             lazy = false,
