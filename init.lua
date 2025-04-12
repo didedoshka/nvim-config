@@ -62,79 +62,50 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local table_of_plugins = {}
-if vim.g.vscode then
-    vim.keymap.set('n', 'K', function()
-        require('vscode').call('editor.action.showHover')
-    end)
-
-    vim.keymap.set('n', 'gd', function()
-        require('vscode').call('editor.action.revealDefinition')
-    end)
-
-    vim.keymap.set('n', 'gi', function()
-        require('vscode').call('editor.action.goToImplementation')
-    end)
-
-    vim.keymap.set('n', 'gr', function()
-        require('vscode').call('editor.action.goToReferences')
-    end)
-
-    vim.keymap.set('n', 'gD', function()
-        require('vscode').call('editor.action.revealDeclaration')
-    end)
-
-    vim.keymap.set('n', '[x', function()
-        require('vscode').call('merge-conflict.previous')
-    end)
-
-    vim.keymap.set('n', ']x', function()
-        require('vscode').call('merge-conflict.next')
-    end)
-
-    table_of_plugins = {
-        -- flit
-        require("plugins.flit"),
-    }
-else
-    -- autocommand for wrapping in typst file
-    vim.api.nvim_create_autocmd("BufEnter", {
-        callback = function(args)
-            local bufnr = args.buf
-            if vim.bo[bufnr].filetype == "typst" then
-                vim.opt.wrap = true
-            else
-                vim.opt.wrap = false
-            end
+-- autocommand for wrapping in typst file
+vim.api.nvim_create_autocmd("BufEnter", {
+    callback = function(args)
+        local bufnr = args.buf
+        if vim.bo[bufnr].filetype == "typst" then
+            vim.opt.wrap = true
+        else
+            vim.opt.wrap = false
         end
-    })
+    end
+})
 
-    -- autocommand for opening typst file
-    vim.api.nvim_create_autocmd("FileType", {
-        callback = function(args)
-            if args['match'] == 'typst' then
-                vim.opt.iminsert = 1
-                vim.keymap.set('i', '$', '$<C-l>', { remap = true, buffer = args.buf })
-            end
+-- autocommand for opening typst file
+vim.api.nvim_create_autocmd("FileType", {
+    callback = function(args)
+        if args['match'] == 'typst' then
+            vim.opt.iminsert = 1
+            vim.keymap.set('i', '$', '$<C-l>', { remap = true, buffer = args.buf })
         end
-    })
+    end
+})
 
-    vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
-        pattern = { "*.py", "*.cpp", "*.h", "*.c", "*.S", "*.txt", "*.lua", "*.typ" },
-        command = "silent update"
-    })
+vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
+    pattern = { "*.py", "*.cpp", "*.h", "*.c", "*.S", "*.txt", "*.lua", "*.typ" },
+    command = "silent update"
+})
 
-    -- working with buffers
-    vim.keymap.set("n", "<leader>q", "<cmd>bp<bar>sp<bar>bn<bar>bd<cr>", { desc = "close buffer" })
-    vim.keymap.set("n", "<Tab>", "<cmd>bnext<cr>", { desc = "next buffer" })
-    vim.keymap.set("n", "<S-Tab>", "<cmd>bprevious<cr>", { desc = "previous buffer" })
+-- working with buffers
+vim.keymap.set("n", "<leader>q", "<cmd>bp<bar>sp<bar>bn<bar>bd<cr>", { desc = "close buffer" })
+vim.keymap.set("n", "<Tab>", "<cmd>bnext<cr>", { desc = "next buffer" })
+vim.keymap.set("n", "<S-Tab>", "<cmd>bprevious<cr>", { desc = "previous buffer" })
 
-    table_of_plugins = {
+-- setting plugins
+require("lazy").setup(
+    {
         -- colorscheme
         require("plugins.ayu"),
         -- require("plugins.catppuccin"),
 
         {
-            "Yggdroot/indentLine"
+            "Yggdroot/indentLine",
+            config = function()
+                vim.g.indentLine_char = '|'
+            end
         },
 
         -- flit
@@ -229,9 +200,5 @@ else
             end,
         },
     }
-end
 
--- setting plugins
-require("lazy").setup(
-    table_of_plugins
 )
