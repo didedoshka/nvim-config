@@ -120,8 +120,8 @@ require("lazy").setup(
         -- telescope
         require("plugins.telescope"),
 
-        -- filetree
-        require("plugins.nerdtree"),
+        -- file explorer
+        require("plugins.oil"),
 
         -- cmp
         require("plugins.cmp"),
@@ -204,5 +204,4 @@ require("lazy").setup(
             end,
         },
     }
-
 )
