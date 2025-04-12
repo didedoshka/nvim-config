@@ -101,107 +101,80 @@ vim.keymap.set("v", "<bs>l", ":lua<cr>", { desc = "execute current (l)ua code" }
 require("keymaps_to_buffer")
 
 -- setting plugins
-require("lazy").setup(
+require("lazy").setup({
+    -- colorscheme
+    require("plugins.ayu"),
+    -- require("plugins.catppuccin"),
+
     {
-        -- colorscheme
-        require("plugins.ayu"),
-        -- require("plugins.catppuccin"),
+        "Yggdroot/indentLine",
+        config = function()
+            vim.g.indentLine_char = '|'
+        end
+    },
 
-        {
-            "Yggdroot/indentLine",
-            config = function()
-                vim.g.indentLine_char = '|'
-            end
-        },
+    -- flit
+    require("plugins.flit"),
 
-        -- flit
-        require("plugins.flit"),
+    -- telescope
+    require("plugins.telescope"),
 
-        -- telescope
-        require("plugins.telescope"),
+    -- file explorer
+    require("plugins.oil"),
 
-        -- file explorer
-        require("plugins.oil"),
+    -- cmp
+    require("plugins.cmp"),
 
-        -- cmp
-        require("plugins.cmp"),
+    -- treesitter
+    require("plugins.treesitter"),
 
-        -- treesitter
-        require("plugins.treesitter"),
+    -- lspconfig
+    require("plugins.lspconfig"),
 
-        -- lspconfig
-        require("plugins.lspconfig"),
-
-        {
-            "jose-elias-alvarez/null-ls.nvim",
-            config = function()
-                require("null-ls").setup({
-                    sources = require("null-ls").builtins.formatting.autopep8.with({
-                        extra_args = { "-a", "-a", "--max-line-length", "119" }
-                    })
+    {
+        "jose-elias-alvarez/null-ls.nvim",
+        config = function()
+            require("null-ls").setup({
+                sources = require("null-ls").builtins.formatting.autopep8.with({
+                    extra_args = { "-a", "-a", "--max-line-length", "119" }
                 })
-            end,
-            dependencies = { "nvim-lua/plenary.nvim" }
-        },
-        -- comment
-        require("plugins.comment"),
+            })
+        end,
+        dependencies = { "nvim-lua/plenary.nvim" }
+    },
+    -- comment
+    require("plugins.comment"),
 
-        -- lazygit
-        require("plugins.lazygit"),
+    -- lazygit
+    require("plugins.lazygit"),
 
-        { "mbbill/undotree" },
+    {
+        "mbbill/undotree",
+        config = function()
+            vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<cr>", { desc = "(u)ndotree" })
+        end
+    },
 
-        {
-            "folke/which-key.nvim",
-            lazy = false,
-            opts = {
-                delay = 2000,
-                icons = {
-                    mappings = false,
-                },
-            },
-            keys = {
-                {
-                    "<leader>?",
-                    function()
-                        require("which-key").show({ global = false })
-                    end,
-                    desc = "buffer-local mappings",
-                },
+    {
+        "folke/which-key.nvim",
+        lazy = false,
+        opts = {
+            delay = 2000,
+            icons = {
+                mappings = false,
             },
         },
-
-        {
-            "mfussenegger/nvim-dap",
-            config = function()
-                local dap = require('dap')
-                dap.adapters.codelldb = {
-                    type = "executable",
-                    command = "/Users/didedoshka/.vscode/extensions/vadimcn.vscode-lldb-1.11.2/adapter/codelldb", -- or if not in $PATH: "/absolute/path/to/codelldb"
-
-                    -- On windows you may have to uncomment this:
-                    -- detached = false,
-                }
-                dap.configurations.cpp = {
-                    {
-                        name = "Launch file",
-                        type = "codelldb",
-                        request = "launch",
-                        program = function()
-                            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-                        end,
-                        cwd = '${workspaceFolder}',
-                        stopOnEntry = false,
-                    },
-                }
-            end,
+        keys = {
+            {
+                "<leader>?",
+                function()
+                    require("which-key").show({ global = false })
+                end,
+                desc = "buffer-local mappings",
+            },
         },
-        {
-            "rcarriga/nvim-dap-ui",
-            dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
-            config = function()
-                require("dapui").setup()
-            end,
-        },
-    }
-)
+    },
+
+    require("plugins.dap")
+
+})
