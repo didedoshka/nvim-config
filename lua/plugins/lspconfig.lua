@@ -62,6 +62,7 @@ return
 
         -- clangd
         require("lspconfig")["clangd"].setup({
+            -- cmd = { "docker", "exec", "-i", "name", "clangd" },
             capabilities = capabilities
         })
 
@@ -77,6 +78,9 @@ return
                 exportPdf = "onType",
                 semanticTokens = "disable"
             },
+            root_dir = function(fname, bufnr)
+                return vim.fs.root(bufnr, "template.typ")
+            end,
             capabilities = capabilities
         }
 
