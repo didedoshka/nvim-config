@@ -175,6 +175,15 @@ require("lazy").setup({
         },
     },
 
-    require("plugins.dap")
+    require("plugins.dap"),
+
+    {
+        'echasnovski/mini.nvim',
+        version = '*',
+        config = function()
+            require('mini.splitjoin').setup()
+            require('mini.surround').setup()
+        end
+    },
 
 })
