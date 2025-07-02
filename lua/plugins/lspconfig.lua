@@ -3,7 +3,7 @@ return
     "neovim/nvim-lspconfig",
 
     dependencies = {
-        { "ray-x/lsp_signature.nvim" },
+        "ray-x/lsp_signature.nvim",
     },
 
     config = function()
@@ -139,7 +139,7 @@ return
                 vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, { buffer = args.buf, desc = "(r)ename" })
                 vim.keymap.set({ 'n', 'v' }, '<leader>a', vim.lsp.buf.code_action,
                     { buffer = args.buf, desc = "code (a)ction" })
-                vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+                vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, opts)
                 vim.keymap.set('n', '<leader>f', function()
                     vim.lsp.buf.format { async = true }
                 end, { buffer = args.buf, desc = "(f)ormat" })

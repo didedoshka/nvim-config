@@ -10,5 +10,6 @@ vim.keymap.set("n", "<leader>y", function ()
     vim.cmd("%s/\\*.*\\n/")
     vim.cmd("%s/^\\n/")
     vim.cmd("sort")
+    vim.cmd.noh()
 end, {desc = "output keymaps to a buffer"})
 

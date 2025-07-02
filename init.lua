@@ -1,18 +1,8 @@
 -- Created by didedoshka on May 24
 
 -- function to print a table
-function dump(to_dump)
-    if type(to_dump) == 'table' then
-        local s = '{ '
-        for key, value in pairs(to_dump) do
-            if type(key) ~= 'number' then key = '"' .. key .. '"' end
-            s = s .. '[' .. key .. '] = ' .. dump(value) .. ','
-        end
-        return s .. '} '
-    else
-        return tostring(to_dump)
-    end
-end
+--
+vim.deprecate = function() end
 
 -- set leader
 vim.g.mapleader = " "
@@ -27,8 +17,8 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 -- sync clipboard between vim and os
+vim.g.clipboard = "osc52"
 vim.opt.clipboard = "unnamedplus"
-
 -- set wrap and max text width
 vim.opt.wrap = false
 vim.opt.colorcolumn = "120"
@@ -95,16 +85,18 @@ vim.keymap.set("n", "<Tab>", "<cmd>bnext<cr>", { desc = "next buffer" })
 vim.keymap.set("n", "<S-Tab>", "<cmd>bprevious<cr>", { desc = "previous buffer" })
 
 -- running lua
-vim.keymap.set("n", "<bs>l", ":.lua<cr>", { desc = "execute current (l)ua code" })
-vim.keymap.set("v", "<bs>l", ":lua<cr>", { desc = "execute current (l)ua code" })
+vim.keymap.set("n", "<bs>?", ":.lua<cr>", { desc = "execute current (l)ua code" })
+vim.keymap.set("v", "<bs>?", ":lua<cr>", { desc = "execute current (l)ua code" })
 
-require("keymaps_to_buffer")
+vim.keymap.set("t", "<C-e>", "<c-\\><c-n>")
+
+vim.cmd.colorscheme('dide')
+vim.go.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:block-blinkon500-blinkoff500-TermCursor,a:Cursor"
 
 -- setting plugins
 require("lazy").setup({
     -- colorscheme
-    require("plugins.ayu"),
-    -- require("plugins.catppuccin"),
+    -- require("plugins.ayu"),
 
     {
         "Yggdroot/indentLine",
@@ -131,17 +123,17 @@ require("lazy").setup({
     -- lspconfig
     require("plugins.lspconfig"),
 
-    {
-        "jose-elias-alvarez/null-ls.nvim",
-        config = function()
-            require("null-ls").setup({
-                sources = require("null-ls").builtins.formatting.autopep8.with({
-                    extra_args = { "-a", "-a", "--max-line-length", "119" }
-                })
-            })
-        end,
-        dependencies = { "nvim-lua/plenary.nvim" }
-    },
+    -- {
+    --     "jose-elias-alvarez/null-ls.nvim",
+    --     config = function()
+    --         require("null-ls").setup({
+    --             sources = require("null-ls").builtins.formatting.autopep8.with({
+    --                 extra_args = { "-a", "-a", "--max-line-length", "119" }
+    --             })
+    --         })
+    --     end,
+    --     dependencies = { "nvim-lua/plenary.nvim" }
+    -- },
     -- comment
     require("plugins.comment"),
 
@@ -182,7 +174,32 @@ require("lazy").setup({
         version = '*',
         config = function()
             require('mini.splitjoin').setup()
-            require('mini.surround').setup()
+            -- require('mini.surround').setup()
+        end
+    },
+
+    {
+        'norcalli/nvim-colorizer.lua',
+        config = function()
+            require('colorizer').setup()
+        end
+    },
+
+    {
+        'hiphish/rainbow-delimiters.nvim',
+        config = function()
+            require('rainbow-delimiters.setup').setup {
+                highlight = {
+                    "SemanticHighlightingColor0",
+                    "SemanticHighlightingColor1",
+                    "SemanticHighlightingColor2",
+                    "SemanticHighlightingColor3",
+                    "SemanticHighlightingColor4",
+                    "SemanticHighlightingColor5",
+                    "SemanticHighlightingColor6",
+                    "SemanticHighlightingColor7",
+                },
+            }
         end
     },
 

@@ -3,26 +3,34 @@ local colors = {
     black = '#000000',
 
     -- This color is not part of `ayu` but matches the default style applied in VSCode.
-    lsp_inlay_hint = '#969696',
+    lsp_inlay_hint = '#808080',
 
-    accent = '#000000',
+    gray3 = "#2d2d2d",
+    gray4 = "#474747",
+    gray5 = '#636363',
+    gray6 = "#808080",
+    gray7 = "#9e9e9e",
+    gray8 = "#bdbdbd",
+    gray9 = "#dddddd",
+
+    accent = '#636363',
     bg = '#FFFFFF',
-    fg = '#000000',
+    fg = '#2d2d2d',
     ui = '#8A9199',
 
-    tag = '#000000',
-    func = '#000000',
-    entity = '#000000',
-    string = '#000000',
-    regexp = '#000000',
-    markup = '#000000',
-    keyword = '#000000',
-    special = '#000000',
-    comment = '#000000',
+    tag = '#2d2d2d',
+    func = '#2d2d2d',
+    entity = '#2d2d2d',
+    string = '#808080',
+    regexp = '#2d2d2d',
+    markup = '#2d2d2d',
+    keyword = '#2d2d2d',
+    special = '#2d2d2d',
+    comment = '#808080',
     constant = '#000000',
-    operator = '#000000',
-    error = '#000000',
-    lsp_parameter = '#000000',
+    operator = '#2d2d2d',
+    error = '#ff0000',
+    lsp_parameter = '#2d2d2d',
 
     line = '#E7EAED',
     panel_bg = '#F3F4F5',
@@ -30,11 +38,10 @@ local colors = {
     panel_border = '#F0F0F0',
     gutter_normal = '#CCCFD3',
     gutter_active = '#A0A6AC',
-    -- selection_bg = '#D3E1F5',
-    selection_inactive = '#FF0000',
+    selection_inactive = '#e4e4e4',
     selection_border = '#E1E1E2',
     -- guide_active = '#D2D5D8',
-    guide_normal = '#000000',
+    guide_normal = '#636363',
 
     vcs_added = '#6CBF43',
     vcs_modified = '#478ACC',
@@ -78,9 +85,9 @@ local function set_groups()
         Pmenu = { fg = colors.fg, bg = colors.selection_inactive },
         PmenuSel = { fg = colors.fg, bg = colors.selection_inactive, reverse = true },
         Question = { fg = colors.string },
-        Search = { fg = colors.bg, bg = colors.constant },
-        CurSearch = { fg = colors.bg, bg = colors.special },
-        IncSearch = { fg = colors.keyword, bg = colors.selection_inactive },
+        Search = { fg = colors.fg, bg = colors.gray9 },
+        CurSearch = { fg = colors.fg, bg = colors.gray8 },
+        IncSearch = { link = "Search" },
         SpecialKey = { fg = colors.selection_inactive },
         SpellCap = { sp = colors.tag, undercurl = true },
         SpellLocal = { sp = colors.keyword, undercurl = true },
@@ -93,16 +100,16 @@ local function set_groups()
         TabLineFill = { fg = colors.fg, bg = colors.panel_border },
         TabLineSel = { fg = colors.fg, bg = colors.bg },
         Title = { fg = colors.keyword },
-        Visual = { bg = colors.selection_inactive },
+        Visual = { fg = colors.bg, bg = colors.fg},
         WarningMsg = { fg = colors.warning },
 
         Comment = { fg = colors.comment, italic = true },
-        Constant = { fg = colors.constant },
-        String = { fg = colors.string },
+        Constant = { link = "String" },
+        String = { fg = colors.fg, bold = true },
         Identifier = { fg = colors.entity },
         Function = { fg = colors.func },
         Statement = { fg = colors.keyword },
-        Operator = { fg = colors.operator },
+        Operator = { fg = colors.operator, bold = true },
         Exception = { fg = colors.markup },
         PreProc = { fg = colors.accent },
         Type = { fg = colors.entity },
@@ -257,11 +264,6 @@ local function set_groups()
 end
 
 --- Set the colorscheme.
-vim.api.nvim_command('hi clear')
-if vim.fn.exists('syntax_on') then
-    vim.api.nvim_command('syntax reset')
-end
-
 vim.o.termguicolors = true
 vim.g.colors_name = 'dide'
 
@@ -291,12 +293,16 @@ local function linear_srgb_to_srgb(x)
     end
 end
 
+local function cap(x)
+    return math.max(0, math.min(1, x))
+end
+
 local function oklab_to_srgb(color)
     local linear_srgb = oklab_to_linear_srgb(color)
     return {
-        r = linear_srgb_to_srgb(linear_srgb.r),
-        g = linear_srgb_to_srgb(linear_srgb.g),
-        b = linear_srgb_to_srgb(linear_srgb.b),
+        r = cap(linear_srgb_to_srgb(linear_srgb.r)),
+        g = cap(linear_srgb_to_srgb(linear_srgb.g)),
+        b = cap(linear_srgb_to_srgb(linear_srgb.b)),
     }
 end
 
@@ -343,112 +349,229 @@ local function string_to_srgb(color)
     return result
 end
 
-
 local function srgb_to_string(color)
-    print(color.r)
-    print(color.g)
-    print(color.b)
-    return string.format("#%x\n%x\n%x\n", color.r * 255, color.g * 255, color.b * 255)
+    return string.format("#%02x%02x%02x", color.r * 255, color.g * 255, color.b * 255)
 end
+
+local function generate_colors(n)
+    colors = {}
+    local c = 0.4
+    for i = 0, n - 1 do
+        local step = 2 * math.pi * i / n
+        local oklab = { L = 0.5, a = c * math.cos(step), b = c * math.sin(step) }
+        local color_string = srgb_to_string(oklab_to_srgb(oklab))
+        print(string.format("\"%s\",", color_string))
+        table.insert(colors, color_string)
+    end
+    -- local oklab = { L = 0.92, a = 0, b = 0 }
+    -- local color_string = srgb_to_string(oklab_to_srgb(oklab))
+    -- print(string.format("\"%s\",", color_string))
+    return colors
+end
+
 
 local function check()
-    color = "#ffce00"
-    rgb1 = string_to_srgb(color)
-    vim.print(rgb1)
-    oklab = srgb_to_oklab(rgb1)
-    vim.print(oklab)
-    rgb2 = oklab_to_srgb(oklab)
-    vim.print(rgb2)
+    local thing = srgb_to_oklab(string_to_srgb("#ff9b00"))
+    thing.L = 0.5
+    vim.print(srgb_to_string(oklab_to_srgb(thing)))
 end
 
--- check()
+-- generate_colors(64)
 
-local semantic_highlighting_colors = {"#ff0000", "#00ff00", "#0000ff"}
+local semantic_highlighting_colors = {
+    "#fd0000",
+    "#0000ff",
+    "#009831",
+    "#8300ff",
+    "#00939a",
+    "#d400ae",
+    "#5b6f00",
+    "#ef0059",
+    "#7600ff",
+    "#746600",
+    "#0074f9",
+    "#009200",
+    "#994f00",
+    "#ea0070",
+    "#c300d4",
+    "#009500",
+    "#f70000",
+    "#9a00ff",
+    "#008400",
+    "#f30000",
+    "#00976c",
+    "#ee0000",
+    "#003eff",
+    "#e30085",
+    "#3a7700",
+    "#a83f00",
+    "#008ac3",
+    "#c20000",
+    "#dc009a",
+    "#004fff",
+    "#fb0000",
+    "#0069ff",
+    "#3f00ff",
+    "#e00000",
+    "#f40041",
+    "#8f00ff",
+    "#005dff",
+    "#6700ff",
+    "#008a00",
+    "#f80021",
+    "#e80000",
+    "#009700",
+    "#009683",
+    "#cc00c2",
+    "#cd0000",
+    "#009851",
+    "#fa0000",
+    "#007ce8",
+    "#5600ff",
+    "#007e00",
+    "#875b00",
+    "#0025ff",
+    "#d70000",
+    "#a500ff",
+    "#008e00",
+    "#1900ff",
+    "#b000f6",
+    "#008faf",
+    "#b62900",
+    "#b900e6",
+    "#0084d6",
+    "#fc0000",
+}
 
-local function get_color_number(token, buf)
-    local line = vim.api.nvim_buf_get_lines(buf, token.line, token.line + 1, true)[1]
-    local varname = string.sub(line, token.start_col + 1, token.end_col)
+local colors_to_look = {
+    "#ef0059",
+    "#f40041",
+    "#f80021",
+    "#fb0000",
+    "#fc0000",
+    "#fd0000",
+    "#fa0000",
+    "#f70000",
+    "#f30000",
+    "#ee0000",
+    "#e80000",
+    "#e00000",
+    "#d70000",
+    "#cd0000",
+    "#c20000",
+    "#b62900",
+    "#a83f00",
+    "#994f00",
+    "#875b00",
+    "#746600",
+    "#5b6f00",
+    "#3a7700",
+    "#007e00",
+    "#008400",
+    "#008a00",
+    "#008e00",
+    "#009200",
+    "#009500",
+    "#009700",
+    "#009831",
+    "#009851",
+    "#00976c",
+    "#009683",
+    "#00939a",
+    "#008faf",
+    "#008ac3",
+    "#0084d6",
+    "#007ce8",
+    "#0074f9",
+    "#0069ff",
+    "#005dff",
+    "#004fff",
+    "#003eff",
+    "#0025ff",
+    "#0000ff",
+    "#1900ff",
+    "#3f00ff",
+    "#5600ff",
+    "#6700ff",
+    "#7600ff",
+    "#8300ff",
+    "#8f00ff",
+    "#9a00ff",
+    "#a500ff",
+    "#b000f6",
+    "#b900e6",
+    "#c300d4",
+    "#cc00c2",
+    "#d400ae",
+    "#dc009a",
+    "#e30085",
+    "#ea0070",
+}
+
+local function get_color_number(name)
     local p = 259
     local mod = 1000000009
     local hash = 0
-    for i = 1, string.len(varname) do
-        hash = ((hash * p) % mod + string.byte(varname, i)) % mod
+    for i = 1, string.len(name) do
+        hash = ((hash * p) % mod + string.byte(name, i)) % mod
     end
     return hash % #semantic_highlighting_colors
 end
 
 local considered_variable = {
     "variable", "type", "property", "type.builtin" }
-
-local function start_semantic_highlighting()
-    vim.api.nvim_set_hl(0, 'VarName0', { fg = '#cca650' })
-    vim.api.nvim_set_hl(0, 'VarName1', { fg = '#50a6fe' })
-    vim.api.nvim_set_hl(0, 'VarName2', { fg = '#ffa6fe' })
-    vim.api.nvim_set_hl(0, 'VarName3', { fg = '#ffc66b' })
-    vim.api.nvim_set_hl(0, 'VarName4', { fg = '#c600ff' })
-    vim.api.nvim_set_hl(0, 'VarName5', { fg = '#aaffaa' })
-    vim.api.nvim_set_hl(0, 'VarName6', { fg = '#bbbbbb' })
-    vim.api.nvim_set_hl(0, 'VarName7', { fg = '#00ff44' })
-    vim.api.nvim_set_hl(0, 'VarName8', { fg = '#009900' })
-    vim.api.nvim_set_hl(0, 'VarName9', { fg = '#995500' })
-    vim.api.nvim_set_hl(0, 'VarName10', { fg = '#3355aa' })
-    vim.api.nvim_set_hl(0, 'VarName11', { fg = '#009977' })
-    vim.api.nvim_set_hl(0, 'VarName12', { fg = '#bbbb00' })
-    vim.api.nvim_set_hl(0, 'VarName13', { fg = '#66ffff' })
-    vim.api.nvim_set_hl(0, 'VarName14', { fg = '#ff9999' })
-    vim.api.nvim_set_hl(0, 'VarName15', { fg = '#ffff66' })
-    vim.api.nvim_create_autocmd("LspTokenUpdate", {
-        callback = function(args)
-            local token = args.data.token
-            local buf = args.buf
-            local client_id = args.data.client_id
-            if vim.tbl_contains(considered_variable, token.type) then
-                vim.lsp.semantic_tokens.highlight_token(
-                    token, buf, client_id,
-                    "VarName" .. get_color_number(token, buf)
-                )
-            end
-        end
-    })
-end
-
 local parsers = {}
-local ns = vim.api.nvim_create_namespace('SemanticHighlighting')
+local ns = {}
 local queries = {}
-local supported_languages = { "lua", "c", "cpp", "python" }
+local supported_languages = { "c", "cpp", "python", "lua" }
+-- local supported_languages = {}
 
 local function colorize(bufnr, lang, start_row, end_row)
-    parsers[bufnr]:parse(
-        { start_row, end_row },
-        function(err, trees)
-            vim.schedule(function()
-                vim.api.nvim_buf_clear_namespace(bufnr, ns, start_row, end_row)
-                local tree = trees[1]
-                for pattern, match, metadata in queries[lang]:iter_matches(tree:root(), 0, start_row, end_row) do
-                    for id, nodes in pairs(match) do
-                        local name = queries[lang].captures[id]
-                        if vim.tbl_contains(considered_variable, name) then
-                            for _, node in ipairs(nodes) do
-                                local node_start_row, node_start_col, node_end_row, node_end_col = node:range()
-                                local variable = vim.api.nvim_buf_get_text(bufnr, node_start_row, node_start_col, node_end_row, node_end_col, {})
-                                vim.api.nvim_buf_set_extmark(bufnr, ns, node_start_row, node_start_col,
-                                    { end_row = node_end_row, end_col = node_end_col, hl_group = "String", priority = 200, strict = false })
+    vim.schedule(function()
+        parsers[bufnr]:parse(
+            { start_row, end_row },
+            function(err, trees)
+                vim.schedule(function()
+                    vim.api.nvim_buf_clear_namespace(bufnr, ns[bufnr], start_row, end_row)
+                    local tree = trees[1]
+                    for pattern, match, metadata in queries[lang]:iter_matches(tree:root(), 0, start_row, end_row) do
+                        for id, nodes in pairs(match) do
+                            local name = queries[lang].captures[id]
+                            if vim.tbl_contains(considered_variable, name) then
+                                for _, node in ipairs(nodes) do
+                                    local node_start_row, node_start_col, node_end_row, node_end_col = node:range()
+                                    local variable = vim.api.nvim_buf_get_text(bufnr, node_start_row, node_start_col,
+                                        node_end_row, node_end_col, {})[1]
+                                    vim.api.nvim_buf_set_extmark(bufnr, ns[bufnr], node_start_row, node_start_col,
+                                        {
+                                            end_row = node_end_row,
+                                            end_col = node_end_col,
+                                            hl_group =
+                                                "SemanticHighlightingColor" .. get_color_number(variable),
+                                            priority = 200,
+                                            strict = false
+                                        })
+                                end
                             end
                         end
                     end
-                end
-            end)
-        end
-    )
+                end)
+            end
+        )
+    end)
+end
+
+
+local function define_hlgroups()
+    for i, color in ipairs(semantic_highlighting_colors) do
+        vim.api.nvim_set_hl(0, 'SemanticHighlightingColor' .. (i - 1), { fg = color })
+    end
 end
 
 local function start_treesitter_semantic_highlighting(bufnr, lang)
-    for i, color in ipairs(semantic_highlighting_colors) do
-        vim.api.nvim_set_hl(0, 'SemanticHighlightingColor' .. i, { fg = color })
-    end
-
     parsers[bufnr] = vim.treesitter.get_parser(bufnr, lang)
     queries[lang] = vim.treesitter.query.get(parsers[bufnr]:lang(), "highlights")
+    ns[bufnr] = vim.api.nvim_create_namespace('SemanticHighlighting' .. bufnr)
 
     colorize(bufnr, lang, 0, -1)
 
@@ -470,11 +593,13 @@ vim.api.nvim_create_autocmd('FileType', {
         end
         local bufnr = args.buf
 
-        print("Starting semantic highlighting for ", lang, " in buffer ", bufnr)
+        print("Starting semantic highlighting for", lang, "in buffer", bufnr)
 
         start_treesitter_semantic_highlighting(bufnr, lang)
     end
 })
---
--- vim.keymap.set("n", "<bs><bs>", treesitter_try)
--- vim.hl.range(0, vim.api.nvim_create_namespace(''), "String", { 467, 0 }, { 467, 5 }, { priority = 200 })
+
+vim.api.nvim_create_autocmd('ColorScheme', {
+    group = sh_augroup,
+    callback = define_hlgroups
+})
