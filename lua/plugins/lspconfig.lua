@@ -19,13 +19,15 @@ return
         end
 
         -- servers
-        -- local capabilities = require("cmp_nvim_lsp").default_capabilities()
-        local capabilities = require("cmp_nvim_lsp").default_capabilities({ snippetSupport = false })
-        -- print(dump(capabilities))
+        local capabilities = require("cmp_nvim_lsp").default_capabilities()
+        -- local capabilities = require("cmp_nvim_lsp").default_capabilities({ snippetSupport = false })
+
+        vim.lsp.config("*", {
+            capabilities = capabilities,
+        })
 
         -- lua_language_server
-        require("lspconfig")["lua_ls"].setup({
-            capabilities = capabilities,
+        vim.lsp.config("lua_ls", {
             settings = {
                 Lua = {
                     runtime = {
@@ -45,18 +47,14 @@ return
                     telemetry = {
                         enable = false,
                     },
-                    completion = {
-                        keywordSnippet = "Disable",
-                    },
-
                     hint = { enable = true }
                 },
             }
         })
+        vim.lsp.enable("lua_ls")
 
         -- pyright
-        require("lspconfig")["pyright"].setup({
-            capabilities = capabilities,
+        vim.lsp.config("pyright", {
             settings = {
                 python = {
                     analysis = {
@@ -68,30 +66,28 @@ return
                 }
             }
         })
+        vim.lsp.enable("pyright")
 
         -- clangd
-        require("lspconfig")["clangd"].setup({
+        vim.lsp.config("clangd", {
+            root_markers = { "build" },
             -- cmd = { "docker", "exec", "-i", "name", "clangd" },
-            capabilities = capabilities
         })
+        vim.lsp.enable("clangd")
 
 
         -- cmake
-        require("lspconfig")["cmake"].setup({
-            capabilities = capabilities
-        })
+        vim.lsp.enable("cmake")
 
-        require("lspconfig")["tinymist"].setup {
+        vim.lsp.config("tinymist", {
             settings = {
                 formatterMode = "typstyle",
                 exportPdf = "onType",
                 semanticTokens = "disable"
             },
-            root_dir = function(fname, bufnr)
-                return vim.fs.root(bufnr, "template.typ")
-            end,
-            capabilities = capabilities
-        }
+            root_markers = "template.typ"
+        })
+        vim.lsp.enable("tinymist")
 
         vim.api.nvim_create_autocmd('LspAttach', {
             callback = function(args)
@@ -122,9 +118,10 @@ return
                 -- basic keymaps
                 local opts = { buffer = args.buf }
                 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { buffer = args.buf, desc = "(d)iagnostic" })
-                vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-                vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+                vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
+                vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
                 -- vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, opts)
+                vim.keymap.set("n", "<leader>q", vim.diagnostic.setqflist, opts)
                 vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
                 vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
                 vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
