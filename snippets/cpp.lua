@@ -1,9 +1,27 @@
-local ls = require("luasnip")
+return {
+    {
+        prefix = 'f',
+        body = "for (int $1 = $2; $1 < $3; ++$1) {\n\t$0\n}"
+    },
 
-ls.add_snippets("cpp", {
-    ls.parser.parse_snippet({ trig = "f" }, "for (int $1 = $2; $1 < $3; ++$1) {\n\t$0\n}"),
-    ls.parser.parse_snippet({ trig = "fb" }, "for (int $1 = $2; $1 >= $3; --$1) {\n\t$0\n}"),
-    ls.parser.parse_snippet({ trig = "fff" }, [[
+    {
+        prefix = 'fb',
+        body = "for (int $1 = $2; $1 >= $3; --$1) {\n\t$0\n}"
+    },
+
+    {
+        prefix = 'en',
+        body = '\'\\n\''
+    },
+
+    {
+        prefix = 'be',
+        body = "$1.begin(), $1.end()"
+    },
+
+    {
+        prefix = 'fff',
+        body = [[
 #include <algorithm>
 #include <bitset>
 #include <cassert>
@@ -74,7 +92,6 @@ i32 main() {
 
     finish;
 }
-]]),
-    ls.parser.parse_snippet({ trig = "en" }, "'\\n'"),
-    ls.parser.parse_snippet({ trig = "be" }, "$1.begin(), $1.end()"),
-})
+]]
+    },
+}
