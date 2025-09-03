@@ -1,19 +1,48 @@
 return
 {
-    "rcarriga/nvim-dap-ui",
-    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+    "miroshQa/debugmaster.nvim",
+    dependencies = { "mfussenegger/nvim-dap", },
     config = function()
-        local dap = require('dap')
-        dap.adapters.codelldb = {
-            type = "executable",
-            command = "/Users/didedoshka/.vscode/extensions/vadimcn.vscode-lldb-1.11.2/adapter/codelldb",     -- or if not in $PATH: "/absolute/path/to/codelldb"
+        local dm = require("debugmaster")
+        local dap = require("dap")
+        local brd = require("brd")
 
-            -- On windows you may have to uncomment this:
-            -- detached = false,
+        brd.setup({ debugmaster = true })
+        --  →󰁔󰜴
+
+        vim.fn.sign_define('DapBreakpoint',
+            { text = '', texthl = 'DapBreakpoint', linehl = 'DapBreakpointLine', numhl = 'DapBreakpoint' })
+        vim.fn.sign_define('DapBreakpointCondition',
+            { text = 'ﳁ', texthl = 'DapBreakpoint', linehl = 'DapBreakpointLine', numhl = 'DapBreakpoint' })
+        vim.fn.sign_define('DapBreakpointRejected',
+            { text = '', texthl = 'DapBreakpoint', linehl = 'DapBreakpointLine', numhl = 'DapBreakpoint' })
+        vim.fn.sign_define('DapLogPoint', { text = '', texthl = 'DapLogPoint', linehl = 'DapLogPoint', numhl =
+        'DapLogPoint' })
+        -- vim.fn.sign_define('DapStopped', { text = '', texthl = 'DapStopped', linehl = 'DapStopped', numhl = 'DapStopped' })
+        vim.fn.sign_define('DapStopped', { text = '󰁔', texthl = 'DapStopped', linehl = 'DapStoppedLine', numhl = 'DapStopped' })
+
+        -- vim.print(require("debugmaster.state"))
+
+        vim.keymap.set({ "n", "v" }, "<bs>", dm.mode.toggle, { nowait = true })
+        vim.keymap.set("n", "<Esc>", dm.mode.disable)
+
+        dap.adapters["codelldb"] = {
+            type = "executable",
+            command = "/Users/didedoshka/.vscode/extensions/vadimcn.vscode-lldb-1.11.2/adapter/codelldb",
         }
-        dap.configurations.cpp = {
+
+        brd.dap_configurations["cpp"] = {
+            name = "cpp",
+            type = "codelldb",
+            request = "launch",
+            program = brd.get_debug_executable,
+            cwd = brd.get_dir,
+            stopOnEntry = false,
+        }
+
+        dap.configurations["cpp"] = {
             {
-                name = "Launch file",
+                name = "cpp",
                 type = "codelldb",
                 request = "launch",
                 program = function()
@@ -23,6 +52,5 @@ return
                 stopOnEntry = false,
             },
         }
-        require("dapui").setup()
-    end,
+    end
 }
