@@ -43,24 +43,30 @@ return
         }
 
         require("telescope").load_extension("ui-select")
+        require("telescope").load_extension("textcase")
 
         vim.keymap.set('n', '<leader>b', require('telescope.builtin').buffers, { desc = "look at open (b)uffers" })
         vim.keymap.set('n', '<leader>o', function()
                 require('telescope.builtin').find_files({ no_ignore = true })
             end,
             { desc = "(o)pen file (current working directory)" })
-
         vim.keymap.set('n', '<leader>e', function()
             require('telescope.builtin').find_files({ cwd = require('telescope.utils').buffer_dir(), no_ignore = true })
         end, { desc = "open file (current file's directory)" })
 
         vim.keymap.set('n', '<leader>h', require('telescope.builtin').live_grep,
             { desc = "grep in files. (h) is near f-find and g-grep" })
+        vim.keymap.set('v', '<leader>h', function()
+            require('telescope.builtin').live_grep({ default_text = vim.fn.expand("<cword>") })
+        end, { desc = "grep in files. (h) is near f-find and g-grep" })
         vim.keymap.set('n', '<leader>g', require('telescope.builtin').current_buffer_fuzzy_find,
             { desc = "(g)rep current buffer" })
         vim.keymap.set('n', '<leader>s', require('telescope.builtin').lsp_document_symbols,
             { desc = "lsp document (s)ymbols" })
-        vim.keymap.set('n', '<leader>t', require('telescope.builtin').help_tags,
+        vim.keymap.set('n', '<leader>p', require('telescope.builtin').help_tags,
             { desc = "neovim help" })
+        vim.keymap.set('v', '<leader>t', function()
+            require('telescope.builtin').help_tags({ default_text = vim.fn.expand("<cword>") })
+        end, { desc = "neovim help" })
     end
 }

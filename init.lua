@@ -21,7 +21,7 @@ vim.g.clipboard = "osc52"
 vim.opt.clipboard = "unnamedplus"
 -- set wrap and max text width
 vim.opt.wrap = false
-vim.opt.colorcolumn = "120"
+-- vim.opt.colorcolumn = "120"
 
 vim.opt.undofile = true
 
@@ -56,7 +56,7 @@ local table_of_plugins = {}
 vim.api.nvim_create_autocmd("BufEnter", {
     callback = function(args)
         local bufnr = args.buf
-        if vim.bo[bufnr].filetype == "typst" then
+        if vim.bo[bufnr].filetype == "typst" or vim.bo[bufnr].filetype == "markdown" then
             vim.opt.wrap = true
         else
             vim.opt.wrap = false
@@ -75,18 +75,16 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
-    pattern = { "*.py", "*.cpp", "*.h", "*.c", "*.S", "*.txt", "*.lua", "*.typ" },
+    pattern = { "*.py", "*.cpp", "*.h", "*.c", "*.S", "*.txt", "*.lua", "*.typ", "*.md" },
     command = "silent update"
 })
 
 -- working with buffers
 vim.keymap.set("n", "<leader>q", "<cmd>bp<bar>sp<bar>bn<bar>bd<cr>", { desc = "close buffer" })
-vim.keymap.set("n", "<Tab>", "<cmd>bnext<cr>", { desc = "next buffer" })
-vim.keymap.set("n", "<S-Tab>", "<cmd>bprevious<cr>", { desc = "previous buffer" })
 
 -- running lua
-vim.keymap.set("n", "<bs>?", ":.lua<cr>", { desc = "execute current (l)ua code" })
-vim.keymap.set("v", "<bs>?", ":lua<cr>", { desc = "execute current (l)ua code" })
+-- vim.keymap.set("n", "<bs>?", ":.lua<cr>", { desc = "execute current (l)ua code" })
+-- vim.keymap.set("v", "<bs>?", ":lua<cr>", { desc = "execute current (l)ua code" })
 
 vim.keymap.set("t", "<C-e>", "<c-\\><c-n>")
 
@@ -99,10 +97,18 @@ require("lazy").setup({
     -- require("plugins.ayu"),
 
     {
-        "Yggdroot/indentLine",
+        "lukas-reineke/indent-blankline.nvim",
         config = function()
-            vim.g.indentLine_char = '|'
-        end
+            require("ibl").setup({
+                indent = { highlight = "Comment", char = "▏" },
+                scope = { enabled = false }
+            })
+            local hooks = require "ibl.hooks"
+            hooks.register(
+                hooks.type.WHITESPACE,
+                hooks.builtin.hide_first_space_indent_level
+            )
+        end,
     },
 
     -- flit
@@ -179,10 +185,12 @@ require("lazy").setup({
     },
 
     {
-        'norcalli/nvim-colorizer.lua',
-        config = function()
-            require('colorizer').setup()
-        end
+        "catgoose/nvim-colorizer.lua",
+        opts = {
+            user_default_options = {
+                names = false, -- "Name" codes like Blue or red
+            },
+        },
     },
 
     {
@@ -190,17 +198,42 @@ require("lazy").setup({
         config = function()
             require('rainbow-delimiters.setup').setup {
                 highlight = {
-                    "SemanticHighlightingColor0",
-                    "SemanticHighlightingColor1",
-                    "SemanticHighlightingColor2",
-                    "SemanticHighlightingColor3",
                     "SemanticHighlightingColor4",
-                    "SemanticHighlightingColor5",
-                    "SemanticHighlightingColor6",
                     "SemanticHighlightingColor7",
+                    "SemanticHighlightingColor10",
+                    "SemanticHighlightingColor1",
                 },
             }
         end
     },
 
+    {
+        "zk-org/zk-nvim",
+        config = function()
+            require("zk").setup()
+            vim.keymap.set("n", "<leader>zn", "<cmd>ZkNew<cr>", { desc = "(z)k (n)ew" })
+            vim.keymap.set("n", "<leader>zi", "<cmd>ZkInsertLink<cr>", { desc = "(z)k (i)nsert" })
+            vim.keymap.set("n", "<leader>zb", "<cmd>ZkBacklinks<cr>", { desc = "(z)k (b)acklinks" })
+        end
+    },
+
+    {
+        "johmsalas/text-case.nvim",
+        config = function()
+            require("textcase").setup({})
+        end,
+    },
+
+    -- require("plugins.lualine"),
+
+    {
+        dir = "~/programming/brd.nvim",
+        config = function()
+        end
+    },
+
+    -- {
+    --     'MeanderingProgrammer/render-markdown.nvim',
+    --     opts = {},
+    -- },
 })

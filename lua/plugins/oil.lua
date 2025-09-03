@@ -11,7 +11,7 @@ return
         )
 
         -- tree for project directory. <leader> project
-        vim.keymap.set("n", "<leader>p", "<cmd>Oil " .. vim.fn.getcwd() .. "<cr>",
+        vim.keymap.set("n", "<leader>t", "<cmd>Oil " .. vim.fn.getcwd() .. "<cr>",
             { desc = "(p)roject tree" }
         )
     end
