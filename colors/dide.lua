@@ -9,9 +9,10 @@ local colors = {
     gray4 = "#474747",
     gray5 = '#636363',
     gray6 = "#808080",
-    gray7 = "#9e9e9e",
-    gray8 = "#bdbdbd",
+    gray7 = "#bdbdbd",
+    gray8 = "#cdcdcd",
     gray9 = "#dddddd",
+    gray10 = "#ededed",
 
     accent = '#636363',
     bg = '#FFFFFF',
@@ -100,7 +101,7 @@ local function set_groups()
         TabLineFill = { fg = colors.fg, bg = colors.panel_border },
         TabLineSel = { fg = colors.fg, bg = colors.bg },
         Title = { fg = colors.keyword },
-        Visual = { fg = colors.bg, bg = colors.fg},
+        Visual = { bg = colors.gray10 },
         WarningMsg = { fg = colors.warning },
 
         Comment = { fg = colors.comment, italic = true },
@@ -240,6 +241,11 @@ local function set_groups()
 
         -- Dap.
         NvimDapVirtualText = { fg = colors.regexp },
+        DapBreakpoint = { fg = "#dd0000"},
+        DapBreakpointLine = { bg = "#FAEAE6"},
+        DapStopped = { fg = "#EDA300"},
+        DapStoppedLine = { bg = "#FCEDD7"},
+        DapLogPoint = { fg = "#ffff00"},
 
         -- DAP UI.
         DapUIScope = { fg = colors.func },
@@ -376,144 +382,63 @@ local function check()
     vim.print(srgb_to_string(oklab_to_srgb(thing)))
 end
 
--- generate_colors(64)
+-- generate_colors(52)
 
 local semantic_highlighting_colors = {
-    "#fd0000",
-    "#0000ff",
-    "#009831",
-    "#8300ff",
-    "#00939a",
-    "#d400ae",
-    "#5b6f00",
     "#ef0059",
-    "#7600ff",
-    "#746600",
-    "#0074f9",
-    "#009200",
-    "#994f00",
-    "#ea0070",
-    "#c300d4",
+    "#dd0000",
+    "#a54300",
+    "#327800",
     "#009500",
-    "#f70000",
-    "#9a00ff",
-    "#008400",
-    "#f30000",
-    "#00976c",
-    "#ee0000",
-    "#003eff",
-    "#e30085",
-    "#3a7700",
-    "#a83f00",
-    "#008ac3",
-    "#c20000",
-    "#dc009a",
-    "#004fff",
-    "#fb0000",
-    "#0069ff",
-    "#3f00ff",
-    "#e00000",
-    "#f40041",
-    "#8f00ff",
-    "#005dff",
-    "#6700ff",
-    "#008a00",
-    "#f80021",
-    "#e80000",
-    "#009700",
-    "#009683",
-    "#cc00c2",
-    "#cd0000",
-    "#009851",
-    "#fa0000",
-    "#007ce8",
-    "#5600ff",
-    "#007e00",
-    "#875b00",
-    "#0025ff",
-    "#d70000",
-    "#a500ff",
-    "#008e00",
-    "#1900ff",
-    "#b000f6",
-    "#008faf",
-    "#b62900",
-    "#b900e6",
-    "#0084d6",
-    "#fc0000",
+    "#009589",
+    "#0084d5",
+    "#0052ff",
+    "#0000ff",
+    "#5a00ff",
+    "#8e00ff",
+    "#b600ec",
+    "#d700a8",
 }
 
 local colors_to_look = {
     "#ef0059",
-    "#f40041",
-    "#f80021",
-    "#fb0000",
-    "#fc0000",
     "#fd0000",
-    "#fa0000",
-    "#f70000",
-    "#f30000",
-    "#ee0000",
-    "#e80000",
-    "#e00000",
-    "#d70000",
-    "#cd0000",
-    "#c20000",
-    "#b62900",
-    "#a83f00",
-    "#994f00",
-    "#875b00",
-    "#746600",
-    "#5b6f00",
-    "#3a7700",
-    "#007e00",
-    "#008400",
-    "#008a00",
-    "#008e00",
-    "#009200",
+    "#dd0000",
+    "#a54300",
+    "#327800",
     "#009500",
-    "#009700",
-    "#009831",
-    "#009851",
-    "#00976c",
-    "#009683",
-    "#00939a",
-    "#008faf",
-    "#008ac3",
-    "#0084d6",
-    "#007ce8",
-    "#0074f9",
-    "#0069ff",
-    "#005dff",
-    "#004fff",
-    "#003eff",
-    "#0025ff",
+    "#009589",
+    "#0084d5",
+    "#0052ff",
     "#0000ff",
-    "#1900ff",
-    "#3f00ff",
-    "#5600ff",
-    "#6700ff",
-    "#7600ff",
-    "#8300ff",
-    "#8f00ff",
-    "#9a00ff",
-    "#a500ff",
-    "#b000f6",
-    "#b900e6",
-    "#c300d4",
-    "#cc00c2",
-    "#d400ae",
-    "#dc009a",
-    "#e30085",
-    "#ea0070",
+    "#5a00ff",
+    "#8e00ff",
+    "#b600ec",
+    "#d700a8",
 }
 
+local function init_characters_tbl()
+    local tbl = {}
+    local characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
+    for i = 1, string.len(characters) do
+        tbl[string.byte(characters, i)] = i
+    end
+    return tbl
+end
+
+local characters_tbl = init_characters_tbl()
+
 local function get_color_number(name)
-    local p = 259
+    local p = 67
     local mod = 1000000009
     local hash = 0
     for i = 1, string.len(name) do
-        hash = ((hash * p) % mod + string.byte(name, i)) % mod
+        local char = characters_tbl[string.byte(name, i)]
+        if char == nil then
+            print(string.byte(name, i), "is nil")
+            char = 0
+        end
+        hash = ((hash * p) % mod + char) % mod
     end
     return hash % #semantic_highlighting_colors
 end
@@ -526,17 +451,20 @@ local queries = {}
 local supported_languages = { "c", "cpp", "python", "lua" }
 -- local supported_languages = {}
 
-local function colorize(bufnr, lang, start_row, end_row)
+local function colorize(bufnr, start_row, end_row)
     vim.schedule(function()
+        if parsers[bufnr] == nil then
+            return
+        end
         parsers[bufnr]:parse(
             { start_row, end_row },
             function(err, trees)
                 vim.schedule(function()
                     vim.api.nvim_buf_clear_namespace(bufnr, ns[bufnr], start_row, end_row)
                     local tree = trees[1]
-                    for pattern, match, metadata in queries[lang]:iter_matches(tree:root(), 0, start_row, end_row) do
+                    for pattern, match, metadata in queries[bufnr]:iter_matches(tree:root(), 0, start_row, end_row) do
                         for id, nodes in pairs(match) do
-                            local name = queries[lang].captures[id]
+                            local name = queries[bufnr].captures[id]
                             if vim.tbl_contains(considered_variable, name) then
                                 for _, node in ipairs(nodes) do
                                     local node_start_row, node_start_col, node_end_row, node_end_col = node:range()
@@ -570,15 +498,19 @@ end
 
 local function start_treesitter_semantic_highlighting(bufnr, lang)
     parsers[bufnr] = vim.treesitter.get_parser(bufnr, lang)
-    queries[lang] = vim.treesitter.query.get(parsers[bufnr]:lang(), "highlights")
+    queries[bufnr] = vim.treesitter.query.get(parsers[bufnr]:lang(), "highlights")
     ns[bufnr] = vim.api.nvim_create_namespace('SemanticHighlighting' .. bufnr)
 
-    colorize(bufnr, lang, 0, -1)
+    colorize(bufnr, 0, -1)
 
     parsers[bufnr]:register_cbs({
         on_bytes = function(buffer_id, changed_tick, start_row, start_col, byte_offset, old_end_row, old_end_col,
                             old_end_byte, new_end_row, new_end_col, new_end_byte)
-            colorize(bufnr, lang, start_row, start_row + new_end_row + 1)
+            colorize(bufnr,  start_row, start_row + new_end_row + 1)
+        end,
+        on_detach = function(bufn)
+            parsers[bufn] = nil
+            ns[bufn] = nil
         end
     })
 end
@@ -593,7 +525,8 @@ vim.api.nvim_create_autocmd('FileType', {
         end
         local bufnr = args.buf
 
-        print("Starting semantic highlighting for", lang, "in buffer", bufnr)
+        -- vim.print(args)
+        print("Starting semantic highlighting for", lang, "in buffer", bufnr, "with filename", args.file)
 
         start_treesitter_semantic_highlighting(bufnr, lang)
     end
