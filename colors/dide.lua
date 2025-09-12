@@ -30,7 +30,6 @@ local colors = {
     comment = '#808080',
     constant = '#000000',
     operator = '#2d2d2d',
-    error = '#ff0000',
     lsp_parameter = '#2d2d2d',
 
     line = '#E7EAED',
@@ -53,6 +52,21 @@ local colors = {
 
     fg_idle = '#8A9199',
     warning = '#FA8D3E',
+
+
+    -- "#ef0059",
+    error = "#dd0000",
+    -- "#a54300",
+    -- "#327800",
+    hint = "#009500",
+    -- "#009589",
+    -- "#0084d5",
+    info = "#0052ff",
+    -- "#0000ff",
+    -- "#5a00ff",
+    warn ="#8e00ff",
+    -- "#b600ec",
+    -- "#d700a8",
 }
 
 
@@ -138,14 +152,14 @@ local function set_groups()
 
         -- LSP.
         DiagnosticError = { fg = colors.error },
-        DiagnosticWarn = { fg = colors.keyword },
-        DiagnosticInfo = { fg = colors.tag },
-        DiagnosticHint = { fg = colors.regexp },
+        DiagnosticWarn = { fg = colors.warn },
+        DiagnosticInfo = { fg = colors.info },
+        DiagnosticHint = { fg = colors.hint },
 
         DiagnosticUnderlineError = { sp = colors.error, undercurl = true },
-        DiagnosticUnderlineWarn = { sp = colors.keyword, undercurl = true },
-        DiagnosticUnderlineInfo = { sp = colors.tag, undercurl = true },
-        DiagnosticUnderlineHint = { sp = colors.regexp, undercurl = true },
+        DiagnosticUnderlineWarn = { sp = colors.warn, undercurl = true },
+        DiagnosticUnderlineInfo = { sp = colors.info, undercurl = true },
+        DiagnosticUnderlineHint = { sp = colors.hint, undercurl = true },
 
         -- Markdown.
         markdownCode = { fg = colors.special },
