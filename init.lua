@@ -81,6 +81,7 @@ vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
 
 -- working with buffers
 vim.keymap.set("n", "<leader>q", "<cmd>bp<bar>sp<bar>bn<bar>bd<cr>", { desc = "close buffer" })
+vim.keymap.set("n", "<tab>", "<C-w>", { desc = "" })
 
 -- running lua
 -- vim.keymap.set("n", "<bs>?", ":.lua<cr>", { desc = "execute current (l)ua code" })
@@ -89,7 +90,9 @@ vim.keymap.set("n", "<leader>q", "<cmd>bp<bar>sp<bar>bn<bar>bd<cr>", { desc = "c
 vim.keymap.set("t", "<C-e>", "<c-\\><c-n>")
 
 vim.cmd.colorscheme('dide')
+
 vim.go.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:block-blinkon500-blinkoff500-TermCursor,a:Cursor"
+vim.diagnostic.config({ virtual_text = true })
 
 -- setting plugins
 require("lazy").setup({
@@ -224,7 +227,7 @@ require("lazy").setup({
         end,
     },
 
-    -- require("plugins.lualine"),
+    require("plugins.lualine"),
 
     {
         dir = "~/programming/brd.nvim",
