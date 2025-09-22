@@ -75,7 +75,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
-    pattern = { "*.py", "*.cpp", "*.h", "*.c", "*.S", "*.txt", "*.lua", "*.typ", "*.md" },
+    pattern = { "*.py", "*.cpp", "*.h", "*.c", "*.S", "*.txt", "*.lua", "*.typ", "*.md", "*.rs" },
     command = "silent update"
 })
 
@@ -132,17 +132,6 @@ require("lazy").setup({
     -- lspconfig
     require("plugins.lspconfig"),
 
-    -- {
-    --     "jose-elias-alvarez/null-ls.nvim",
-    --     config = function()
-    --         require("null-ls").setup({
-    --             sources = require("null-ls").builtins.formatting.autopep8.with({
-    --                 extra_args = { "-a", "-a", "--max-line-length", "119" }
-    --             })
-    --         })
-    --     end,
-    --     dependencies = { "nvim-lua/plenary.nvim" }
-    -- },
     -- comment
     require("plugins.comment"),
 
@@ -230,7 +219,7 @@ require("lazy").setup({
     require("plugins.lualine"),
 
     {
-        dir = "~/programming/brd.nvim",
+        dir = "~/programming/brd",
         config = function()
         end
     },

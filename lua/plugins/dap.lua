@@ -21,14 +21,26 @@ return
             { text = 'ﳁ', texthl = 'DapBreakpoint', linehl = 'DapBreakpointLine', numhl = 'DapBreakpoint' })
         vim.fn.sign_define('DapBreakpointRejected',
             { text = '', texthl = 'DapBreakpoint', linehl = 'DapBreakpointLine', numhl = 'DapBreakpoint' })
-        vim.fn.sign_define('DapLogPoint', { text = '', texthl = 'DapLogPoint', linehl = 'DapLogPoint', numhl =
-        'DapLogPoint' })
-        vim.fn.sign_define('DapStopped', { text = '󰁔', texthl = 'DapStopped', linehl = 'DapStoppedLine', numhl = 'DapStopped' })
+        vim.fn.sign_define('DapLogPoint',
+            { text = '', texthl = 'DapLogPoint', linehl = 'DapLogPoint', numhl = 'DapLogPoint' })
+        vim.fn.sign_define('DapStopped',
+            { text = '󰁔', texthl = 'DapStopped', linehl = 'DapStoppedLine', numhl = 'DapStopped' })
 
         -- vim.print(require("debugmaster.state"))
 
-        vim.keymap.set({ "n", "v" }, "<bs>", dm.mode.toggle, { nowait = true })
+        vim.keymap.set("n", "<bs><bs>", dm.mode.toggle)
         vim.keymap.set("n", "<Esc>", dm.mode.disable)
+
+        vim.keymap.set("n", "<bs>u", function()
+            state.sidepanel:toggle()
+        end)
+
+        vim.keymap.set("n", "<bs>x", brd.build_and_run)
+        vim.keymap.set("n", "<bs>X", brd.run)
+        vim.keymap.set("n", "<bs>s", brd.choose_target)
+        vim.keymap.set("n", "<bs>C", brd.term.open_terminal)
+
+        -- vim.keymap.set({ "n", "v" }, "<leader>u", "<cmd>BrdConfig<cr>")
 
         dap.adapters["codelldb"] = {
             type = "executable",

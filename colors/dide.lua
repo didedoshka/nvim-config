@@ -458,11 +458,12 @@ local function get_color_number(name)
 end
 
 local considered_variable = {
-    "variable", "type", "property", "type.builtin" }
+    "variable", "type", "property", "type.builtin", "function.call", "method", "variable.member", "module" }
 local parsers = {}
 local ns = {}
 local queries = {}
-local supported_languages = { "c", "cpp", "python", "lua" }
+-- maybe change to unsupported_languages
+local supported_languages = { "c", "cpp", "python", "lua", "rust", "fish" }
 -- local supported_languages = {}
 
 local function colorize(bufnr, start_row, end_row)

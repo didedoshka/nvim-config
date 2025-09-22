@@ -15,14 +15,6 @@ return {
             return "LSP: " .. table.concat(names, ", ")
         end
 
-        local function macro()
-            local reg = vim.fn.reg_recording()
-            if reg == "" then
-                return ""
-            end
-            return "Recording macro in: " .. reg
-        end
-
         local dmode_enabled = false
         vim.api.nvim_create_autocmd("User", {
             pattern = "DebugModeChanged",
@@ -34,7 +26,7 @@ return {
 
         require("lualine").setup({
             options = {
-                globalstatus = true,
+                globalstatus = false,
                 component_separators = { left = '', right = '' },
                 section_separators = { left = '', right = '' },
             },
@@ -52,7 +44,7 @@ return {
                     { "branch" },
                     { "diff" },
                     { "diagnostics" },
-                    { macro },
+                    { },
                 },
                 lualine_x = {
                     { lsp_status },

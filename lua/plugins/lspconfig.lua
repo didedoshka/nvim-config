@@ -75,7 +75,6 @@ return
         })
         vim.lsp.enable("clangd")
 
-
         -- cmake
         vim.lsp.enable("cmake")
 
@@ -88,6 +87,28 @@ return
             root_markers = "template.typ"
         })
         vim.lsp.enable("tinymist")
+
+        vim.lsp.enable("rust_analyzer")
+
+        vim.lsp.config('ruff', {
+            init_options = {
+                settings = {
+                    lint = {
+                        enable = false
+                    }
+                }
+            }
+        })
+        vim.lsp.enable('ruff')
+
+
+        -- require("null-ls").setup({
+        --     sources = {
+        --         require("null-ls").builtins.formatting.autopep8.with({
+        --         extra_args = { "-a", "-a", "--max-line-length", "119" }
+        --     })
+        --     }
+        -- })
 
         vim.api.nvim_create_autocmd('LspAttach', {
             callback = function(args)
