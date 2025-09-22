@@ -222,6 +222,10 @@ require("lazy").setup({
         "didedoshka/brd",
     },
 
+    {
+        "perillo/qbe.vim",
+    },
+
     -- {
     --     'MeanderingProgrammer/render-markdown.nvim',
     --     opts = {},
