@@ -219,9 +219,7 @@ require("lazy").setup({
     require("plugins.lualine"),
 
     {
-        dir = "~/programming/brd",
-        config = function()
-        end
+        "didedoshka/brd",
     },
 
     -- {
