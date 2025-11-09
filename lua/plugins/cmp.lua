@@ -64,6 +64,12 @@ return {
                 ['<C-e>'] = {
                     i = cmp.mapping.abort(),
                 },
+                -- ['<C-d>'] = {
+                --     n = cmp.mapping.scroll_docs(-4),
+                -- },
+                -- ['<C-u>'] = {
+                --     n = cmp.mapping.scroll_docs(4),
+                -- },
             },
 
             sources = {

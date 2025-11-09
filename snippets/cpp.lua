@@ -1,5 +1,10 @@
 return {
     {
+        prefix = 'ft',
+        body = "for ($1 $2 = $3; $2 < $4; ++$2) {\n\t$0\n}"
+    },
+
+    {
         prefix = 'f',
         body = "for (int $1 = $2; $1 < $3; ++$1) {\n\t$0\n}"
     },

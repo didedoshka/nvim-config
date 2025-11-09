@@ -24,8 +24,11 @@ return {
             end
         })
 
+        -- local navic = require("nvim-navic")
+
         require("lualine").setup({
             options = {
+                theme = "dide",
                 globalstatus = false,
                 component_separators = { left = '', right = '' },
                 section_separators = { left = '', right = '' },
@@ -44,7 +47,7 @@ return {
                     { "branch" },
                     { "diff" },
                     { "diagnostics" },
-                    { },
+                    {},
                 },
                 lualine_x = {
                     { lsp_status },
@@ -61,6 +64,14 @@ return {
                 lualine_y = {},
                 lualine_z = {},
             },
+            -- winbar = {
+            --     lualine_c = {
+            --         "navic",
+            --         color_correction = nil,
+            --         navic_opts = nil
+            --     }
+            -- }
+
         })
     end,
 }

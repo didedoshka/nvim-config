@@ -35,8 +35,11 @@ return
             state.sidepanel:toggle()
         end)
 
-        vim.keymap.set("n", "<bs>x", brd.build_and_run)
+        vim.keymap.set("n", "<bs>J", brd.build)
         vim.keymap.set("n", "<bs>X", brd.run)
+        vim.keymap.set("n", "<bs>P", brd.debug)
+        vim.keymap.set("n", "<bs>x", brd.build_and_run)
+        vim.keymap.set("n", "<bs>p", brd.build_and_debug)
         vim.keymap.set("n", "<bs>s", brd.choose_target)
         vim.keymap.set("n", "<bs>C", brd.term.open_terminal)
 

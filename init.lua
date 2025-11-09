@@ -35,7 +35,7 @@ vim.keymap.set('i', '<C-l>', '<C-^>', { remap = true })
 
 -- set listchars
 vim.opt.list = true
-vim.opt.listchars = { tab = '>\\', eol = '¬', trail = '·' }
+vim.opt.listchars = { tab = '  ', eol = '¬', trail = '·' }
 
 -- installing lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -75,19 +75,29 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
-    pattern = { "*.py", "*.cpp", "*.h", "*.c", "*.S", "*.txt", "*.lua", "*.typ", "*.md", "*.rs" },
+    pattern = { "*.py", "*.cpp", "*.h", "*.c", "*.S", "*.txt", "*.lua", "*.typ", "*.md", "*.proto", "*.go", "*.rs" },
     command = "silent update"
 })
 
+-- vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
+--     pattern = { "*.rs" },
+--     command = "w"
+-- })
+
 -- working with buffers
 vim.keymap.set("n", "<leader>q", "<cmd>bp<bar>sp<bar>bn<bar>bd<cr>", { desc = "close buffer" })
+vim.keymap.set("n", "<C-j>", "<C-i>", { desc = "" })
+vim.keymap.set("n", "<C-k>", "<C-o>", { desc = "" })
+vim.keymap.set("n", "<C-o>", function() print("habit") end, { desc = "" })
 vim.keymap.set("n", "<tab>", "<C-w>", { desc = "" })
 
 -- running lua
 -- vim.keymap.set("n", "<bs>?", ":.lua<cr>", { desc = "execute current (l)ua code" })
 -- vim.keymap.set("v", "<bs>?", ":lua<cr>", { desc = "execute current (l)ua code" })
 
+-- terminal
 vim.keymap.set("t", "<C-e>", "<c-\\><c-n>")
+vim.opt.scrollback = 100000
 
 vim.cmd.colorscheme('dide')
 
@@ -142,6 +152,7 @@ require("lazy").setup({
         "mbbill/undotree",
         config = function()
             vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<cr>", { desc = "(u)ndotree" })
+            vim.g.undotree_WindowLayout = 2
         end
     },
 
@@ -225,6 +236,45 @@ require("lazy").setup({
     {
         "perillo/qbe.vim",
     },
+
+    {
+        "SmiteshP/nvim-navic",
+        config = function()
+            local navic = require("nvim-navic")
+            navic.setup({
+                lsp = { auto_attach = true },
+                icons = {
+                    File = '',
+                    Module = '',
+                    Namespace = '',
+                    Package = '',
+                    Class = '',
+                    Method = '',
+                    Property = '',
+                    Field = '',
+                    Constructor = '',
+                    Enum = '',
+                    Interface = '',
+                    Function = '',
+                    Variable = '',
+                    Constant = '',
+                    String = '',
+                    Number = '',
+                    Boolean = '',
+                    Array = '',
+                    Object = '',
+                    Key = '',
+                    Null = '',
+                    EnumMember = '',
+                    Struct = '',
+                    Event = '',
+                    Operator = '',
+                    TypeParameter = '',
+                }
+            })
+            -- vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
+        end
+    }
 
     -- {
     --     'MeanderingProgrammer/render-markdown.nvim',

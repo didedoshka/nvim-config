@@ -37,7 +37,7 @@ local colors = {
     panel_shadow = '#D3D4D5',
     panel_border = '#F0F0F0',
     gutter_normal = '#CCCFD3',
-    gutter_active = '#A0A6AC',
+
     selection_inactive = '#e4e4e4',
     selection_border = '#E1E1E2',
     -- guide_active = '#D2D5D8',
@@ -64,7 +64,7 @@ local colors = {
     info = "#0052ff",
     -- "#0000ff",
     -- "#5a00ff",
-    warn ="#8e00ff",
+    warn = "#8e00ff",
     -- "#b600ec",
     -- "#d700a8",
 }
@@ -239,43 +239,49 @@ local function set_groups()
 
 
         -- WhichKey.
-        WhichKeyFloat = { bg = colors.bg },
+        WhichKeyFloat               = { bg = colors.bg },
 
         -- Leap.
-        LeapMatch = { fg = colors.regexp, underline = true },
-        LeapLabelPrimary = { fg = colors.bg, bg = colors.regexp },
-        LeapLabelSecondary = { fg = colors.bg, bg = colors.entity },
-        LeapLabelSelected = { fg = colors.bg, bg = colors.tag },
+        LeapMatch                   = { fg = colors.regexp, underline = true },
+        LeapLabelPrimary            = { fg = colors.bg, bg = colors.regexp },
+        LeapLabelSecondary          = { fg = colors.bg, bg = colors.entity },
+        LeapLabelSelected           = { fg = colors.bg, bg = colors.tag },
 
         -- LSP Inlay Hints.
-        LspInlayHint = { fg = colors.lsp_inlay_hint },
+        LspInlayHint                = { fg = colors.lsp_inlay_hint },
 
         -- LSP Signature.
         LspSignatureActiveParameter = { italic = true },
 
         -- Dap.
-        NvimDapVirtualText = { fg = colors.regexp },
-        DapBreakpoint = { fg = "#dd0000"},
-        DapBreakpointLine = { bg = "#FAEAE6"},
-        DapStopped = { fg = "#EDA300"},
-        DapStoppedLine = { bg = "#FCEDD7"},
-        DapLogPoint = { fg = "#ffff00"},
+        NvimDapVirtualText          = { fg = colors.regexp },
+        DapBreakpoint               = { fg = "#dd0000" },
+        DapBreakpointLine           = { bg = "#FAEAE6" },
+        DapStopped                  = { fg = "#EDA300" },
+        DapStoppedLine              = { bg = "#FCEDD7" },
+        DapLogPoint                 = { fg = "#ffff00" },
 
         -- DAP UI.
-        DapUIScope = { fg = colors.func },
-        DapUIType = { fg = colors.entity },
-        DapUIDecoration = { fg = colors.tag },
-        DapUIThread = { fg = colors.string },
-        DapUIStoppedThread = { fg = colors.special },
-        DapUISource = { fg = colors.regexp },
-        DapUILineNumber = { fg = colors.constant },
-        DapUIFloatBorder = { fg = colors.panel_border },
-        DapUIWatchesEmpty = { fg = colors.warning },
-        DapUIWatchesValue = { fg = colors.string },
-        DapUIWatchesError = { fg = colors.error },
-        DapUIBreakpointsPath = { fg = colors.regexp },
-        DapUIBreakpointsInfo = { fg = colors.constant },
+        DapUIScope                  = { fg = colors.func },
+        DapUIType                   = { fg = colors.entity },
+        DapUIDecoration             = { fg = colors.tag },
+        DapUIThread                 = { fg = colors.string },
+        DapUIStoppedThread          = { fg = colors.special },
+        DapUISource                 = { fg = colors.regexp },
+        DapUILineNumber             = { fg = colors.constant },
+        DapUIFloatBorder            = { fg = colors.panel_border },
+        DapUIWatchesEmpty           = { fg = colors.warning },
+        DapUIWatchesValue           = { fg = colors.string },
+        DapUIWatchesError           = { fg = colors.error },
+        DapUIBreakpointsPath        = { fg = colors.regexp },
+        DapUIBreakpointsInfo        = { fg = colors.constant },
         DapUIBreakpointsCurrentLine = { fg = colors.constant, bold = true },
+
+
+        WinBar         = { fg = colors.fg, bg = colors.bg, underline = true },
+        WinBarNC       = { link = "WinBar" },
+        NavicText      = { link = "WinBar" },
+        NavicSeparator = { bold = true },
     }
 
     for group, parameters in pairs(groups) do
@@ -399,19 +405,20 @@ end
 -- generate_colors(52)
 
 local semantic_highlighting_colors = {
-    "#ef0059",
-    "#dd0000",
-    "#a54300",
-    "#327800",
-    "#009500",
-    "#009589",
-    "#0084d5",
+    "#2d2d2d",
     "#0052ff",
+    "#dd0000",
+    "#8e00ff",
+    "#009589",
+    "#d700a8",
+    "#009500",
     "#0000ff",
     "#5a00ff",
-    "#8e00ff",
     "#b600ec",
-    "#d700a8",
+    "#ef0059",
+    "#a54300",
+    "#327800",
+    "#0084d5",
 }
 
 local colors_to_look = {
@@ -449,21 +456,22 @@ local function get_color_number(name)
     for i = 1, string.len(name) do
         local char = characters_tbl[string.byte(name, i)]
         if char == nil then
-            print(string.byte(name, i), "is nil")
-            char = 0
+            print(name, ":", string.byte(name, i), "is nil")
+            return 0
         end
         hash = ((hash * p) % mod + char) % mod
     end
-    return hash % #semantic_highlighting_colors
+    return 1 + hash % (#semantic_highlighting_colors - 1)
 end
 
 local considered_variable = {
-    "variable", "type", "property", "type.builtin", "function.call", "method", "variable.member", "module" }
+    "variable", "type", "property", "type.builtin", "function.call", "method", "variable.member", "module",
+    "function.method" }
 local parsers = {}
 local ns = {}
 local queries = {}
 -- maybe change to unsupported_languages
-local supported_languages = { "c", "cpp", "python", "lua", "rust", "fish" }
+local supported_languages = { "c", "cpp", "python", "lua", "rust", "fish", "proto", "go" }
 -- local supported_languages = {}
 
 local function colorize(bufnr, start_row, end_row)
@@ -521,7 +529,7 @@ local function start_treesitter_semantic_highlighting(bufnr, lang)
     parsers[bufnr]:register_cbs({
         on_bytes = function(buffer_id, changed_tick, start_row, start_col, byte_offset, old_end_row, old_end_col,
                             old_end_byte, new_end_row, new_end_col, new_end_byte)
-            colorize(bufnr,  start_row, start_row + new_end_row + 1)
+            colorize(bufnr, start_row, start_row + new_end_row + 1)
         end,
         on_detach = function(bufn)
             parsers[bufn] = nil
@@ -541,7 +549,7 @@ vim.api.nvim_create_autocmd('FileType', {
         local bufnr = args.buf
 
         -- vim.print(args)
-        print("Starting semantic highlighting for", lang, "in buffer", bufnr, "with filename", args.file)
+        -- print("Starting semantic highlighting for", lang, "in buffer", bufnr, "with filename", args.file)
 
         start_treesitter_semantic_highlighting(bufnr, lang)
     end
@@ -551,3 +559,40 @@ vim.api.nvim_create_autocmd('ColorScheme', {
     group = sh_augroup,
     callback = define_hlgroups
 })
+
+local navic_hl_groups = {
+    "NavicIconsFile",
+    "NavicIconsModule",
+    "NavicIconsNamespace",
+    "NavicIconsPackage",
+    "NavicIconsClass",
+    "NavicIconsMethod",
+    "NavicIconsProperty",
+    "NavicIconsField",
+    "NavicIconsConstructor",
+    "NavicIconsEnum",
+    "NavicIconsInterface",
+    "NavicIconsFunction",
+    "NavicIconsVariable",
+    "NavicIconsConstant",
+    "NavicIconsString",
+    "NavicIconsNumber",
+    "NavicIconsBoolean",
+    "NavicIconsArray",
+    "NavicIconsObject",
+    "NavicIconsKey",
+    "NavicIconsNull",
+    "NavicIconsEnumMember",
+    "NavicIconsStruct",
+    "NavicIconsEvent",
+    "NavicIconsOperator",
+    "NavicIconsTypeParameter",
+}
+
+local function set_groups_by_name(a)
+    for _, k in ipairs(a) do
+        vim.api.nvim_set_hl(0, k, { fg = semantic_highlighting_colors[get_color_number(k)], underline = true })
+    end
+end
+
+-- set_groups_by_name(navic_hl_groups)

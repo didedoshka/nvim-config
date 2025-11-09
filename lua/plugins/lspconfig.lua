@@ -88,9 +88,16 @@ return
         })
         vim.lsp.enable("tinymist")
 
+        vim.lsp.config("rust_analyzer", {
+            root_dir = function(bufnr, on_dir)
+                local found = vim.fs.root(bufnr, "Cargo.toml")
+                if found then on_dir(found) end
+            end,
+        })
+
         vim.lsp.enable("rust_analyzer")
 
-        vim.lsp.config('ruff', {
+        vim.lsp.config("ruff", {
             init_options = {
                 settings = {
                     lint = {
@@ -99,8 +106,11 @@ return
                 }
             }
         })
-        vim.lsp.enable('ruff')
+        vim.lsp.enable("ruff")
 
+        vim.lsp.enable("protols")
+
+        vim.lsp.enable("gopls")
 
         -- require("null-ls").setup({
         --     sources = {
@@ -115,6 +125,7 @@ return
                 -- get buffer number and client info
                 local bufnr = args.buf
                 local client = vim.lsp.get_client_by_id(args.data.client_id)
+
 
                 -- if vim.tbl_contains({ 'null-ls' }, client.name) then -- blacklist lsp
                 --     return
@@ -142,7 +153,7 @@ return
                 vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
                 vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
                 -- vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, opts)
-                vim.keymap.set("n", "<leader>q", vim.diagnostic.setqflist, opts)
+                vim.keymap.set("n", "<leader>j", vim.diagnostic.setqflist, opts)
                 vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
                 vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
                 vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
