@@ -449,7 +449,7 @@ end
 
 local characters_tbl = init_characters_tbl()
 
-local to_print_hashes = true
+local to_print_hashes = false
 local strings_hashes = {}
 
 local function get_color_number(name)
