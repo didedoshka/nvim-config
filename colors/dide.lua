@@ -407,18 +407,18 @@ end
 local semantic_highlighting_colors = {
     "#2d2d2d",
     "#0052ff",
-    "#dd0000",
-    "#8e00ff",
-    "#009589",
     "#d700a8",
+    "#327800",
+    "#b600ec",
+    "#dd0000",
+    "#a54300",
+    "#009589",
+    "#0084d5",
+    "#ef0059",
+    "#8e00ff",
     "#009500",
     "#0000ff",
     "#5a00ff",
-    "#b600ec",
-    "#ef0059",
-    "#a54300",
-    "#327800",
-    "#0084d5",
 }
 
 local colors_to_look = {
@@ -449,19 +449,46 @@ end
 
 local characters_tbl = init_characters_tbl()
 
+local to_print_hashes = true
+local strings_hashes = {}
+
 local function get_color_number(name)
-    local p = 67
-    local mod = 1000000009
+    local mod = 13
     local hash = 0
     for i = 1, string.len(name) do
         local char = characters_tbl[string.byte(name, i)]
-        if char == nil then
-            -- print(name, ":", string.byte(name, i), "is nil")
-            return 0
+        if char ~= nil then
+            hash = (hash + char) % mod
+        else
+            print(name, ":", string.byte(name, i), "is nil")
         end
-        hash = ((hash * p) % mod + char) % mod
     end
-    return 1 + hash % (#semantic_highlighting_colors - 1)
+    local result = 1 + hash % (#semantic_highlighting_colors - 1)
+    if to_print_hashes then
+        strings_hashes[name] = result
+    end
+    return result
+end
+
+
+local function print_hashes()
+    if not to_print_hashes then
+        return
+    end
+
+    local number_of_hashes = {}
+    for k, v in pairs(strings_hashes) do
+        if number_of_hashes[v] == nil then
+            number_of_hashes[v] = { k }
+        else
+            table.insert(number_of_hashes[v], k)
+        end
+    end
+
+    for k, v in pairs(number_of_hashes) do
+        print(k, #v)
+        vim.print(v)
+    end
 end
 
 local considered_variable = {
@@ -474,6 +501,7 @@ local queries = {}
 local supported_languages = { "c", "cpp", "python", "lua", "rust", "fish", "proto", "go" }
 -- local supported_languages = {}
 
+
 local function colorize(bufnr, start_row, end_row)
     vim.schedule(function()
         if parsers[bufnr] == nil then
@@ -482,29 +510,34 @@ local function colorize(bufnr, start_row, end_row)
         parsers[bufnr]:parse(
             { start_row, end_row },
             function(err, trees)
-                    vim.api.nvim_buf_clear_namespace(bufnr, ns[bufnr], start_row, end_row)
-                    local tree = trees[1]
-                    for pattern, match, metadata in queries[bufnr]:iter_matches(tree:root(), bufnr, start_row, end_row) do
-                        for id, nodes in pairs(match) do
-                            local name = queries[bufnr].captures[id]
-                            if vim.tbl_contains(considered_variable, name) then
-                                for _, node in ipairs(nodes) do
-                                    local node_start_row, node_start_col, node_end_row, node_end_col = node:range()
-                                    local variable = vim.api.nvim_buf_get_text(bufnr, node_start_row, node_start_col,
-                                        node_end_row, node_end_col, {})[1]
-                                    vim.api.nvim_buf_set_extmark(bufnr, ns[bufnr], node_start_row, node_start_col,
-                                        {
-                                            end_row = node_end_row,
-                                            end_col = node_end_col,
-                                            hl_group =
-                                                "SemanticHighlightingColor" .. get_color_number(variable),
-                                            priority = 200,
-                                            strict = false
-                                        })
-                                end
+                if to_print_hashes then
+                    strings_hashes = {}
+                end
+                vim.api.nvim_buf_clear_namespace(bufnr, ns[bufnr], start_row, end_row)
+                local tree = trees[1]
+                for pattern, match, metadata in queries[bufnr]:iter_matches(tree:root(), bufnr, start_row, end_row) do
+                    for id, nodes in pairs(match) do
+                        local name = queries[bufnr].captures[id]
+                        if vim.tbl_contains(considered_variable, name) then
+                            for _, node in ipairs(nodes) do
+                                local node_start_row, node_start_col, node_end_row, node_end_col = node:range()
+                                local variable = vim.api.nvim_buf_get_text(bufnr, node_start_row, node_start_col,
+                                    node_end_row, node_end_col, {})[1]
+                                vim.api.nvim_buf_set_extmark(bufnr, ns[bufnr], node_start_row, node_start_col,
+                                    {
+                                        end_row = node_end_row,
+                                        end_col = node_end_col,
+                                        hl_group =
+                                            "SemanticHighlightingColor" .. get_color_number(variable),
+                                        priority = 200,
+                                        strict = false
+                                    })
                             end
                         end
                     end
+                end
+
+                print_hashes()
             end
         )
     end)
