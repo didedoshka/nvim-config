@@ -456,7 +456,7 @@ local function get_color_number(name)
     for i = 1, string.len(name) do
         local char = characters_tbl[string.byte(name, i)]
         if char == nil then
-            print(name, ":", string.byte(name, i), "is nil")
+            -- print(name, ":", string.byte(name, i), "is nil")
             return 0
         end
         hash = ((hash * p) % mod + char) % mod
@@ -482,10 +482,9 @@ local function colorize(bufnr, start_row, end_row)
         parsers[bufnr]:parse(
             { start_row, end_row },
             function(err, trees)
-                vim.schedule(function()
                     vim.api.nvim_buf_clear_namespace(bufnr, ns[bufnr], start_row, end_row)
                     local tree = trees[1]
-                    for pattern, match, metadata in queries[bufnr]:iter_matches(tree:root(), 0, start_row, end_row) do
+                    for pattern, match, metadata in queries[bufnr]:iter_matches(tree:root(), bufnr, start_row, end_row) do
                         for id, nodes in pairs(match) do
                             local name = queries[bufnr].captures[id]
                             if vim.tbl_contains(considered_variable, name) then
@@ -506,7 +505,6 @@ local function colorize(bufnr, start_row, end_row)
                             end
                         end
                     end
-                end)
             end
         )
     end)
