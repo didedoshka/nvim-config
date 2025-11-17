@@ -202,9 +202,9 @@ require("lazy").setup({
             require('rainbow-delimiters.setup').setup {
                 highlight = {
                     "SemanticHighlightingColor1",
-                    "SemanticHighlightingColor3",
+                    "SemanticHighlightingColor11",
+                    "SemanticHighlightingColor9",
                     "SemanticHighlightingColor6",
-                    "SemanticHighlightingColor13",
                 },
             }
         end
