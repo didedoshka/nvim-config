@@ -153,7 +153,7 @@ return
                 vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
                 vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
                 -- vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, opts)
-                vim.keymap.set("n", "<leader>j", vim.diagnostic.setqflist, opts)
+                vim.keymap.set("n", "<leader>j", vim.diagnostic.setqflist, { buffer = args.buf, desc = "diagnostics to quickfixlist" })
                 vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
                 vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
                 vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
