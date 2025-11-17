@@ -272,7 +272,17 @@ require("lazy").setup({
                     TypeParameter = '',
                 }
             })
-            -- vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
+
+            local navic_on = false
+
+            vim.keymap.set("n", "<leader>n", function()
+                if navic_on then
+                    vim.o.winbar = ""
+                else
+                    vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
+                end
+                navic_on = not navic_on
+            end, { desc = "toggle navic" })
         end
     }
 
