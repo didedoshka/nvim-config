@@ -18,6 +18,7 @@ return {
         },
         { "hrsh7th/cmp-buffer" },
         { "abeldekat/cmp-mini-snippets" },
+        { "hrsh7th/cmp-cmdline" },
     },
 
     config = function()
@@ -35,6 +36,24 @@ return {
             },
         })
 
+        local cmp_mapping = {
+            ['<C-n>'] = {
+                i = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+                c = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+            },
+            ['<C-p>'] = {
+                i = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+                c = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+            },
+            ['<C-y>'] = {
+                i = cmp.mapping.confirm({ select = true }),
+                c = cmp.mapping.confirm({ select = true }),
+            },
+            ['<C-e>'] = {
+                i = cmp.mapping.abort(),
+                c = cmp.mapping.abort(),
+            },
+        }
 
         cmp.setup({
             snippet = {
@@ -51,26 +70,7 @@ return {
                 documentation = { winhighlight = "Normal:NormalFloat", border = "single" },
             },
 
-            mapping = {
-                ['<C-n>'] = {
-                    i = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
-                },
-                ['<C-p>'] = {
-                    i = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
-                },
-                ['<C-y>'] = {
-                    i = cmp.mapping.confirm({ select = true }),
-                },
-                ['<C-e>'] = {
-                    i = cmp.mapping.abort(),
-                },
-                -- ['<C-d>'] = {
-                --     n = cmp.mapping.scroll_docs(-4),
-                -- },
-                -- ['<C-u>'] = {
-                --     n = cmp.mapping.scroll_docs(4),
-                -- },
-            },
+            mapping = cmp_mapping,
 
             sources = {
                 { name = "mini_snippets" },
@@ -80,6 +80,26 @@ return {
             },
 
             experimental = { ghost_text = true },
+        })
+
+        -- cmp.setup.cmdline('/', {
+        --     sources = {
+        --         { name = 'buffer' }
+        --     },
+        -- })
+
+        cmp.setup.cmdline(':', {
+            mapping = cmp_mapping,
+            sources = cmp.config.sources({
+                { name = 'path' }
+            }, {
+                {
+                    name = 'cmdline',
+                    option = {
+                        ignore_cmds = { 'Man', '!' }
+                    }
+                }
+            }),
         })
     end
 }
