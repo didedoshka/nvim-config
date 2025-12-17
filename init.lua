@@ -284,7 +284,26 @@ require("lazy").setup({
                 navic_on = not navic_on
             end, { desc = "toggle navic" })
         end
-    }
+    },
+
+    {
+        "leath-dub/snipe.nvim",
+        keys = {
+            { "s", function() require("snipe").open_buffer_menu() end, desc = "Open Snipe buffer menu" }
+        },
+        opts = {
+            ui = {
+                position = "center",
+                -- persist_tags = false,
+            },
+            hints = {
+                dictionary = "tenadufgori",
+            },
+            navigate = {
+                -- change_tag = "C",
+            },
+        }
+    },
 
     -- {
     --     'MeanderingProgrammer/render-markdown.nvim',
