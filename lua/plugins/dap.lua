@@ -8,7 +8,7 @@ return
         local brd = require("brd")
 
         local state = require("debugmaster.state")
-        state.sidepanel.direction = "below"
+        state.sidepanel.float = true
 
         dm.plugins.ui_auto_toggle.enabled = false
         dm.plugins.last_config_rerunner.enabled = false
