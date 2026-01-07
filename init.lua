@@ -91,6 +91,17 @@ vim.keymap.set("n", "<C-k>", "<C-o>", { desc = "" })
 vim.keymap.set("n", "<C-o>", function() print("habit") end, { desc = "" })
 vim.keymap.set("n", "<tab>", "<C-w>", { desc = "" })
 
+-- habits
+vim.keymap.set("n", "s", function() print("habit") end, { desc = "" })
+vim.keymap.set("v", "s", function() print("habit") end, { desc = "" })
+vim.keymap.set("n", "S", function() print("habit") end, { desc = "" })
+vim.keymap.set("v", "S", function() print("habit") end, { desc = "" })
+
+vim.keymap.set("n", "x", function() print("habit") end, { desc = "" })
+vim.keymap.set("v", "x", function() print("habit") end, { desc = "" })
+vim.keymap.set("n", "X", function() print("habit") end, { desc = "" })
+vim.keymap.set("v", "X", function() print("habit") end, { desc = "" })
+
 -- running lua
 -- vim.keymap.set("n", "<bs>?", ":.lua<cr>", { desc = "execute current (l)ua code" })
 -- vim.keymap.set("v", "<bs>?", ":lua<cr>", { desc = "execute current (l)ua code" })
