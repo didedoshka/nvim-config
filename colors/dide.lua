@@ -569,22 +569,32 @@ local function start_treesitter_semantic_highlighting(bufnr, lang)
     })
 end
 
+local function check_and_start_semantic_highlighting(filetype, bufnr)
+    local lang = vim.treesitter.language.get_lang(filetype)
+    if not vim.tbl_contains(supported_languages, lang) then
+        return
+    end
+    start_treesitter_semantic_highlighting(bufnr, lang)
+end
+
 local sh_augroup = vim.api.nvim_create_augroup("SemanticHighlighting", {})
 vim.api.nvim_create_autocmd('FileType', {
     group = sh_augroup,
     callback = function(args)
-        local lang = vim.treesitter.language.get_lang(args.match)
-        if not vim.tbl_contains(supported_languages, lang) then
-            return
-        end
-        local bufnr = args.buf
-
-        -- vim.print(args)
-        -- print("Starting semantic highlighting for", lang, "in buffer", bufnr, "with filename", args.file)
-
-        start_treesitter_semantic_highlighting(bufnr, lang)
+        check_and_start_semantic_highlighting(args.match, args.buf)
     end
 })
+
+vim.keymap.set("n", "<leader>s", function ()
+    local bufnr = vim.fn.bufnr()
+    if ns[bufnr] == nil then
+        check_and_start_semantic_highlighting(vim.bo.filetype, bufnr)
+    else
+        vim.api.nvim_buf_clear_namespace(bufnr, ns[bufnr], 0, -1)
+        ns[bufnr] = nil
+    end
+end, {desc = "toggle didecolors semantic highlighting"})
+
 
 vim.api.nvim_create_autocmd('ColorScheme', {
     group = sh_augroup,
