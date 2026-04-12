@@ -4,6 +4,7 @@ return
 
     dependencies = {
         "ray-x/lsp_signature.nvim",
+        "nvimtools/none-ls.nvim",
     },
 
     config = function()
@@ -70,8 +71,9 @@ return
 
         -- clangd
         vim.lsp.config("clangd", {
-            root_markers = { "build" },
+            root_markers = { "build", ".git" },
             -- cmd = { "docker", "exec", "-i", "name", "clangd" },
+            -- cmd = { "/Users/didedoshka/.local/bin/clangd", }, -- clangd 21
         })
         vim.lsp.enable("clangd")
 
@@ -81,10 +83,10 @@ return
         vim.lsp.config("tinymist", {
             settings = {
                 formatterMode = "typstyle",
-                exportPdf = "onType",
+                exportPdf = "never",
                 semanticTokens = "disable"
             },
-            root_markers = "template.typ"
+            root_markers = { "template.typ" },
         })
         vim.lsp.enable("tinymist")
 
@@ -112,13 +114,15 @@ return
 
         vim.lsp.enable("gopls")
 
-        -- require("null-ls").setup({
-        --     sources = {
-        --         require("null-ls").builtins.formatting.autopep8.with({
-        --         extra_args = { "-a", "-a", "--max-line-length", "119" }
-        --     })
-        --     }
-        -- })
+        local null_ls = require("null-ls")
+        null_ls.setup({
+            sources = {
+                null_ls.builtins.formatting.cmake_format,
+                null_ls.builtins.formatting.prettier,
+            }
+        })
+
+        vim.lsp.enable('jsonls')
 
         vim.api.nvim_create_autocmd('LspAttach', {
             callback = function(args)
@@ -153,7 +157,8 @@ return
                 vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
                 vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
                 -- vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, opts)
-                vim.keymap.set("n", "<leader>j", vim.diagnostic.setqflist, { buffer = args.buf, desc = "diagnostics to quickfixlist" })
+                vim.keymap.set("n", "<leader>j", vim.diagnostic.setqflist,
+                    { buffer = args.buf, desc = "diagnostics to quickfixlist" })
                 vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
                 vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
                 vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
