@@ -493,12 +493,12 @@ end
 
 local considered_variable = {
     "variable", "type", "property", "type.builtin", "function.call", "method", "variable.member", "module",
-    "function.method" }
+    "function.method", "function.method.call" }
 local parsers = {}
 local ns = {}
 local queries = {}
 -- maybe change to unsupported_languages
-local supported_languages = { "c", "cpp", "python", "lua", "rust", "fish", "proto", "go" }
+local supported_languages = { "c", "cpp", "python", "lua", "rust", "fish", "proto", "go", "mlir", "tablegen" }
 -- local supported_languages = {}
 
 
@@ -585,7 +585,7 @@ vim.api.nvim_create_autocmd('FileType', {
     end
 })
 
-vim.keymap.set("n", "<leader>s", function ()
+vim.keymap.set("n", "<leader>s", function()
     local bufnr = vim.fn.bufnr()
     if ns[bufnr] == nil then
         check_and_start_semantic_highlighting(vim.bo.filetype, bufnr)
@@ -593,7 +593,7 @@ vim.keymap.set("n", "<leader>s", function ()
         vim.api.nvim_buf_clear_namespace(bufnr, ns[bufnr], 0, -1)
         ns[bufnr] = nil
     end
-end, {desc = "toggle didecolors semantic highlighting"})
+end, { desc = "toggle didecolors semantic highlighting" })
 
 
 vim.api.nvim_create_autocmd('ColorScheme', {
