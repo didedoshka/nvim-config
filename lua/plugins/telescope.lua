@@ -46,6 +46,7 @@ return
         require("telescope").load_extension("textcase")
 
         vim.keymap.set('n', '<leader>b', require('telescope.builtin').buffers, { desc = "look at open (b)uffers" })
+
         vim.keymap.set('n', '<leader>o', function()
                 require('telescope.builtin').find_files({ no_ignore = true })
             end,
@@ -56,6 +57,10 @@ return
 
         vim.keymap.set('n', '<leader>h', require('telescope.builtin').live_grep,
             { desc = "grep in files. (h) is near f-find and g-grep" })
+        vim.keymap.set('n', '<leader>v', function()
+            require('telescope.builtin').live_grep({ cwd = require('telescope.utils').buffer_dir(), no_ignore = true })
+        end, { desc = "grep in files. (current file's directory)" })
+
         vim.keymap.set('v', '<leader>h', function()
             require('telescope.builtin').live_grep({ default_text = vim.fn.expand("<cword>") })
         end, { desc = "grep in files. (h) is near f-find and g-grep" })
