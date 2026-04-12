@@ -1,7 +1,5 @@
 -- Created by didedoshka on May 24
 
--- function to print a table
---
 vim.deprecate = function() end
 
 -- set leader
@@ -20,13 +18,20 @@ vim.opt.relativenumber = true
 vim.g.clipboard = "osc52"
 vim.opt.clipboard = "unnamedplus"
 -- set wrap and max text width
-vim.opt.wrap = false
+vim.opt.wrap = true
+vim.opt.linebreak = true
 -- vim.opt.colorcolumn = "120"
 
 vim.opt.undofile = true
 
--- set extensions
-vim.filetype.add({ extension = { ["keymap"] = "cpp" } })
+-- set filetypes
+vim.filetype.add({
+    extension = { ["keymap"] = "cpp" },
+    pattern = {
+        ['.*.cpp.inc'] = 'cpp',
+        ['.*.h.inc'] = 'cpp',
+    },
+})
 
 -- set russian
 vim.opt.keymap = "russian-yasherty"
@@ -51,38 +56,25 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local table_of_plugins = {}
--- autocommand for wrapping in typst file
-vim.api.nvim_create_autocmd("BufEnter", {
-    callback = function(args)
-        local bufnr = args.buf
-        if vim.bo[bufnr].filetype == "typst" or vim.bo[bufnr].filetype == "markdown" then
-            vim.opt.wrap = true
-        else
-            vim.opt.wrap = false
-        end
-    end
-})
-
 -- autocommand for opening typst file
 vim.api.nvim_create_autocmd("FileType", {
     callback = function(args)
         if args['match'] == 'typst' then
-            vim.opt.iminsert = 1
             vim.keymap.set('i', '$', '$<C-l>', { remap = true, buffer = args.buf })
         end
     end
 })
 
+-- autosaving
 vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
-    pattern = { "*.py", "*.cpp", "*.h", "*.c", "*.S", "*.txt", "*.lua", "*.typ", "*.md", "*.proto", "*.go", "*.rs" },
-    command = "silent update"
+    pattern = { "*.*" },
+    callback = function()
+        if vim.bo.buftype == "" and vim.bo.modifiable and vim.fn.expand("%") ~= "" and vim.bo.filetype ~= "" then
+            vim.cmd("silent update")
+        end
+    end,
 })
 
--- vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
---     pattern = { "*.rs" },
---     command = "w"
--- })
 
 -- working with buffers
 vim.keymap.set("n", "<leader>q", "<cmd>bp<bar>sp<bar>bn<bar>bd<cr>", { desc = "close buffer" })
@@ -298,21 +290,22 @@ require("lazy").setup({
     },
 
     {
-        "leath-dub/snipe.nvim",
-        keys = {
-            { "s", function() require("snipe").open_buffer_menu() end, desc = "Open Snipe buffer menu" }
-        },
+        "otavioschwanck/arrow.nvim",
         opts = {
-            ui = {
-                position = "center",
-                -- persist_tags = false,
+            show_icons = false,
+            leader_key = 's',
+            mappings = {
+                edit = "E",
+                delete_mode = "D",
+                clear_all_items = "<BS>",
+                toggle = "<CR>", -- used as save if separate_save_and_remove is true
+                open_vertical = "V",
+                open_horizontal = "H",
+                quit = "s",
+                next_item = "]",
+                prev_item = "["
             },
-            hints = {
-                dictionary = "tenadufgori",
-            },
-            navigate = {
-                -- change_tag = "C",
-            },
+            index_keys = "abcdefghijklmnopqrstuvwxyz",
         }
     },
 
