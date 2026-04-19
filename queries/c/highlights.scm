@@ -2,8 +2,8 @@
 ((identifier) @variable
   (#set! priority 95))
 
-(preproc_def
-  (preproc_arg) @variable)
+; (preproc_def
+;   (preproc_arg) @variable)
 
 [
   "default"
