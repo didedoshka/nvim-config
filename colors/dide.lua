@@ -460,7 +460,7 @@ local function get_color_number(name)
         if char ~= nil then
             hash = (hash + char) % mod
         else
-            print(name, ":", string.byte(name, i), "is nil")
+            -- print(name, ":", string.byte(name, i), "is nil")
         end
     end
     local result = 1 + hash % (#semantic_highlighting_colors - 1)
@@ -493,45 +493,49 @@ end
 
 local considered_variable = {
     "variable", "type", "property", "type.builtin", "function.call", "method", "variable.member", "module",
-    "function.method", "function.method.call" }
+    "function.method", "function.method.call", "function", "property" }
 local parsers = {}
 local ns = {}
-local queries = {}
--- maybe change to unsupported_languages
-local supported_languages = { "c", "cpp", "python", "lua", "rust", "fish", "proto", "go", "mlir", "tablegen" }
--- local supported_languages = {}
 
+local function get_query(lang)
+    return vim.treesitter.query.get(lang, "highlights")
+end
 
 local function colorize(bufnr, start_row, end_row)
     vim.schedule(function()
         if parsers[bufnr] == nil then
             return
         end
-        parsers[bufnr]:parse(
-            { start_row, end_row },
-            function(err, trees)
+
+        parsers[bufnr]:parse(true)
+        parsers[bufnr]:for_each_tree(
+            function(tree, langtree)
+                local lang = langtree:lang()
                 if to_print_hashes then
                     strings_hashes = {}
                 end
                 vim.api.nvim_buf_clear_namespace(bufnr, ns[bufnr], start_row, end_row)
-                local tree = trees[1]
-                for pattern, match, metadata in queries[bufnr]:iter_matches(tree:root(), bufnr, start_row, end_row) do
+
+                for pattern, match, metadata in get_query(lang):iter_matches(tree:root(), bufnr, start_row, end_row) do
                     for id, nodes in pairs(match) do
-                        local name = queries[bufnr].captures[id]
+                        local name = get_query(lang).captures[id]
                         if vim.tbl_contains(considered_variable, name) then
                             for _, node in ipairs(nodes) do
                                 local node_start_row, node_start_col, node_end_row, node_end_col = node:range()
                                 local variable = vim.api.nvim_buf_get_text(bufnr, node_start_row, node_start_col,
                                     node_end_row, node_end_col, {})[1]
-                                vim.api.nvim_buf_set_extmark(bufnr, ns[bufnr], node_start_row, node_start_col,
-                                    {
-                                        end_row = node_end_row,
-                                        end_col = node_end_col,
-                                        hl_group =
-                                            "SemanticHighlightingColor" .. get_color_number(variable),
-                                        priority = 200,
-                                        strict = false
-                                    })
+                                -- print(variable, node_start_row, node_start_col, node_end_row, node_end_col)
+                                vim.schedule(function()
+                                    vim.api.nvim_buf_set_extmark(bufnr, ns[bufnr], node_start_row, node_start_col,
+                                        {
+                                            end_row = node_end_row,
+                                            end_col = node_end_col,
+                                            hl_group =
+                                                "SemanticHighlightingColor" .. get_color_number(variable),
+                                            priority = 200,
+                                            strict = false
+                                        })
+                                end)
                             end
                         end
                     end
@@ -552,7 +556,6 @@ end
 
 local function start_treesitter_semantic_highlighting(bufnr, lang)
     parsers[bufnr] = vim.treesitter.get_parser(bufnr, lang)
-    queries[bufnr] = vim.treesitter.query.get(parsers[bufnr]:lang(), "highlights")
     ns[bufnr] = vim.api.nvim_create_namespace('SemanticHighlighting' .. bufnr)
 
     colorize(bufnr, 0, -1)
@@ -571,7 +574,10 @@ end
 
 local function check_and_start_semantic_highlighting(filetype, bufnr)
     local lang = vim.treesitter.language.get_lang(filetype)
-    if not vim.tbl_contains(supported_languages, lang) then
+    local installed_langs = require('nvim-treesitter').get_installed()
+    local is_installed = vim.tbl_contains(installed_langs, lang)
+    -- if not vim.tbl_contains(supported_languages, lang) then
+    if not is_installed then
         return
     end
     start_treesitter_semantic_highlighting(bufnr, lang)
@@ -581,6 +587,7 @@ local sh_augroup = vim.api.nvim_create_augroup("SemanticHighlighting", {})
 vim.api.nvim_create_autocmd('FileType', {
     group = sh_augroup,
     callback = function(args)
+        -- print("called from didecolors")colo
         check_and_start_semantic_highlighting(args.match, args.buf)
     end
 })
