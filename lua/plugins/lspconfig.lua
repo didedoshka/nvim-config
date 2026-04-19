@@ -8,9 +8,9 @@ return
     },
 
     config = function()
-        vim.keymap.set("n", "<leader>li", function() vim.cmd("LspInfo") end, { desc = "(l)sp (i)nfo" })
-        vim.keymap.set("n", "<leader>lb", function() vim.cmd("LspStart") end, { desc = "(l)sp (b)egin" })
-        vim.keymap.set("n", "<leader>le", function() vim.cmd("LspStop") end, { desc = "(l)sp (e)nd" })
+        vim.keymap.set("n", "<leader>li", function() vim.cmd("checkhealth vim.lsp") end, { desc = "(l)sp (i)nfo" })
+        vim.keymap.set("n", "<leader>lb", function() vim.cmd("lsp enable") end, { desc = "(l)sp (b)egin" })
+        vim.keymap.set("n", "<leader>le", function() vim.cmd("lsp disable") end, { desc = "(l)sp (e)nd" })
 
         local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
         function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
@@ -74,6 +74,7 @@ return
             root_markers = { "build", ".git" },
             -- cmd = { "docker", "exec", "-i", "name", "clangd" },
             -- cmd = { "/Users/didedoshka/.local/bin/clangd", }, -- clangd 21
+            cmd = { "/opt/homebrew/opt/llvm/bin/clangd", "--query-driver=clang++"},
         })
         vim.lsp.enable("clangd")
 
