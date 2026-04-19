@@ -3,7 +3,10 @@ return
     "ggandor/flit.nvim",
 
     dependencies = {
-        "ggandor/leap.nvim",
+        {
+            url = "https://codeberg.org/andyg/leap.nvim",
+            commit = "28d0d30f20",
+        },
         "tpope/vim-repeat",
     },
 
