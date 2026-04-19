@@ -1,7 +1,5 @@
 -- Created by didedoshka on May 24
 
-vim.deprecate = function() end
-
 -- set leader
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -247,33 +245,8 @@ require("lazy").setup({
             navic.setup({
                 lsp = { auto_attach = true },
                 icons = {
-                    File = '',
-                    Module = '',
-                    Namespace = '',
-                    Package = '',
-                    Class = '',
-                    Method = '',
-                    Property = '',
-                    Field = '',
-                    Constructor = '',
-                    Enum = '',
-                    Interface = '',
-                    Function = '',
-                    Variable = '',
-                    Constant = '',
-                    String = '',
-                    Number = '',
-                    Boolean = '',
-                    Array = '',
-                    Object = '',
-                    Key = '',
-                    Null = '',
-                    EnumMember = '',
-                    Struct = '',
-                    Event = '',
-                    Operator = '',
-                    TypeParameter = '',
-                }
+                    enabled = false,
+                },
             })
 
             local navic_on = false
@@ -305,12 +278,7 @@ require("lazy").setup({
                 next_item = "]",
                 prev_item = "["
             },
-            index_keys = "abcdefghijklmnopqrstuvwxyz",
+            index_keys = "neailuoy",
         }
     },
-
-    -- {
-    --     'MeanderingProgrammer/render-markdown.nvim',
-    --     opts = {},
-    -- },
 })
