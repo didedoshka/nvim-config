@@ -281,4 +281,16 @@ require("lazy").setup({
             index_keys = "neailuoy",
         }
     },
+
+    {
+        "ptdewey/pendulum-nvim",
+        config = function()
+            require("pendulum").setup(
+                {
+                    time_zone = "Local",
+                    time_format = "24h"
+                }
+            )
+        end,
+    }
 })
