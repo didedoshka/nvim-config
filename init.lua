@@ -175,15 +175,6 @@ require("lazy").setup({
     require("plugins.dap"),
 
     {
-        'echasnovski/mini.nvim',
-        version = '*',
-        config = function()
-            require('mini.splitjoin').setup()
-            -- require('mini.surround').setup()
-        end
-    },
-
-    {
         "catgoose/nvim-colorizer.lua",
         opts = {
             user_default_options = {
@@ -226,11 +217,6 @@ require("lazy").setup({
     require("plugins.lualine"),
 
     {
-        "didedoshka/brd",
-    },
-
-    {
-        "perillo/qbe.vim",
     },
 
     {

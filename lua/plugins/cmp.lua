@@ -19,6 +19,7 @@ return {
         { "hrsh7th/cmp-buffer" },
         { "abeldekat/cmp-mini-snippets" },
         { "hrsh7th/cmp-cmdline" },
+        { "nvim-mini/mini.nvim" },
     },
 
     config = function()
