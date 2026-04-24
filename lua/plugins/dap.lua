@@ -1,6 +1,6 @@
 return
 {
-    "miroshQa/debugmaster.nvim",
+    "MironPascalCaseFan/debugmaster.nvim",
     dependencies = { "mfussenegger/nvim-dap", },
     config = function()
         local dm = require("debugmaster")
