@@ -105,6 +105,9 @@ vim.cmd.colorscheme('dide')
 vim.go.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:block-blinkon500-blinkoff500-TermCursor,a:Cursor"
 vim.diagnostic.config({ virtual_text = true })
 
+vim.cmd("packadd nvim.undotree")
+vim.keymap.set("n", "<leader>u", require("undotree").open)
+
 -- setting plugins
 require("lazy").setup({
     -- colorscheme
@@ -148,14 +151,6 @@ require("lazy").setup({
 
     -- lazygit
     require("plugins.lazygit"),
-
-    {
-        "mbbill/undotree",
-        config = function()
-            vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<cr>", { desc = "(u)ndotree" })
-            vim.g.undotree_WindowLayout = 2
-        end
-    },
 
     {
         "folke/which-key.nvim",
