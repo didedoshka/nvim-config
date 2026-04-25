@@ -19,3 +19,5 @@
     - Подумать про буфер обмена, пользоваться им лучше
     - https://www.reddit.com/r/neovim/comments/1pqks2r/edit_any_macos_text_field_in_neovim_with_a/
     - https://www.reddit.com/r/neovim/comments/1h43mjj/snacksprofiler_a_neovim_lua_profiler/
+    - Buffer-specific wrap setting
+    - Настроить дебагеры
