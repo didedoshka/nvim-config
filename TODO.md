@@ -7,6 +7,7 @@
     - https://github.com/ThePrimeagen/refactoring.nvim/tree/develop
     - https://github.com/MeanderingProgrammer/render-markdown.nvim
     - hardtime.nvim
+    - https://github.com/A7Lavinraj/fyler.nvim
 
 - Мои плагины
     - BRD
@@ -21,3 +22,4 @@
     - https://www.reddit.com/r/neovim/comments/1h43mjj/snacksprofiler_a_neovim_lua_profiler/
     - Buffer-specific wrap setting
     - Настроить дебагеры
+    - switch hpp/cpp
