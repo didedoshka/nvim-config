@@ -22,4 +22,3 @@
     - https://www.reddit.com/r/neovim/comments/1h43mjj/snacksprofiler_a_neovim_lua_profiler/
     - Buffer-specific wrap setting
     - Настроить дебагеры
-    - switch hpp/cpp

@@ -72,9 +72,24 @@ return
         -- clangd
         vim.lsp.config("clangd", {
             root_markers = { "build", ".git" },
+            on_attach = function(client, bufnr)
+                vim.keymap.set('n', '<leader>k', function()
+                        client:request('textDocument/switchSourceHeader', {
+                                uri = vim.uri_from_bufnr(bufnr),
+                            },
+                            function(err, result)
+                                if err or not result then
+                                    vim.notify('Could not find counterpart file', vim.log.levels.WARN)
+                                    return
+                                end
+                                vim.cmd('edit ' .. vim.uri_to_fname(result))
+                            end, 0
+                        )
+                    end,
+                    { buffer = bufnr, desc = "switch cpp/hpp" })
+            end,
             -- cmd = { "docker", "exec", "-i", "name", "clangd" },
             -- cmd = { "/Users/didedoshka/.local/bin/clangd", }, -- clangd 21
-            cmd = { "/opt/homebrew/opt/llvm/bin/clangd", "--query-driver=clang++"},
         })
         vim.lsp.enable("clangd")
 
