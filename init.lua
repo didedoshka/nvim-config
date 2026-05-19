@@ -16,7 +16,7 @@ vim.opt.relativenumber = true
 vim.g.clipboard = "osc52"
 vim.opt.clipboard = "unnamedplus"
 -- set wrap and max text width
-vim.opt.wrap = true
+vim.opt.wrap = false
 vim.opt.linebreak = true
 -- vim.opt.colorcolumn = "120"
 
@@ -217,6 +217,7 @@ require("lazy").setup({
     require("plugins.lualine"),
 
     {
+        "didedoshka/brd",
     },
 
     {
