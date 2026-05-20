@@ -9,69 +9,145 @@ return
             build = 'make',
         },
         'nvim-telescope/telescope-ui-select.nvim',
+        'segoon/telescope-arcadia-codesearch.nvim',
     },
 
     config = function()
-        pcall(require('telescope').load_extension, 'fzf')
+        local telescope = require('telescope')
+        local builtin = require('telescope.builtin')
+        local themes = require('telescope.themes')
+        local actions = require('telescope.actions')
+        local action_state = require('telescope.actions.state')
+        local utils = require('telescope.utils')
 
-        require('telescope').setup {
+        local function buffer_dir()
+            return utils.buffer_dir()
+        end
+
+        local function reopen_in_buffer_dir(picker_fn, opts)
+            opts = opts or {}
+
+            return function(prompt_bufnr)
+                local picker = action_state.get_current_picker(prompt_bufnr)
+                local prompt = picker:_get_prompt()
+
+                actions.close(prompt_bufnr)
+
+                picker_fn(vim.tbl_extend('force', opts, {
+                    cwd = buffer_dir(),
+                    no_ignore = true,
+                    default_text = prompt,
+                }))
+            end
+        end
+
+        local function picker_with_buffer_dir_mapping(picker_fn, opts)
+            opts = opts or {}
+
+            return function(extra_opts)
+                extra_opts = extra_opts or {}
+
+                local final_opts = vim.tbl_extend('force', opts, extra_opts)
+
+                picker_fn(vim.tbl_extend('force', final_opts, {
+                    attach_mappings = function(_, map)
+                        map({ 'i', 'n' }, '<C-f>', reopen_in_buffer_dir(picker_fn, final_opts))
+
+                        return true
+                    end,
+                }))
+            end
+        end
+
+        local find_files = picker_with_buffer_dir_mapping(builtin.find_files, {
+            no_ignore = true,
+        })
+
+        local live_grep = picker_with_buffer_dir_mapping(builtin.live_grep, {
+            no_ignore = true,
+        })
+
+        telescope.setup {
             defaults = {
                 layout_strategy = 'vertical',
-                borderchars = { '─', '│', '─', '│', '┌', '┐', '┘', '└' }
+                borderchars = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
             },
             extensions = {
-                ["ui-select"] = {
-                    require("telescope.themes").get_dropdown {
-                        -- even more opts
-                    }
-
-                    -- pseudo code / specification for writing custom displays, like the one
-                    -- for "codeactions"
-                    -- specific_opts = {
-                    --   [kind] = {
-                    --     make_indexed = function(items) -> indexed_items, width,
-                    --     make_displayer = function(widths) -> displayer
-                    --     make_display = function(displayer) -> function(e)
-                    --     make_ordinal = function(e) -> string
-                    --   },
-                    --   -- for example to disable the custom builtin "codeactions" display
-                    --      do the following
-                    --   codeactions = false,
-                    -- }
-                }
+                ['ui-select'] = {
+                    themes.get_dropdown {},
+                },
             },
         }
 
-        require("telescope").load_extension("ui-select")
-        require("telescope").load_extension("textcase")
+        pcall(telescope.load_extension, 'fzf')
+        pcall(telescope.load_extension, 'ui-select')
+        pcall(telescope.load_extension, 'textcase')
+        pcall(telescope.load_extension, 'arcadia_cs')
 
-        vim.keymap.set('n', '<leader>b', require('telescope.builtin').buffers, { desc = "look at open (b)uffers" })
+        vim.keymap.set(
+            'n',
+            '<leader>b',
+            builtin.buffers,
+            { desc = 'look at open (b)uffers' }
+        )
 
-        vim.keymap.set('n', '<leader>o', function()
-                require('telescope.builtin').find_files({ no_ignore = true })
+        vim.keymap.set(
+            'n',
+            '<leader>o',
+            find_files,
+            { desc = '(o)pen file' }
+        )
+
+        vim.keymap.set(
+            'n',
+            '<leader>h',
+            live_grep,
+            { desc = 'grep in files' }
+        )
+
+        vim.keymap.set(
+            'v',
+            '<leader>h',
+            function()
+                live_grep({
+                    default_text = vim.fn.expand('<cword>'),
+                })
             end,
-            { desc = "(o)pen file (current working directory)" })
-        vim.keymap.set('n', '<leader>e', function()
-            require('telescope.builtin').find_files({ cwd = require('telescope.utils').buffer_dir(), no_ignore = true })
-        end, { desc = "open file (current file's directory)" })
+            { desc = 'grep selected/current word in files' }
+        )
 
-        vim.keymap.set('n', '<leader>h', require('telescope.builtin').live_grep,
-            { desc = "grep in files. (h) is near f-find and g-grep" })
-        vim.keymap.set('n', '<leader>v', function()
-            require('telescope.builtin').live_grep({ cwd = require('telescope.utils').buffer_dir(), no_ignore = true })
-        end, { desc = "grep in files. (current file's directory)" })
+        vim.keymap.set(
+            'n',
+            '<leader>g',
+            builtin.current_buffer_fuzzy_find,
+            { desc = '(g)rep current buffer' }
+        )
 
-        vim.keymap.set('v', '<leader>h', function()
-            require('telescope.builtin').live_grep({ default_text = vim.fn.expand("<cword>") })
-        end, { desc = "grep in files. (h) is near f-find and g-grep" })
-        vim.keymap.set('n', '<leader>g', require('telescope.builtin').current_buffer_fuzzy_find,
-            { desc = "(g)rep current buffer" })
-        -- vim.keymap.set('n', '<leader>s', require('telescope.builtin').lsp_document_symbols,
-        --     { desc = "lsp document (s)ymbols" })
-        vim.keymap.set('n', '<leader>p', require('telescope.builtin').help_tags,
-            { desc = "neovim help" })
-        vim.keymap.set('v', '<leader>t', function()
-            require('telescope.builtin').help_tags({ default_text = vim.fn.expand("<cword>") })
-        end, { desc = "neovim help" })
-    end
+        vim.keymap.set(
+            'n',
+            '<leader>p',
+            builtin.help_tags,
+            { desc = 'neovim help' }
+        )
+
+        vim.keymap.set(
+            'v',
+            '<leader>t',
+            function()
+                builtin.help_tags({
+                    default_text = vim.fn.expand('<cword>'),
+                })
+            end,
+            { desc = 'neovim help' }
+        )
+
+        vim.keymap.set(
+            'n',
+            '<leader>m',
+            function()
+                telescope.extensions.arcadia_cs.arcadia_cs({ root = 1 })
+            end,
+            { desc = 'arcadia code search' }
+        )
+    end,
 }
