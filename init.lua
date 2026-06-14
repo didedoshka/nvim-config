@@ -269,4 +269,48 @@ require("lazy").setup({
         opts = {},
     },
 
+    {
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {
+            -- Disable gutter signs globally (optional, but recommended if you hate clutter)
+            sign = { enabled = false },
+
+            heading = {
+                icons = {}, -- Disables heading icons (like 󰲡, 󰲣)
+                signs = {}, -- Disables the heading indicators in the gutter
+            },
+
+            bullet = {
+                icons = {}, -- Disables custom bullet point icons
+            },
+
+            checkbox = {
+                -- Instead of Nerd Font icons, revert to standard text brackets
+                unchecked = { icon = '[ ]' },
+                checked   = { icon = '[x]' },
+                -- (Alternatively, use icon = '' to remove them completely)
+            },
+
+            code = {
+                sign = false, -- Disables the language icon in the gutter
+                style = 'none', -- Keeps the background highlighting but removes extra flair
+            },
+
+            callout = {
+                -- If you use Obsidian-style callouts (> [!INFO]), you may need to
+                -- overwrite the defaults to strip their icons as well.
+                note = { icon = '' },
+                tip = { icon = '' },
+                warning = { icon = '' },
+                -- etc...
+            }
+        },
+    },
+
+    -- {
+    --     "segoon/yamake-python-lspconfig.nvim",
+    --     config = function()
+    --         require('yamake-python-lspconfig').setup()
+    --     end
+    -- },
 })
