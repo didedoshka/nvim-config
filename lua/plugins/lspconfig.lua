@@ -71,8 +71,10 @@ return
 
         -- clangd
         vim.lsp.config("clangd", {
-            root_markers = { "build", ".git" },
+            -- root_markers = { "build", ".git" },
             on_attach = function(client, bufnr)
+                client.server_capabilities.documentFormattingProvider = false
+                client.server_capabilities.documentRangeFormattingProvider = false
                 vim.keymap.set('n', '<leader>k', function()
                         client:request('textDocument/switchSourceHeader', {
                                 uri = vim.uri_from_bufnr(bufnr),
@@ -90,6 +92,14 @@ return
             end,
             -- cmd = { "docker", "exec", "-i", "name", "clangd" },
             -- cmd = { "/Users/didedoshka/.local/bin/clangd", }, -- clangd 21
+            cmd = {
+                "ya", "tool", "clangd",
+                -- "clangd",
+                "--background-index",
+                "-j=32",
+                "--header-insertion=never",
+                "--pch-storage=memory"
+            },
         })
         vim.lsp.enable("clangd")
 
@@ -135,10 +145,13 @@ return
             sources = {
                 null_ls.builtins.formatting.cmake_format,
                 null_ls.builtins.formatting.prettier,
+                null_ls.builtins.formatting.clang_format.with({
+                    command = { "ya", "tool", "ads-clang-format" },
+                }),
             }
         })
 
-        vim.lsp.enable('jsonls')
+        -- vim.lsp.enable('jsonls')
 
         vim.api.nvim_create_autocmd('LspAttach', {
             callback = function(args)
