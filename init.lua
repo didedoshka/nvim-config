@@ -154,22 +154,18 @@ require("lazy").setup({
 
     {
         "folke/which-key.nvim",
-        lazy = false,
         opts = {
             delay = 2000,
             icons = {
                 mappings = false,
             },
         },
-        keys = {
-            {
-                "<leader>?",
-                function()
-                    require("which-key").show({ global = false })
-                end,
-                desc = "buffer-local mappings",
-            },
-        },
+        config = function(_, opts)
+            require("which-key").setup(opts)
+            vim.keymap.set("n", "<leader>?", function()
+                require("which-key").show({ global = false })
+            end, { desc = "buffer-local mappings" })
+        end,
     },
 
     require("plugins.dap"),
