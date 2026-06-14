@@ -5,8 +5,6 @@
 - https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 - https://github.com/JoosepAlviste/nvim-ts-context-commentstring
 - https://github.com/ThePrimeagen/refactoring.nvim/tree/develop
-- https://github.com/MeanderingProgrammer/render-markdown.nvim
-- hardtime.nvim
 - https://github.com/A7Lavinraj/fyler.nvim
 - https://github.com/chrisgrieser/nvim-spider
 

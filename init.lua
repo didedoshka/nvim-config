@@ -292,7 +292,7 @@ require("lazy").setup({
             },
 
             code = {
-                sign = false, -- Disables the language icon in the gutter
+                sign = false,   -- Disables the language icon in the gutter
                 style = 'none', -- Keeps the background highlighting but removes extra flair
             },
 
@@ -307,4 +307,13 @@ require("lazy").setup({
         },
     },
 
+    {
+        "m4xshen/hardtime.nvim",
+        lazy = false,
+        dependencies = { "MunifTanjim/nui.nvim" },
+        config = function ()
+            vim.opt.showmode = false
+            require("hardtime").setup()
+        end
+    },
 })
