@@ -6,7 +6,6 @@
 - https://github.com/JoosepAlviste/nvim-ts-context-commentstring
 - https://github.com/ThePrimeagen/refactoring.nvim/tree/develop
 - https://github.com/A7Lavinraj/fyler.nvim
-- https://github.com/chrisgrieser/nvim-spider
 
 
 ## BRD
