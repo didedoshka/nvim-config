@@ -14,7 +14,7 @@ vim.opt.relativenumber = true
 
 -- sync clipboard between vim and os
 vim.g.clipboard = "osc52"
-vim.opt.clipboard = "unnamedplus"
+vim.opt.clipboard = "unnamed,unnamedplus"
 -- set wrap and max text width
 vim.opt.wrap = false
 vim.opt.linebreak = true
