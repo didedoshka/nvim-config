@@ -315,4 +315,11 @@ require("lazy").setup({
             vim.keymap.set({ "n", "o", "x" }, "ge", "<cmd>lua require('spider').motion('ge')<CR>")
         end
     },
+
+    {
+        "ThePrimeagen/refactoring.nvim",
+        dependencies = {
+            "lewis6991/async.nvim",
+        },
+    },
 })

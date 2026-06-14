@@ -4,7 +4,6 @@
 - https://github.com/Wansmer/treesj (or splitjoin.nvim)
 - https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 - https://github.com/JoosepAlviste/nvim-ts-context-commentstring
-- https://github.com/ThePrimeagen/refactoring.nvim/tree/develop
 - https://github.com/A7Lavinraj/fyler.nvim
 
 
