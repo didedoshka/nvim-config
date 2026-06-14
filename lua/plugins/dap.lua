@@ -32,7 +32,7 @@ return
 
         dap.adapters["codelldb"] = {
             type = "executable",
-            command = "/Users/didedoshka/.vscode/extensions/vadimcn.vscode-lldb-1.11.5/adapter/codelldb",
+            command = "codelldb",
         }
 
         brd.dap_configurations["cpp"] = {
