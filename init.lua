@@ -263,4 +263,10 @@ require("lazy").setup({
             index_keys = "neailuoy",
         }
     },
+
+    {
+        "j-hui/fidget.nvim",
+        opts = {},
+    },
+
 })
