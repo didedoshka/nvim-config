@@ -132,7 +132,7 @@ return
 
         vim.keymap.set(
             'v',
-            '<leader>t',
+            '<leader>p',
             function()
                 builtin.help_tags({
                     default_text = vim.fn.expand('<cword>'),
