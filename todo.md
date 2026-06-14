@@ -49,7 +49,6 @@
 - work/personal https://www.reddit.com/r/neovim/comments/1gesejh/comment/lucx4zy/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
 - rethink (gdb-like) https://github.com/MironPascalCaseFan/debugmaster.nvim/blob/main/doc/designphilosophy.md
 - заменить render-markdown на markview
-- lsp status in lualine
 
 
 ## User experience

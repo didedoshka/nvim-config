@@ -265,11 +265,6 @@ require("lazy").setup({
     },
 
     {
-        "j-hui/fidget.nvim",
-        opts = {},
-    },
-
-    {
         'MeanderingProgrammer/render-markdown.nvim',
         opts = {
             -- Disable gutter signs globally (optional, but recommended if you hate clutter)
@@ -309,8 +304,6 @@ require("lazy").setup({
 
     {
         "m4xshen/hardtime.nvim",
-        lazy = false,
-        dependencies = { "MunifTanjim/nui.nvim" },
         config = function()
             vim.opt.showmode = false
             require("hardtime").setup()
