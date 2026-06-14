@@ -307,10 +307,4 @@ require("lazy").setup({
         },
     },
 
-    -- {
-    --     "segoon/yamake-python-lspconfig.nvim",
-    --     config = function()
-    --         require('yamake-python-lspconfig').setup()
-    --     end
-    -- },
 })
