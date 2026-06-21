@@ -1,4 +1,4 @@
-# TODO
+# Ideas
 
 ## Плагины, которые возможно стоит добавить:
 - https://github.com/Wansmer/treesj (or splitjoin.nvim)
@@ -110,4 +110,4 @@ telescope picker is worse than cs.y-t.ru
 
 
 ## Thoughts
-Nvim = text editor + tmux + different tui (lazygit). Can it be used instead of tmux??
+Nvim = text editor + tmux + different tui (lazygit). Can it be used instead of tmux?
