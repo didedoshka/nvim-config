@@ -105,13 +105,13 @@ return {
                 lualine_b = {},
                 lualine_c = {
                     { "filename",   path = 1 },
-                    { "filetype" },
                     -- { "branch" },
                     -- { "diff" },
                     { "diagnostics" },
                     {},
                 },
                 lualine_x = {
+                    { "filetype" },
                     { lsp_status },
                 },
                 lualine_y = { { "progress" }, { "location" } },
