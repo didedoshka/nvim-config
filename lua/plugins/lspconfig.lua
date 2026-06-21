@@ -146,7 +146,7 @@ return
                 null_ls.builtins.formatting.cmake_format,
                 null_ls.builtins.formatting.prettier,
                 null_ls.builtins.formatting.clang_format.with({
-                    command = { "ya", "tool", "ads-clang-format" },
+                    command = { "ads-clang-format" },
                 }),
             }
         })
