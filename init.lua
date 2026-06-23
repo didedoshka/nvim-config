@@ -319,4 +319,19 @@ require("lazy").setup({
             "lewis6991/async.nvim",
         },
     },
+
+    {
+        "chrisgrieser/nvim-rip-substitute",
+        config = function()
+            require("rip-substitute").setup()
+
+            vim.keymap.set(
+                { "n", "x" },
+                "<leader>rs",
+                function() require("rip-substitute").sub() end,
+                { desc = "rip substitute" }
+            )
+        end,
+    },
+
 })
