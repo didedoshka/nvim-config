@@ -48,6 +48,7 @@
 - go to definition of the function/class you are currently inside
 - clang-format selected lines
 - disable inline-hints (чтобы проверить отступы)
+- ya style for python
 
 
 ### скрипт/по хрону строить протобуфы и compile_commands.json
