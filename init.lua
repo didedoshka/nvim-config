@@ -108,6 +108,8 @@ vim.diagnostic.config({ virtual_text = true })
 vim.cmd("packadd nvim.undotree")
 vim.keymap.set("n", "<leader>u", require("undotree").open, { desc = "(u)ndotree" })
 
+vim.keymap.set("n", "<leader>m", "<cmd>restart<cr>", { desc = "close buffer" })
+
 -- setting plugins
 require("lazy").setup({
     -- colorscheme
