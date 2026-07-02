@@ -71,7 +71,7 @@ return
 
         -- clangd
         vim.lsp.config("clangd", {
-            -- root_markers = { "build", ".git" },
+            root_markers = { "compile_commands.json" },
             on_attach = function(client, bufnr)
                 client.server_capabilities.documentFormattingProvider = false
                 client.server_capabilities.documentRangeFormattingProvider = false
