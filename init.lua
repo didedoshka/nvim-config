@@ -130,8 +130,8 @@ require("lazy").setup({
     -- flit
     require("plugins.flit"),
 
-    -- telescope
-    require("plugins.telescope"),
+    -- fzf-lua
+    require("plugins.fzf"),
 
     -- file explorer
     require("plugins.oil"),
