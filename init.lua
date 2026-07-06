@@ -300,20 +300,20 @@ require("lazy").setup({
         },
     },
 
-    {
-        "m4xshen/hardtime.nvim",
-        config = function()
-            vim.opt.showmode = false
-            require("hardtime").setup({
-                disabled_keys = {
-                    ["<Up>"] = false,
-                    ["<Down>"] = false,
-                    ["<Left>"] = false,
-                    ["<Right>"] = false,
-                }
-            })
-        end
-    },
+    -- {
+    --     "m4xshen/hardtime.nvim",
+    --     config = function()
+    --         vim.opt.showmode = false
+    --         require("hardtime").setup({
+    --             disabled_keys = {
+    --                 ["<Up>"] = false,
+    --                 ["<Down>"] = false,
+    --                 ["<Left>"] = false,
+    --                 ["<Right>"] = false,
+    --             }
+    --         })
+    --     end
+    -- },
 
     {
         "ThePrimeagen/refactoring.nvim",
