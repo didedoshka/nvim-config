@@ -110,5 +110,13 @@ telescope picker is worse than cs.y-t.ru
 Issues are in browser, it's hard to open corresponding codelines in editor
 
 
+## Keys that can start a layer in normal mode
+<BS> -- currently brd
+s -- currently arrow
+<Tab> -- currently <C-w>
+x
+<Esc>
+
+
 ## Thoughts
 Nvim = text editor + tmux + different tui (lazygit). Can it be used instead of tmux?
