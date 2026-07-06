@@ -9,6 +9,7 @@
 - плагины tpope
 - плагины chrisgrieser
 - подумать, стоит ли заменить render-markdown на markview
+- https://github.com/tiagovla/scope.nvim
 
 
 ## BRD
@@ -108,6 +109,8 @@ telescope picker is worse than cs.y-t.ru
 - window is narrow
 - line doesn't fit
 - lines are not left-aligned
+#### Fixing issues
+Issues are in browser, it's hard to open corresponding codelines in editor
 
 
 ## Thoughts
