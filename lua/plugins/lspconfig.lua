@@ -8,9 +8,9 @@ return
     },
 
     config = function()
-        vim.keymap.set("n", "<leader>li", function() vim.cmd("checkhealth vim.lsp") end, { desc = "(l)sp (i)nfo" })
-        vim.keymap.set("n", "<leader>lb", function() vim.cmd("lsp enable") end, { desc = "(l)sp (b)egin" })
-        vim.keymap.set("n", "<leader>le", function() vim.cmd("lsp disable") end, { desc = "(l)sp (e)nd" })
+        vim.keymap.set("n", "<leader>lh", function() vim.cmd("checkhealth vim.lsp") end, { desc = "(l)sp (h)ealth" })
+        vim.keymap.set("n", "<leader>le", function() vim.cmd("lsp enable") end, { desc = "(l)sp (e)nable" })
+        vim.keymap.set("n", "<leader>ld", function() vim.cmd("lsp disable") end, { desc = "(l)sp (d)isable" })
 
         local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
         function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
@@ -153,6 +153,97 @@ return
 
         -- vim.lsp.enable('jsonls')
 
+        -- jump to the header of the enclosing symbol of one of `kinds` (via LSP documentSymbol)
+        local SK = vim.lsp.protocol.SymbolKind
+        local function goto_enclosing(kinds)
+            local bufnr = 0
+            local params = { textDocument = vim.lsp.util.make_text_document_params(bufnr) }
+            local res = vim.lsp.buf_request_sync(bufnr, "textDocument/documentSymbol", params, 1000)
+            if not res then return end
+
+            local cur = vim.api.nvim_win_get_cursor(0)
+            local row, col = cur[1] - 1, cur[2]
+            local function contains(r)
+                if row < r.start.line or row > r["end"].line then return false end
+                if row == r.start.line and col < r.start.character then return false end
+                if row == r["end"].line and col > r["end"].character then return false end
+                return true
+            end
+
+            local best
+            local function walk(syms)
+                for _, s in ipairs(syms or {}) do
+                    local r = s.range or (s.location and s.location.range)
+                    if r and contains(r) then
+                        if kinds[s.kind] then best = s end
+                        walk(s.children)
+                    end
+                end
+            end
+            for _, r in pairs(res) do walk(r.result) end
+
+            if not best then
+                vim.notify("no enclosing symbol", vim.log.levels.INFO)
+                return
+            end
+            local p = (best.selectionRange or best.range).start
+            vim.cmd("normal! m'")
+            vim.api.nvim_win_set_cursor(0, { p.line + 1, p.character })
+        end
+
+        -- walk up the enclosing scope chain: innermost first, then one level up per press
+        local scope_kinds = {
+            [SK.Function] = true, [SK.Method] = true, [SK.Constructor] = true,
+            [SK.Class] = true, [SK.Struct] = true, [SK.Interface] = true,
+            [SK.Enum] = true, [SK.Namespace] = true, [SK.Module] = true,
+        }
+        local function goto_scope_up()
+            local params = { textDocument = vim.lsp.util.make_text_document_params(0) }
+            local res = vim.lsp.buf_request_sync(0, "textDocument/documentSymbol", params, 1000)
+            if not res then return end
+
+            local cur = vim.api.nvim_win_get_cursor(0)
+            local row, col = cur[1] - 1, cur[2]
+            local function contains(r)
+                if row < r.start.line or row > r["end"].line then return false end
+                if row == r.start.line and col < r.start.character then return false end
+                if row == r["end"].line and col > r["end"].character then return false end
+                return true
+            end
+
+            local chain = {} -- outermost -> innermost
+            local function walk(syms)
+                for _, s in ipairs(syms or {}) do
+                    local r = s.range or (s.location and s.location.range)
+                    if r and contains(r) then
+                        if scope_kinds[s.kind] then chain[#chain + 1] = s end
+                        walk(s.children)
+                    end
+                end
+            end
+            for _, r in pairs(res) do walk(r.result) end
+            if #chain == 0 then
+                vim.notify("no enclosing scope", vim.log.levels.INFO)
+                return
+            end
+
+            local target = chain[#chain] -- default: innermost
+            for i, s in ipairs(chain) do -- already on a header? step to its parent
+                local h = (s.selectionRange or s.range).start
+                if h.line == row and h.character == col then
+                    if i == 1 then
+                        vim.notify("at outermost scope", vim.log.levels.INFO)
+                        return
+                    end
+                    target = chain[i - 1]
+                    break
+                end
+            end
+            local p = (target.selectionRange or target.range).start
+            vim.cmd("normal! m'")
+            vim.api.nvim_win_set_cursor(0, { p.line + 1, p.character })
+        end
+
         vim.api.nvim_create_autocmd('LspAttach', {
             callback = function(args)
                 -- get buffer number and client info
@@ -178,6 +269,20 @@ return
                 -- turn inlay_hint on
                 if client.server_capabilities.inlayHintProvider then
                     vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+                    vim.keymap.set("n", "<leader>v", function()
+                        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
+                    end, { buffer = bufnr, desc = "toggle inlay hints" })
+                end
+
+                -- jump to enclosing function / class definition
+                if client.server_capabilities.documentSymbolProvider then
+                    vim.keymap.set("n", "[f", function()
+                        goto_enclosing({ [SK.Function] = true, [SK.Method] = true, [SK.Constructor] = true })
+                    end, { buffer = bufnr, desc = "enclosing (f)unction" })
+                    vim.keymap.set("n", "[c", function()
+                        goto_enclosing({ [SK.Class] = true, [SK.Struct] = true, [SK.Interface] = true, [SK.Enum] = true })
+                    end, { buffer = bufnr, desc = "enclosing (c)lass" })
+                    vim.keymap.set("n", "go", goto_scope_up, { buffer = bufnr, desc = "(g)o to enclosing scope/(o)ut" })
                 end
 
                 -- basic keymaps
