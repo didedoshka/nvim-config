@@ -105,9 +105,6 @@ vim.cmd.colorscheme('dide')
 vim.go.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:block-blinkon500-blinkoff500-TermCursor,a:Cursor"
 vim.diagnostic.config({ virtual_text = true })
 
-vim.cmd("packadd nvim.undotree")
-vim.keymap.set("n", "<leader>u", require("undotree").open, { desc = "(u)ndotree" })
-
 vim.keymap.set("n", "<leader>m", "<cmd>restart<cr>", { desc = "close buffer" })
 
 -- setting plugins
@@ -334,6 +331,14 @@ require("lazy").setup({
                 { desc = "rip substitute" }
             )
         end,
+    },
+
+    {
+        "mbbill/undotree",
+        config = function()
+            vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<cr>", { desc = "(u)ndotree" })
+            vim.g.undotree_WindowLayout = 2
+        end
     },
 
 })
