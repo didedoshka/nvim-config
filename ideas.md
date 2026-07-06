@@ -55,9 +55,6 @@
 ### скрипт/по хрону строить протобуфы и compile_commands.json
 compile_commands.json в a/yt a/util a/library/cpp
 
-### Buffer-specific wrap setting (pull-request to neovim)
-- is this feature wanted?
-
 ### vim-regex is stupid? https://github.com/chrisgrieser/nvim-rip-substitute
 - rewrite it to support pure search, n/N, * (search under cursor)
 - do I need regex syntax highlighting? (and thus a window instead of command line (though jumping between search/replace may be useful))
