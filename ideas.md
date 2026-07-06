@@ -46,7 +46,6 @@
 - подумать про буфер обмена (копировать в регистры, разобраться в какие регистры копируется и как этим нормально пользоваться)
 - https://www.reddit.com/r/neovim/comments/1pqks2r/edit_any_macos_text_field_in_neovim_with_a/
 - статистика использования hotkeys
-- go to definition of the function/class you are currently inside
 - clang-format selected lines
 - disable inline-hints (чтобы проверить отступы)
 - ya style for python

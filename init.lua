@@ -341,4 +341,23 @@ require("lazy").setup({
         end
     },
 
+    {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        branch = "main",
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
+        config = function()
+            require("nvim-treesitter-textobjects").setup({
+                move = { set_jumps = true }, -- push to jumplist so <C-o> returns
+            })
+            local move = require("nvim-treesitter-textobjects.move")
+            -- go to header of the enclosing function/class
+            vim.keymap.set({ "n", "x", "o" }, "[f", function()
+                move.goto_previous_start({ "@function.outer", "@class.outer" }, "textobjects")
+            end, { desc = "goto enclosing (f)unction/class" })
+            vim.keymap.set({ "n", "x", "o" }, "]f", function()
+                move.goto_next_start({ "@function.outer", "@class.outer" }, "textobjects")
+            end, { desc = "goto next (f)unction/class" })
+        end,
+    },
+
 })
