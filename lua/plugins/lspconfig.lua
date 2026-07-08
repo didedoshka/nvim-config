@@ -308,7 +308,7 @@ return
                 vim.keymap.set({ 'n', 'v' }, '<leader>a', vim.lsp.buf.code_action,
                     { buffer = args.buf, desc = "code (a)ction" })
                 vim.keymap.set('n', 'gr', require('fzf-lua').lsp_references, opts)
-                vim.keymap.set('n', '<leader>f', function()
+                vim.keymap.set({ 'n', 'v' }, '<leader>f', function()
                     vim.lsp.buf.format { async = true }
                 end, { buffer = args.buf, desc = "(f)ormat" })
             end,
