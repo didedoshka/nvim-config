@@ -153,14 +153,13 @@ require("lazy").setup({
 
     {
         "folke/which-key.nvim",
-        opts = {
-            delay = 2000,
-            icons = {
-                mappings = false,
-            },
-        },
-        config = function(_, opts)
-            require("which-key").setup(opts)
+        config = function()
+            require("which-key").setup({
+                delay = 2000,
+                icons = {
+                    mappings = false,
+                },
+            })
             vim.keymap.set("n", "<leader>?", function()
                 require("which-key").show({ global = false })
             end, { desc = "buffer-local mappings" })
@@ -171,11 +170,13 @@ require("lazy").setup({
 
     {
         "catgoose/nvim-colorizer.lua",
-        opts = {
-            user_default_options = {
-                names = false, -- "Name" codes like Blue or red
-            },
-        },
+        config = function()
+            require("colorizer").setup({
+                user_default_options = {
+                    names = false, -- "Name" codes like Blue or red
+                },
+            })
+        end,
     },
 
     {
@@ -241,60 +242,64 @@ require("lazy").setup({
 
     {
         "otavioschwanck/arrow.nvim",
-        opts = {
-            show_icons = false,
-            leader_key = 's',
-            mappings = {
-                edit = "E",
-                delete_mode = "D",
-                clear_all_items = "<BS>",
-                toggle = "<CR>", -- used as save if separate_save_and_remove is true
-                open_vertical = "V",
-                open_horizontal = "H",
-                quit = "s",
-                next_item = "]",
-                prev_item = "["
-            },
-            index_keys = "neailuoy",
-        }
+        config = function()
+            require("arrow").setup({
+                show_icons = false,
+                leader_key = 's',
+                mappings = {
+                    edit = "E",
+                    delete_mode = "D",
+                    clear_all_items = "<BS>",
+                    toggle = "<CR>", -- used as save if separate_save_and_remove is true
+                    open_vertical = "V",
+                    open_horizontal = "H",
+                    quit = "s",
+                    next_item = "]",
+                    prev_item = "["
+                },
+                index_keys = "neailuoy",
+            })
+        end,
     },
 
     {
         'MeanderingProgrammer/render-markdown.nvim',
-        opts = {
-            -- Disable gutter signs globally (optional, but recommended if you hate clutter)
-            sign = { enabled = false },
+        config = function()
+            require("render-markdown").setup({
+                -- Disable gutter signs globally (optional, but recommended if you hate clutter)
+                sign = { enabled = false },
 
-            heading = {
-                icons = {}, -- Disables heading icons (like 󰲡, 󰲣)
-                signs = {}, -- Disables the heading indicators in the gutter
-            },
+                heading = {
+                    icons = {}, -- Disables heading icons (like 󰲡, 󰲣)
+                    signs = {}, -- Disables the heading indicators in the gutter
+                },
 
-            bullet = {
-                icons = {}, -- Disables custom bullet point icons
-            },
+                bullet = {
+                    icons = {}, -- Disables custom bullet point icons
+                },
 
-            checkbox = {
-                -- Instead of Nerd Font icons, revert to standard text brackets
-                unchecked = { icon = '[ ]' },
-                checked   = { icon = '[x]' },
-                -- (Alternatively, use icon = '' to remove them completely)
-            },
+                checkbox = {
+                    -- Instead of Nerd Font icons, revert to standard text brackets
+                    unchecked = { icon = '[ ]' },
+                    checked   = { icon = '[x]' },
+                    -- (Alternatively, use icon = '' to remove them completely)
+                },
 
-            code = {
-                sign = false,   -- Disables the language icon in the gutter
-                style = 'none', -- Keeps the background highlighting but removes extra flair
-            },
+                code = {
+                    sign = false,   -- Disables the language icon in the gutter
+                    style = 'none', -- Keeps the background highlighting but removes extra flair
+                },
 
-            callout = {
-                -- If you use Obsidian-style callouts (> [!INFO]), you may need to
-                -- overwrite the defaults to strip their icons as well.
-                note = { icon = '' },
-                tip = { icon = '' },
-                warning = { icon = '' },
-                -- etc...
-            }
-        },
+                callout = {
+                    -- If you use Obsidian-style callouts (> [!INFO]), you may need to
+                    -- overwrite the defaults to strip their icons as well.
+                    note = { icon = '' },
+                    tip = { icon = '' },
+                    warning = { icon = '' },
+                    -- etc...
+                }
+            })
+        end,
     },
 
     -- {
