@@ -6,13 +6,18 @@ M.config = {
 }
 
 local function normalize_path(path, root)
-    -- GDB says:
-    --   /yt/yt/foo.cpp
-    --   /contrib/foo.h
+    -- GDB emits paths with a source-substitution prefix, e.g.:
+    --   /-S/yt/yt/foo.cpp
+    --   /-S/contrib/foo.h
     --
     -- Real path is:
     --   ~/arc/yt/yt/foo.cpp
     --   ~/arc/contrib/foo.h
+    --
+    -- Strip the leading "/-S" (or similar "/-X") substitution marker, then
+    -- anchor the remaining absolute path under the configured source root.
+
+    path = path:gsub("^/%-%w+", "")
 
     if path:sub(1, 1) == "/" then
         return root .. path
@@ -21,8 +26,9 @@ local function normalize_path(path, root)
     return path
 end
 
-local function parse_gdb_frame(line, opts)
-    -- Match:
+local function parse_gdb_frame(text, opts)
+    -- `text` is a single logical frame, with any wrapped continuation lines
+    -- already joined into one string. Match:
     --   #0  func (...) at /path/file.cpp:123
     --   #1  0xabc in func (...) at /path/file.cpp:123
     --
@@ -31,10 +37,14 @@ local function parse_gdb_frame(line, opts)
     --   frame number
     --   file
     --   line
+    --
+    -- The location is always the trailing "at <file>:<line>". `<file>` never
+    -- contains whitespace, so we anchor on the last such token.
 
-    local frame, before, file, lnum = line:match("^#(%d+)%s+(.-)%s+at%s+(.+):(%d+)%s*$")
+    local frame, before = text:match("^#(%d+)%s+(.-)%s+at%s+%S+:%d+%s*$")
+    local file, lnum = text:match("at%s+(%S+):(%d+)%s*$")
 
-    if not frame then
+    if not frame or not file then
         return nil
     end
 
@@ -45,9 +55,35 @@ local function parse_gdb_frame(line, opts)
         lnum = tonumber(lnum),
         col = 1,
         nr = tonumber(frame),
-        text = ("#%s %s"):format(frame, before),
+        text = ("#%s %s"):format(frame, (before:gsub("%s+", " "))),
         valid = 1,
     }
+end
+
+local function group_frames(lines)
+    -- GDB wraps long frames across several physical lines. A new frame starts
+    -- with "#<n>"; every following line that does not is a continuation and
+    -- belongs to the current frame.
+
+    local frames = {}
+    local current = nil
+
+    for _, line in ipairs(lines) do
+        if line:match("^#%d+%s") or line:match("^#%d+$") then
+            if current then
+                table.insert(frames, current)
+            end
+            current = line
+        elseif current then
+            current = current .. " " .. line:gsub("^%s+", "")
+        end
+    end
+
+    if current then
+        table.insert(frames, current)
+    end
+
+    return frames
 end
 
 function M.lines_to_qf(lines, opts)
@@ -55,8 +91,8 @@ function M.lines_to_qf(lines, opts)
 
     local items = {}
 
-    for _, line in ipairs(lines) do
-        local item = parse_gdb_frame(line, opts)
+    for _, frame_text in ipairs(group_frames(lines)) do
+        local item = parse_gdb_frame(frame_text, opts)
         if item then
             table.insert(items, item)
         end
