@@ -46,8 +46,6 @@
 - подумать про буфер обмена (копировать в регистры, разобраться в какие регистры копируется и как этим нормально пользоваться)
 - https://www.reddit.com/r/neovim/comments/1pqks2r/edit_any_macos_text_field_in_neovim_with_a/
 - статистика использования hotkeys
-- clang-format selected lines
-- ya style for python
 
 
 ### скрипт/по хрону строить протобуфы и compile_commands.json
