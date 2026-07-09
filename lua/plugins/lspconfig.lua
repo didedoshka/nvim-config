@@ -55,6 +55,21 @@ return
         vim.lsp.enable("lua_ls")
 
         -- pyright
+        -- ruff (CI flake8 parity) owns "unused" reporting. pyright reports unused via two channels:
+        --   1. the reportUnused* rules  -> silenced by diagnosticSeverityOverrides below.
+        --   2. an always-on greyed "X is not accessed" hint (Unnecessary tag) that no setting
+        --      controls. In this nvim LSP diagnostics bypass vim.lsp.handlers, so drop those hints
+        --      at vim.diagnostic.set, scoped to pyright's namespace (other servers keep theirs).
+        local orig_diag_set = vim.diagnostic.set
+        vim.diagnostic.set = function(ns, bufnr, diagnostics, opts)
+            local info = vim.diagnostic.get_namespace(ns)
+            if info and info.name and info.name:find("pyright", 1, true) then
+                diagnostics = vim.tbl_filter(function(d)
+                    return not (d._tags and d._tags.unnecessary)
+                end, diagnostics)
+            end
+            return orig_diag_set(ns, bufnr, diagnostics, opts)
+        end
         vim.lsp.config("pyright", {
             settings = {
                 python = {
@@ -62,7 +77,12 @@ return
                         stubPath = "~/.stubs/python-type-stubs/stubs",
                         autoSearchPaths = true,
                         diagnosticMode = "openFilesOnly",
-                        useLibraryCodeForTypes = true
+                        useLibraryCodeForTypes = true,
+                        diagnosticSeverityOverrides = {
+                            reportUnusedImport = "none",
+                            reportUnusedVariable = "none",
+                            reportUnusedExpression = "none",
+                        },
                     }
                 }
             }
@@ -126,13 +146,21 @@ return
         vim.lsp.enable("rust_analyzer")
 
         vim.lsp.config("ruff", {
+            cmd = { "ya", "tool", "ruff", "server" },
             init_options = {
                 settings = {
+                    -- mirror CI flake8 (~/arc/build/config/tests/flake8/flake8.conf):
+                    -- it selects E,W,F,C9,N8,PL, but PL is ignored wholesale and C9 has no
+                    -- max-complexity, so the effective rule set is pycodestyle + pyflakes + naming.
+                    -- (PL is left off on purpose: ruff's pylint codes differ from flake8-pylint's,
+                    --  so enabling it would report warnings CI never does.)
+                    lineLength = 200,
                     lint = {
-                        enable = false
-                    }
-                }
-            }
+                        select = { "E", "W", "F", "N" },
+                        ignore = { "E203", "E701" }, -- black-friendly ignores from the conf (E704 unimplemented in ruff)
+                    },
+                },
+            },
         })
         vim.lsp.enable("ruff")
 
@@ -148,6 +176,7 @@ return
                 null_ls.builtins.formatting.clang_format.with({
                     command = { "ads-clang-format" },
                 }),
+                -- python formatting is handled by ruff (ruff format, range-capable)
             }
         })
 
