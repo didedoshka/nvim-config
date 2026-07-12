@@ -8,6 +8,8 @@ My minimalistic config for neovim.
 2. I should understand every line of lua config that's written.
 
 ## Plugins
+
+The full list of installed plugins and what each does is in [plugin_list.md](plugin_list.md). A couple of notes:
 - refactoring.nvim (:Refactor)
 - text-case.nvim (:Subs, gas - snake, gac - camel, gad - dash)
 

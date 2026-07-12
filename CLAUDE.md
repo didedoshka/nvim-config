@@ -14,13 +14,14 @@ didedoshka's personal, minimalistic Neovim config (Lua, `lazy.nvim`).
 - `snippets/`, `queries/`, `keymap/` — LuaSnip snippets, treesitter queries, russian keymap.
 - `lazy-lock.json` — plugin lockfile (commit changes). `ideas.md`, `cheatsheet.md` — notes.
 
-## Conventions
+## Conventions (see `project_organization.md`)
+- Plugin specs always use `config = function()`, never `keys`/`opts`.
 - Leader is `<space>`; keymaps use `desc` with the mnemonic letter in parens, e.g. `(u)ndotree`.
 - Indentation: 4 spaces, expandtab.
 - Some keys (`s`, `S`, `x`, `X`, `<C-o>`) are deliberately disabled as "habit" breakers or repurposed (`s` = arrow.nvim).
 
 ## Adding a plugin
-Create `lua/plugins/<name>.lua` returning a lazy spec, then add `require("plugins.<name>")` to the list in `init.lua` — or inline it if it's short.
+Create `lua/plugins/<name>.lua` returning a lazy spec, then add `require("plugins.<name>")` to the list in `init.lua` — or inline it if it's short. See `plugin_list.md` for the full inventory of installed plugins and what each does.
 
 ## `colors/dide.lua` (self-contained custom colorscheme, no plugin)
 - **Highlight groups** — light, low-contrast theme built from one `colors` palette table; `set_groups()` maps it onto base/Treesitter/LSP/plugin groups. Edit colors via the `colors` table, not inline hex.
