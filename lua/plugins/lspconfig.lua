@@ -323,9 +323,10 @@ return
                 vim.keymap.set("n", "<leader>j", vim.diagnostic.setqflist,
                     { buffer = args.buf, desc = "diagnostics to quickfixlist" })
                 vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-                vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+                -- route jumps through fzf-lua (like gr) so they never clobber the quickfix list
+                vim.keymap.set('n', 'gd', require('fzf-lua').lsp_definitions, opts)
                 vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-                vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+                vim.keymap.set('n', 'gi', require('fzf-lua').lsp_implementations, opts)
                 -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
                 -- vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
                 -- vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
