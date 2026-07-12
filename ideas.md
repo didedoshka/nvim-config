@@ -96,10 +96,6 @@ telescope (and now fzf-lua) picker is worse than cs.yandex-team.ru
 #### Fixing issues
 Issues are in browser, it's hard to open corresponding codelines in editor
 
-### hard to paste the file codename/line to claude
-(:ArcanumLink now respects the commit + supports ranges — done. Still missing: a plain
-`:CopyLoc` that yanks `relpath:line` (not a URL) for pasting into a terminal agent.)
-
 ### Работа со списками
 #### Примеры списков
 - все файлы, измененные в пулреквесте
