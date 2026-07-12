@@ -81,7 +81,7 @@ local function set_groups()
         ColorColumn = { bg = colors.line },
         Cursor = { fg = colors.bg, bg = colors.fg },
         CursorColumn = { bg = colors.line },
-        CursorLine = { bg = colors.line },
+        CursorLine = { link = 'CurSearch' },
         CursorLineNr = { fg = colors.accent, bg = colors.line },
         LineNr = { fg = colors.guide_normal },
 
