@@ -28,17 +28,6 @@
 - починить баг, что цвета не обновляются в строках, которые не изменились, но изменили семантику (цветной if, цветной private)
 
 
-## Работа со списками
-### Примеры списков
-- все файлы, измененные в пулреквесте
-- список интересных файлов
-- бэктрейс
-- ишьюс
-- дефолтные: греп и rg
-
-### Функционал
-- jumplist: пользоваться не только C-j и C-k
-- сохранять списки
 
 
 ## Другое
@@ -69,7 +58,7 @@ https://www.reddit.com/r/neovim/comments/1gesejh/comment/lucx4zy/?utm_source=sha
 
 
 ## User stories
-### arc and ya make
+### arc and ya make commands are common and long to type, if i had them set up in .brd.lua and could run them with keymaps from vim it would be great
 arc co releases/yt/stable/26.1
 arc co app/build-cache/hot
 arc cherry-pick
@@ -81,6 +70,7 @@ ya make -A --pytest-args="-rP -vv --log-level=ERROR"
 arc co releases/yt/stable/26.1
 arc cherry-pick <commit>
 arc submit -m "[26.1] <Cherry-picked pull-request> name"
+three commands with wait for a no-brain action
 
 ### python tests, run and look to logs/stdout
 ya make -A --pytest-args="-rP -vv --log-level=ERROR"
@@ -97,13 +87,31 @@ now i'm reading code in the browser, no easy way to go back to vim
 same as previous but starts from code search
 ##### Solution
 at least searching inside arc/yt should be easy, and whole arcadia should be searchable the same way
-telescope picker is worse than cs.y-t.ru
+telescope (and now fzf-lua) picker is worse than cs.yandex-team.ru
 - filename is very long
 - window is narrow
 - line doesn't fit
 - lines are not left-aligned
+(these problems are mostly gone now with switch to fzf-lua, though there is no 'whole-arcadia' search in there (as there is for telescope, though it was unusable))
 #### Fixing issues
 Issues are in browser, it's hard to open corresponding codelines in editor
+
+### hard to paste the file codename/line to claude
+(:ArcanumLink now respects the commit + supports ranges — done. Still missing: a plain
+`:CopyLoc` that yanks `relpath:line` (not a URL) for pasting into a terminal agent.)
+
+### Работа со списками
+#### Примеры списков
+- все файлы, измененные в пулреквесте
+- список интересных файлов
+- бэктрейс
+- ишьюс
+- дефолтные: греп и rg
+
+#### Функционал
+- jumplist: пользоваться не только C-j и C-k
+- сохранять списки, парсить
+- quickfixlist/fzf-lua: что для чего, unify workflow
 
 
 ## Keys that can start a layer in normal mode
@@ -115,4 +123,4 @@ x
 
 
 ## Thoughts
-Nvim = text editor + tmux + different tui (lazygit). Can it be used instead of tmux?
+Nvim = text editor + tmux + different tuis (like lazygit). Can it be used instead of tmux?
