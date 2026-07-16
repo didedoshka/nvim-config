@@ -113,8 +113,7 @@ return
             -- cmd = { "docker", "exec", "-i", "name", "clangd" },
             -- cmd = { "/Users/didedoshka/.local/bin/clangd", }, -- clangd 21
             cmd = {
-                "ya", "tool", "clangd",
-                -- "clangd",
+                vim.fn.expand("~/.local/bin/clangd"),  -- self-built clangd 23 (+clangd-remap) for cross-mount index reuse
                 "--background-index",
                 "-j=32",
                 "--header-insertion=never",
