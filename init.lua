@@ -107,9 +107,7 @@ vim.diagnostic.config({ virtual_text = true })
 
 vim.keymap.set("n", "<leader>m", "<cmd>restart<cr>", { desc = "close buffer" })
 
-require("gdb_bt_qf").setup({
-    root = vim.fn.expand("~/arc"),
-})
+require("gdb_bt_qf").setup({})
 
 -- setting plugins
 require("lazy").setup({

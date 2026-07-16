@@ -1,9 +1,18 @@
 local M = {}
 
 M.config = {
-    root = vim.fn.expand("~/arc"),
     open_qf = true,
 }
+
+local function arc_root()
+    -- The GDB "/-S" prefix stands in for the arcadia checkout root, which is
+    -- exactly what `arc root` prints (trailing newline stripped).
+    local out = vim.fn.system("arc root")
+    if vim.v.shell_error ~= 0 then
+        error("gdb_bt_qf: `arc root` failed: " .. vim.trim(out))
+    end
+    return vim.trim(out)
+end
 
 local function normalize_path(path, root)
     -- GDB emits paths with a source-substitution prefix, e.g.:
@@ -11,11 +20,11 @@ local function normalize_path(path, root)
     --   /-S/contrib/foo.h
     --
     -- Real path is:
-    --   ~/arc/yt/yt/foo.cpp
-    --   ~/arc/contrib/foo.h
+    --   <arc root>/yt/yt/foo.cpp
+    --   <arc root>/contrib/foo.h
     --
     -- Strip the leading "/-S" (or similar "/-X") substitution marker, then
-    -- anchor the remaining absolute path under the configured source root.
+    -- anchor the remaining absolute path under the source root.
 
     path = path:gsub("^/%-%w+", "")
 
@@ -26,7 +35,7 @@ local function normalize_path(path, root)
     return path
 end
 
-local function parse_gdb_frame(text, opts)
+local function parse_gdb_frame(text, root)
     -- `text` is a single logical frame, with any wrapped continuation lines
     -- already joined into one string. Match:
     --   #0  func (...) at /path/file.cpp:123
@@ -48,7 +57,7 @@ local function parse_gdb_frame(text, opts)
         return nil
     end
 
-    local filename = normalize_path(file, opts.root)
+    local filename = normalize_path(file, root)
 
     return {
         filename = filename,
@@ -89,10 +98,11 @@ end
 function M.lines_to_qf(lines, opts)
     opts = vim.tbl_deep_extend("force", M.config, opts or {})
 
+    local root = arc_root()
     local items = {}
 
     for _, frame_text in ipairs(group_frames(lines)) do
-        local item = parse_gdb_frame(frame_text, opts)
+        local item = parse_gdb_frame(frame_text, root)
         if item then
             table.insert(items, item)
         end
