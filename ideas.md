@@ -26,8 +26,8 @@
     - для этого установить https://www.reddit.com/r/neovim/comments/1h43mjj/snacksprofiler_a_neovim_lua_profiler/
 - доделать для любой темы, выложить, сделать плагином
 - починить баг, что цвета не обновляются в строках, которые не изменились, но изменили семантику (цветной if, цветной private)
-
-
+- https://github.com/nvim-mini/mini.base16/tree/main
+- make fzf-lua more colorful (including preview)
 
 
 ## Другое
@@ -35,6 +35,8 @@
 - подумать про буфер обмена (копировать в регистры, разобраться в какие регистры копируется и как этим нормально пользоваться)
 - https://www.reddit.com/r/neovim/comments/1pqks2r/edit_any_macos_text_field_in_neovim_with_a/
 - статистика использования hotkeys
+- по крону обновлять нужные ya tool, делать симлинки на низлежащий инструмент
+- сделать красивый markdown (см. markview)
 
 
 ### скрипт/по хрону строить протобуфы и compile_commands.json
