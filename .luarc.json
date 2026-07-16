@@ -1,0 +1,22 @@
+{
+    "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+    "runtime.version": "LuaJIT",
+    "runtime.path": [
+        "lua/?.lua",
+        "lua/?/init.lua"
+    ],
+    "diagnostics.globals": [
+        "vim",
+        "MiniSnippets"
+    ],
+    "workspace.checkThirdParty": false,
+    "workspace.library": [
+        "${3rd}/luv/library"
+    ],
+    "format.defaultConfig": {
+        "indent_style": "space",
+        "indent_size": "4",
+        "quote_style": "none",
+        "max_line_length": "120"
+    }
+}

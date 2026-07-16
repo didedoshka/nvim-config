@@ -2,28 +2,45 @@
 
 didedoshka's personal, minimalistic Neovim config (Lua, `lazy.nvim`).
 
-## Philosophy (see `readme.md`)
+## Philosophy
 - Keep the vim look and feel; avoid clutter, popups, and noisy UI.
-- Every line of config must be understandable — prefer small, explicit Lua over abstraction.
+- Every line must be understandable — prefer small, explicit Lua over abstraction.
+  A clever abstraction that saves five lines is a regression here.
 
 ## Layout
-- `init.lua` — core options, filetypes, autocmds (autosave on `TextChanged`/`InsertLeave`), global keymaps, and the `lazy.setup{}` plugin list.
-- `lua/plugins/*.lua` — one file per plugin spec; `require("plugins.<name>")` into `init.lua`. Inline specs live directly in `init.lua`.
-- `plugin/*.lua` — auto-loaded custom features (e.g. `keymaps_to_buffer`). The arcadia-work commands (`:Cs`, `:Prs`, `:Blame`, `:ArcanumLink`, …) live in a separate local plugin, `~/personal/arc-nvim`.
-- `colors/dide.lua`, `lua/lualine/themes/dide.lua` — custom `dide` colorscheme + statusline theme (see below).
-- `snippets/`, `queries/`, `keymap/` — LuaSnip snippets, treesitter queries, russian keymap.
-- `lazy-lock.json` — plugin lockfile; gitignored, **not** committed.
-- `notes/` — all notes and docs: `ideas.md` (backlog), `plugin_list.md`, `project_organization.md`, `cheatsheet-bracket-and-g.md`, research notes. Only `readme.md` and `CLAUDE.md` stay at the root.
+- `init.lua` — options, filetypes, autocmds, global keymaps, and the `lazy.setup{}` list.
+- `lua/plugins/<name>.lua` — one lazy spec per file, `require`d into `init.lua`; short specs
+  go inline in `init.lua` instead.
+- `plugin/*.lua` — auto-loaded custom features. `lua/gdb_bt_qf.lua` — GDB backtrace → quickfix.
+- `colors/dide.lua` + `lua/lualine/themes/dide.lua` — custom colorscheme and statusline theme.
+  Edit colours via the `colors` table at the top, never inline hex.
+- `snippets/` (mini.snippets), `queries/`, `keymap/`, `tests/`.
+- `notes/` — all docs; only `readme.md` and this file live at the root.
+  **`notes/project_organization.md` is the full map — read it before any structural change.**
+  `notes/plugin_list.md` is the plugin inventory.
+- `lazy-lock.json` is gitignored; never commit it.
 
-## Conventions (see `notes/project_organization.md`)
-- Plugin specs always use `config = function()`, never `keys`/`opts`.
-- Leader is `<space>`; keymaps use `desc` with the mnemonic letter in parens, e.g. `(u)ndotree`.
-- Indentation: 4 spaces, expandtab.
-- Some keys (`s`, `S`, `x`, `X`, `<C-o>`) are deliberately disabled as "habit" breakers or repurposed (`s` = arrow.nvim).
+## Conventions
+- Plugin specs always use `config = function()`, never the declarative `keys`/`opts` fields.
+- Leader is `<space>`; every keymap carries a `desc` with the mnemonic in parens, e.g. `(u)ndotree`.
+- 4 spaces, expandtab.
+- `s`, `S`, `x`, `X`, `<C-o>` deliberately print `"habit"` instead of their default. Not a bug;
+  don't "fix" them.
 
-## Adding a plugin
-Create `lua/plugins/<name>.lua` returning a lazy spec, then add `require("plugins.<name>")` to the list in `init.lua` — or inline it if it's short. See `notes/plugin_list.md` for the full inventory of installed plugins and what each does.
+## Verifying
+- Run `./tests/run.sh` after any Lua change — lint + both tiers, offline, ~1s. A `Write|Edit`
+  hook runs it automatically. `.claude/skills/verify/SKILL.md` has the tiers and what needs a human.
+- Two traps, both measured in this repo:
+  - **`nvim` exits 0 even when `init.lua` throws** — the traceback only reaches stderr. Never
+    verify an init.lua change by exit code alone.
+  - **`lua-language-server` does not catch cross-module breakage.** Renaming `gdb_bt_qf`'s
+    `M.setup()` while `init.lua` calls it is "no problems found". Only loading the code catches
+    it — so the hook runs the whole suite, not just the linter. Don't reduce it to a lint.
+- Point `lua-language-server --check` at the workspace root, or it won't find `.luarc.json` and
+  every `vim` becomes an undefined global.
+- Don't add `stylua`: `lua_ls` already formats via EmmyLuaCodeStyle, configured by `.luarc.json`.
 
-## `colors/dide.lua` (self-contained custom colorscheme, no plugin)
-- **Highlight groups** — light, low-contrast theme built from one `colors` palette table; `set_groups()` maps it onto base/Treesitter/LSP/plugin groups. Edit colors via the `colors` table, not inline hex.
-- **Semantic highlighting** — original feature (toggle `<leader>s`): colors each variable/type by a hash of its name so identical names share a color. Palette generated in OKLab for even perceptual spacing into `SemanticHighlightingColor{N}` groups, applied via Treesitter queries + extmarks on `FileType`.
+## Environment
+- Arcadia: clangd and ruff run via `ya tool`; the arcadia commands (`:Cs`, `:Prs`, `:Blame`, …)
+  live in a separate local plugin, `~/personal/arc-nvim`.
+- No standalone `lua`/`luajit` on this box — `nvim --clean -l` **is** the Lua runtime for tests.

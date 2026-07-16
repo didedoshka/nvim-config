@@ -15,4 +15,11 @@ The full list of installed plugins and what each does is in [plugin_list.md](not
 
 Arcadia work inside nvim (codesearch, PRs, tracker issues, blame) lives in its own plugin: `~/personal/arc-nvim`, loaded via a local `dir` spec in `init.lua`.
 
+## Tests
+
+`./tests/run.sh` — lints the config and loads it headlessly, offline, in about a second. One tier
+runs under `nvim --clean` with no plugins (so it works on a fresh clone); the other loads the real
+`init.lua` and checks what it actually defines, autosave included. See
+[project_organization.md](notes/project_organization.md#testing).
+
 You can find the list of ideas [here](notes/ideas.md)

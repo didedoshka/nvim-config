@@ -31,7 +31,37 @@ describes how the config is laid out and the conventions to follow when editing 
 - `notes/` — everything written rather than executed: `ideas.md` (backlog), `plugin_list.md`,
   this file, `cheatsheet-*.md`, and research notes. Only `readme.md` and `CLAUDE.md` live at
   the root.
+- `tests/` — the offline check suite; see "Testing" below.
+- `.luarc.json` — lua-language-server config: declares the `vim` and `MiniSnippets` globals,
+  resolves `require("gdb_bt_qf")` against `lua/`, and sets EmmyLuaCodeStyle to 4-space indent.
+  Without it the server reports ~270 phantom `undefined global vim` warnings and is useless.
+- `.claude/` — `settings.json` wires a `Write|Edit` hook (`hooks/lua_check.sh`) that runs the
+  suite on Lua edits; `skills/verify/SKILL.md` documents how to verify a change.
 - `.gitignore` — ignores `lazy-lock.json` (the lockfile is **not** committed) and `.DS_Store`.
+
+## Testing
+
+`./tests/run.sh` — lint plus two headless tiers, fully offline (no network, no services, no
+arc mount), about a second. `--quick` skips the lint pass. Non-zero exit on failure.
+
+- `tests/core_spec.lua` runs under `nvim --clean` with no plugins at all, so it stays green on a
+  fresh clone. Covers the parts that are genuinely ours: `dide`'s highlight groups and semantic
+  palette, `gdb_bt_qf` end-to-end (grouping, wrapped frames, `/-S` → arc root rewriting, quickfix
+  population — with only the `arc root` shell-out stubbed), `:CopyLoc`, spec conventions,
+  snippets, and treesitter queries. It must never `:edit` a real file: applying `dide` registers a
+  `FileType` autocmd that requires nvim-treesitter, absent under `--clean`.
+- `tests/init_spec.lua` loads the real `init.lua` with the real plugins and asserts the config's
+  contract — options, filetype rules, keymaps, commands, lazy's plugin list, and autosave driven
+  end-to-end against a real file. Skipped, not failed, when lazy is not installed, so a fresh
+  clone never triggers a plugin download.
+
+Two behaviours worth knowing, both measured here:
+
+- **`nvim` exits 0 even when `init.lua` throws** — the traceback only goes to stderr, so
+  `run.sh` fails the init tier on any stderr output rather than trusting the exit code.
+- **`lua-language-server` does not catch cross-module breakage** — renaming `gdb_bt_qf`'s
+  `M.setup()` while `init.lua` still calls it is "no problems found" to `--check`. Only loading
+  the code catches it, which is why the hook runs the whole suite rather than just the linter.
 
 ## Plugin specs: always `config`, never `keys`/`opts`
 

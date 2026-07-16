@@ -1,0 +1,22 @@
+{
+    "hooks": {
+        "PostToolUse": [
+            {
+                "matcher": "Write|Edit",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/lua_check.sh"
+                    }
+                ]
+            }
+        ]
+    },
+    "permissions": {
+        "allow": [
+            "Bash(./tests/run.sh)",
+            "Bash(./tests/run.sh --quick)",
+            "Bash(tests/run.sh)"
+        ]
+    }
+}
