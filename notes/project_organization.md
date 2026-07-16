@@ -28,7 +28,9 @@ describes how the config is laid out and the conventions to follow when editing 
   is used by the local `tree-sitter-yamake` grammar.
 - `snippets/*.lua` — `mini.snippets` language files (`c`, `cpp`, `lua`), loaded via
   `gen_loader.from_lang()`; each returns a list of `{ prefix, body }` tables.
-- `readme.md`, `ideas.md`, `cheatsheet-*.md` — notes and backlog.
+- `notes/` — everything written rather than executed: `ideas.md` (backlog), `plugin_list.md`,
+  this file, `cheatsheet-*.md`, and research notes. Only `readme.md` and `CLAUDE.md` live at
+  the root.
 - `.gitignore` — ignores `lazy-lock.json` (the lockfile is **not** committed) and `.DS_Store`.
 
 ## Plugin specs: always `config`, never `keys`/`opts`

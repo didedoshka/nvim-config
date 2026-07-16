@@ -12,16 +12,17 @@ didedoshka's personal, minimalistic Neovim config (Lua, `lazy.nvim`).
 - `plugin/*.lua` — auto-loaded custom features (e.g. `keymaps_to_buffer`). The arcadia-work commands (`:Cs`, `:Prs`, `:Blame`, `:ArcanumLink`, …) live in a separate local plugin, `~/personal/arc-nvim`.
 - `colors/dide.lua`, `lua/lualine/themes/dide.lua` — custom `dide` colorscheme + statusline theme (see below).
 - `snippets/`, `queries/`, `keymap/` — LuaSnip snippets, treesitter queries, russian keymap.
-- `lazy-lock.json` — plugin lockfile (commit changes). `ideas.md`, `cheatsheet.md` — notes.
+- `lazy-lock.json` — plugin lockfile; gitignored, **not** committed.
+- `notes/` — all notes and docs: `ideas.md` (backlog), `plugin_list.md`, `project_organization.md`, `cheatsheet-bracket-and-g.md`, research notes. Only `readme.md` and `CLAUDE.md` stay at the root.
 
-## Conventions (see `project_organization.md`)
+## Conventions (see `notes/project_organization.md`)
 - Plugin specs always use `config = function()`, never `keys`/`opts`.
 - Leader is `<space>`; keymaps use `desc` with the mnemonic letter in parens, e.g. `(u)ndotree`.
 - Indentation: 4 spaces, expandtab.
 - Some keys (`s`, `S`, `x`, `X`, `<C-o>`) are deliberately disabled as "habit" breakers or repurposed (`s` = arrow.nvim).
 
 ## Adding a plugin
-Create `lua/plugins/<name>.lua` returning a lazy spec, then add `require("plugins.<name>")` to the list in `init.lua` — or inline it if it's short. See `plugin_list.md` for the full inventory of installed plugins and what each does.
+Create `lua/plugins/<name>.lua` returning a lazy spec, then add `require("plugins.<name>")` to the list in `init.lua` — or inline it if it's short. See `notes/plugin_list.md` for the full inventory of installed plugins and what each does.
 
 ## `colors/dide.lua` (self-contained custom colorscheme, no plugin)
 - **Highlight groups** — light, low-contrast theme built from one `colors` palette table; `set_groups()` maps it onto base/Treesitter/LSP/plugin groups. Edit colors via the `colors` table, not inline hex.

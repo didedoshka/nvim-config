@@ -9,10 +9,10 @@ My minimalistic config for neovim.
 
 ## Plugins
 
-The full list of installed plugins and what each does is in [plugin_list.md](plugin_list.md). A couple of notes:
+The full list of installed plugins and what each does is in [plugin_list.md](notes/plugin_list.md). A couple of notes:
 - refactoring.nvim (:Refactor)
 - text-case.nvim (:Subs, gas - snake, gac - camel, gad - dash)
 
 Arcadia work inside nvim (codesearch, PRs, tracker issues, blame) lives in its own plugin: `~/personal/arc-nvim`, loaded via a local `dir` spec in `init.lua`.
 
-You can find the list of ideas [here](ideas.md)
+You can find the list of ideas [here](notes/ideas.md)
