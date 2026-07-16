@@ -9,7 +9,7 @@ didedoshka's personal, minimalistic Neovim config (Lua, `lazy.nvim`).
 ## Layout
 - `init.lua` — core options, filetypes, autocmds (autosave on `TextChanged`/`InsertLeave`), global keymaps, and the `lazy.setup{}` plugin list.
 - `lua/plugins/*.lua` — one file per plugin spec; `require("plugins.<name>")` into `init.lua`. Inline specs live directly in `init.lua`.
-- `plugin/*.lua` — auto-loaded custom features (e.g. `arcanum_link`, `keymaps_to_buffer`).
+- `plugin/*.lua` — auto-loaded custom features (e.g. `arcanum_link`, `keymaps_to_buffer`). The arcadia-work commands (`:Cs`, `:Prs`, `:Blame`, …) live in a separate local plugin, `~/personal/arc-nvim`.
 - `colors/dide.lua`, `lua/lualine/themes/dide.lua` — custom `dide` colorscheme + statusline theme (see below).
 - `snippets/`, `queries/`, `keymap/` — LuaSnip snippets, treesitter queries, russian keymap.
 - `lazy-lock.json` — plugin lockfile (commit changes). `ideas.md`, `cheatsheet.md` — notes.

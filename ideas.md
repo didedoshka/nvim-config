@@ -60,56 +60,7 @@ https://www.reddit.com/r/neovim/comments/1gesejh/comment/lucx4zy/?utm_source=sha
 
 
 ## User stories
-### arc and ya make commands are common and long to type, if i had them set up in .brd.lua and could run them with keymaps from vim it would be great
-arc co releases/yt/stable/26.1
-arc co app/build-cache/hot
-arc cherry-pick
-ya make -A -F ...
-ya make -L -F ...
-ya make -A --pytest-args="-rP -vv --log-level=ERROR"
-
-#### Merge to release
-arc co releases/yt/stable/26.1
-arc cherry-pick <commit>
-arc submit -m "[26.1] <Cherry-picked pull-request> name"
-three commands with wait for a no-brain action
-
-### python tests, run and look to logs/stdout
-ya make -A --pytest-args="-rP -vv --log-level=ERROR"
-cd very/long/path/of/directory/with/stdout
-(vim stdout) || (cd TestName/logs; (rg||vim) http-proxy-log.debug.log)
-
-### Can't escape browser
-#### Blame
-reading code in neovim
-want to find blame, :ArcanumLink
-jump to pull request (or look at the code prior to it)
-now i'm reading code in the browser, no easy way to go back to vim
-#### Code search
-same as previous but starts from code search
-##### Solution
-at least searching inside arc/yt should be easy, and whole arcadia should be searchable the same way
-telescope (and now fzf-lua) picker is worse than cs.yandex-team.ru
-- filename is very long
-- window is narrow
-- line doesn't fit
-- lines are not left-aligned
-(these problems are mostly gone now with switch to fzf-lua, though there is no 'whole-arcadia' search in there (as there is for telescope, though it was unusable))
-#### Fixing issues
-Issues are in browser, it's hard to open corresponding codelines in editor
-
-### Работа со списками
-#### Примеры списков
-- все файлы, измененные в пулреквесте
-- список интересных файлов
-- бэктрейс
-- ишьюс
-- дефолтные: греп и rg
-
-#### Функционал
-- jumplist: пользоваться не только C-j и C-k
-- сохранять списки, парсить
-- quickfixlist/fzf-lua: что для чего, unify workflow
+Moved to `~/personal/arc-nvim` (`ideas.md` + `user-stories-plans/` there).
 
 
 ## Keys that can start a layer in normal mode

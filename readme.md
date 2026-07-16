@@ -13,4 +13,6 @@ The full list of installed plugins and what each does is in [plugin_list.md](plu
 - refactoring.nvim (:Refactor)
 - text-case.nvim (:Subs, gas - snake, gac - camel, gad - dash)
 
+Arcadia work inside nvim (codesearch, PRs, tracker issues, blame) lives in its own plugin: `~/personal/arc-nvim`, loaded via a local `dir` spec in `init.lua`.
+
 You can find the list of ideas [here](ideas.md)
