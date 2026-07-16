@@ -80,7 +80,7 @@ return
         )
 
         vim.keymap.set('n', '<leader>h',
-            fzf_lua.live_grep_native,
+            fzf_lua.live_grep,
             { desc = 'grep in files' }
         )
 
