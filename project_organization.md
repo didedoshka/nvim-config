@@ -15,7 +15,6 @@ describes how the config is laid out and the conventions to follow when editing 
 - `lua/plugins/*.lua` — one file per plugin, each returning a `lazy.nvim` spec table, pulled
   into `init.lua` via `require("plugins.<name>")`. Short specs are inlined directly in `init.lua`.
 - `plugin/*.lua` — auto-loaded custom features (no plugin manager involved):
-  - `arcanum_link.lua` — `:ArcanumLink` copies an `a.yandex-team.ru` permalink to the current line.
   - `keymaps_to_buffer.lua` — `<leader>y` dumps `<leader>`/`<bs>` mappings into a scratch buffer.
   - `test_ui.lua` — coroutine/`vim.ui` experiment (`<bs>y`); scratch, not a real feature.
 - `lua/gdb_bt_qf.lua` — module `require`d in `init.lua`; parses a GDB backtrace into the quickfix
@@ -113,6 +112,7 @@ Larger specs get their own `lua/plugins/<name>.lua` and a `require("plugins.<nam
 
 This config assumes an Arcadia checkout at `~/arc` and Yandex tooling:
 - clangd runs as `ya tool clangd`; ruff as `ya tool ruff server`; C++ formatting uses `ads-clang-format`.
-- `arcanum_link.lua` and `gdb_bt_qf.lua` rely on `arc` and `~/arc` paths.
+- `gdb_bt_qf.lua` relies on `arc` and `~/arc` paths; the arcanum link commands
+  (`:ArcanumLink`, `:ArcanumOpen`, …) live in `~/personal/arc-nvim`.
 - Treesitter pulls a local `tree-sitter-yamake` grammar from `~/arc/devtools/ide/tree-sitter-yamake`
   and registers `ya.make` as the `yamake` filetype.
