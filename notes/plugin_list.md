@@ -61,8 +61,8 @@ All plugins managed by `lazy.nvim`, grouped by area. Specs live inline in `init.
 
 | Plugin | Description |
 | --- | --- |
-| `MironPascalCaseFan/debugmaster.nvim` | Debug UI/mode over `nvim-dap` (dep `mfussenegger/nvim-dap`). |
-| `didedoshka/brd` | Build/run/debug helper driving DAP configs (`<leader>i` → `:BrdConfig`; codelldb for C++). |
+| `debugmaster.nvim` | Debug UI/mode over `nvim-dap` (dep `mfussenegger/nvim-dap`). Fork of `MironPascalCaseFan/debugmaster.nvim`, local checkout at `~/personal/debugmaster.nvim`. |
+| `brd` | Build/run/debug helper driving DAP configs (`<leader>i` → `:BrdConfig`; codelldb for C++). Local checkout at `~/personal/brd`. |
 
 ## Notes
 

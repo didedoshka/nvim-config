@@ -30,13 +30,12 @@
 - make fzf-lua more colorful (including preview)
 
 
-## Другое
-- можно ли сделать форматирование с помощью nvim-treesitter
+## TODO
 - подумать про буфер обмена (копировать в регистры, разобраться в какие регистры копируется и как этим нормально пользоваться)
-- https://www.reddit.com/r/neovim/comments/1pqks2r/edit_any_macos_text_field_in_neovim_with_a/
-- статистика использования hotkeys
 - по крону обновлять нужные ya tool, делать симлинки на низлежащий инструмент
 - сделать красивый markdown (см. markview)
+- как открывать ссылку в браузере?
+- fzf-lua grep in current directory/specify directory. :Cs as well
 
 
 ### скрипт/по хрону строить протобуфы и compile_commands.json
@@ -69,6 +68,7 @@ s -- currently arrow
 <Tab> -- currently <C-w>
 x
 <Esc>
+<Cr>
 
 
 ## Thoughts

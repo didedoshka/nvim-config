@@ -16,6 +16,10 @@ describes how the config is laid out and the conventions to follow when editing 
   into `init.lua` via `require("plugins.<name>")`. Short specs are inlined directly in `init.lua`.
 - `plugin/*.lua` — auto-loaded custom features (no plugin manager involved):
   - `keymaps_to_buffer.lua` — `<leader>y` dumps `<leader>`/`<bs>` mappings into a scratch buffer.
+  - `keylog.lua` — counts which keys, mappings and ex commands actually get used, to size
+    keymap decisions off data. Inert unless `~/.local/share/nvim/keylog/` exists; `:KeyReport`
+    tallies it, `rm -rf` on that dir stops it and destroys the data. Ignores insert-mode keys
+    and stores commands by name only, so it never records prose.
   - `test_ui.lua` — coroutine/`vim.ui` experiment (`<bs>y`); scratch, not a real feature.
 - `lua/gdb_bt_qf.lua` — module `require`d in `init.lua`; parses a GDB backtrace into the quickfix
   list. Commands: `:GdbBtQf` (whole buffer), `:GdbBtQfSelection` (visual range). `root` maps GDB's
