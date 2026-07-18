@@ -1,0 +1,26 @@
+#!/bin/sh
+# Attach the surrounding nvim's debugger to a process and hand it a barrier
+# file to release once breakpoints are in.
+#
+# Plugged into yt's gdb_helpers via:
+#   YT_GDB_ATTACH_COMMAND='/home/dagorokhov/.config/nvim/gdb/nvim-dap-attach {pid} {barrier}'
+#
+# $NVIM is set by nvim for any job it starts, so this works when the test runs
+# in a terminal inside the editor.
+set -e
+
+pid=$1
+barrier=$2
+
+if [ -z "$pid" ]; then
+    echo "nvim-dap-attach: usage: $0 <pid> [barrier]" >&2
+    exit 2
+fi
+
+if [ -z "$NVIM" ]; then
+    echo "nvim-dap-attach: no \$NVIM in the environment -- run this from a terminal inside nvim" >&2
+    exit 1
+fi
+
+exec nvim --server "$NVIM" --remote-expr \
+    "luaeval('require(\"yt_gdb\").attach(_A[1], _A[2])', [$pid, '$barrier'])"
