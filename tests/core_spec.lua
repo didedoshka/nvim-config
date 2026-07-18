@@ -47,7 +47,7 @@ test("lualine dide theme has the sections lualine reads", function()
 end)
 
 -- ---------------------------------------------------------- spec conventions
--- notes/project_organization.md: specs always use `config = function()`,
+-- CLAUDE.md: specs always use `config = function()`,
 -- never the declarative `keys`/`opts` fields.
 
 test("plugin specs use config, never keys/opts", function()

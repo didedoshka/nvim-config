@@ -9,7 +9,7 @@ My minimalistic config for neovim.
 
 ## Plugins
 
-The full list of installed plugins and what each does is in [plugin_list.md](notes/plugin_list.md). A couple of notes:
+The full list of installed plugins is the `lazy.setup{}` table in `init.lua`, plus `lua/plugins/`. A couple of notes:
 - refactoring.nvim (:Refactor)
 - text-case.nvim (:Subs, gas - snake, gac - camel, gad - dash)
 
@@ -19,7 +19,6 @@ Arcadia work inside nvim (codesearch, PRs, tracker issues, blame) lives in its o
 
 `./tests/run.sh` — lints the config and loads it headlessly, offline, in about a second. One tier
 runs under `nvim --clean` with no plugins (so it works on a fresh clone); the other loads the real
-`init.lua` and checks what it actually defines, autosave included. See
-[project_organization.md](notes/project_organization.md#testing).
+`init.lua` and checks what it actually defines, autosave included.
 
 You can find the list of ideas [here](notes/ideas.md)
