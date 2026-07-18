@@ -102,7 +102,8 @@ Larger specs get their own `lua/plugins/<name>.lua` and a `require("plugins.<nam
   `lualine` (custom LSP-progress component), `which-key`, `nvim-navic` (`<leader>n`),
   `indent-blankline`, `rainbow-delimiters`, `nvim-colorizer`, `render-markdown`.
 - **Git** — `lazygit.nvim` (`<leader>c`).
-- **Debug** — `debugmaster.nvim` + `nvim-dap` + `brd` (`<leader>i`, codelldb for cpp).
+- **Debug** — `debugmaster.nvim` + `nvim-dap` (codelldb for cpp). `<bs>` toggles debug mode,
+  `<bs>{key}` fires one debug command without entering it (`dm.keys.oneshot`).
 - **Notes** — `zk-nvim` (`<leader>z*`).
 
 ## LSP & formatting
@@ -141,7 +142,7 @@ Larger specs get their own `lua/plugins/<name>.lua` and a `require("plugins.<nam
 - Jump/window keys are remapped: `<C-j>` = jump-forward (`<C-i>`), `<C-k>` = jump-back (`<C-o>`),
   `<tab>` = window prefix (`<C-w>`).
 - Habit-breakers: `s`, `S`, `x`, `X`, `<C-o>` print `"habit"` instead of their default; some are
-  repurposed as layer leaders (`s` = arrow.nvim, `<bs>` = brd).
+  repurposed as layer leaders (`s` = arrow.nvim, `<bs>` = debug).
 - Autosave: buffers `:update` on `TextChanged`/`InsertLeave` (real files only).
 
 ## Environment integration (Yandex / Arcadia)

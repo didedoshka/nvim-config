@@ -1,11 +1,15 @@
 return
 {
-    "MironPascalCaseFan/debugmaster.nvim",
+    -- fork of MironPascalCaseFan/debugmaster.nvim, local checkout
+    dir = vim.fn.expand("~/personal/debugmaster.nvim"),
     dependencies = { "mfussenegger/nvim-dap", },
     config = function()
         local dm = require("debugmaster")
         local dap = require("dap")
-        local brd = require("brd")
+
+        -- Must precede the debugmaster.state require below: loading state
+        -- builds the help panel, which resolves the scheme and freezes it.
+        dm.cfg.keymaps = "gdb"
 
         local state = require("debugmaster.state")
         state.sidepanel.float = true
@@ -14,7 +18,10 @@ return
         dm.plugins.ui_auto_toggle.enabled = false
         dm.plugins.last_config_rerunner.enabled = false
 
-        brd.setup({ debugmaster = true })
+        vim.keymap.set("n", "<bs><bs>", dm.mode.toggle, { desc = "toggle (d)ebug mode" })
+        vim.keymap.set("n", "<Esc>", dm.mode.disable, { desc = "leave debug mode" })
+        -- <bs>{key} fires one debug command without entering the mode.
+        dm.keys.oneshot("<bs>")
 
         vim.fn.sign_define('DapBreakpoint',
             { text = '', texthl = 'DapBreakpoint', linehl = 'DapBreakpointLine', numhl = 'DapBreakpoint' })
@@ -27,45 +34,24 @@ return
         vim.fn.sign_define('DapStopped',
             { text = '󰁔', texthl = 'DapStopped', linehl = 'DapStoppedLine', numhl = 'DapStopped' })
 
-        vim.keymap.set({ "n", "v" }, "<leader>i", "<cmd>BrdConfig<cr>",
-            { desc = "BrdConfig" })
-
         dap.adapters["codelldb"] = {
             type = "executable",
             command = "codelldb",
         }
 
-        brd.dap_configurations["cpp"] = {
-            name = "cpp",
-            type = "codelldb",
-            request = "launch",
-            program = function()
-                return coroutine.create(function(dap_run_co)
-                    coroutine.resume(dap_run_co, brd.get_debug_executable())
-                end)
-            end,
-            cwd = function()
-                return coroutine.create(function(dap_run_co)
-                    coroutine.resume(dap_run_co, brd.get_directory())
-                end)
-            end,
-            stopOnEntry = false,
-            stdio = { "../input.txt", nil, nil }
+        -- brd used to answer "which binary" from a .brd.lua target; until its
+        -- replacement lands, ask.
+        dap.configurations["cpp"] = {
+            {
+                name = "cpp",
+                type = "codelldb",
+                request = "launch",
+                program = function()
+                    return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+                end,
+                cwd = '${workspaceFolder}',
+                stopOnEntry = false,
+            },
         }
-
-        dap.configurations["cpp"] = { brd.dap_configurations["cpp"] }
-
-        -- dap.configurations["cpp"] = {
-        --     {
-        --         name = "cpp",
-        --         type = "codelldb",
-        --         request = "launch",
-        --         program = function()
-        --             return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-        --         end,
-        --         cwd = '${workspaceFolder}',
-        --         stopOnEntry = false,
-        --     },
-        -- }
     end
 }

@@ -63,7 +63,7 @@ Moved to `~/personal/arc-nvim` (`ideas.md` + `user-stories-plans/` there).
 
 
 ## Keys that can start a layer in normal mode
-<BS> -- currently brd
+<BS> -- currently debugmaster (mode toggle + one-shot prefix)
 s -- currently arrow
 <Tab> -- currently <C-w>
 x

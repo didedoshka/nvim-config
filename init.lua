@@ -214,10 +214,6 @@ require("lazy").setup({
 
     require("plugins.lualine"),
 
-    {
-        "didedoshka/brd",
-    },
-
     -- arcadia work inside nvim (:Cs, :Prs, :PrView, :Blame, ...), local checkout
     {
         dir = vim.fn.expand("~/personal/arc-nvim"),
