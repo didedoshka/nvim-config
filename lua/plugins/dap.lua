@@ -34,24 +34,72 @@ return
         vim.fn.sign_define('DapStopped',
             { text = '󰁔', texthl = 'DapStopped', linehl = 'DapStoppedLine', numhl = 'DapStopped' })
 
-        dap.adapters["codelldb"] = {
-            type = "executable",
-            command = "codelldb",
-        }
+        -- gdb >= 14 speaks DAP itself, so no separate adapter binary is needed.
+        -- `ya gdb` cannot be that gdb: its patched 17.1 build segfaults as soon
+        -- as a DAP session runs the inferior (measured with a plain launch, no
+        -- core, arcadia printers disabled -- so it is the build, not the
+        -- python). The system gdb works, and ya gdb's pretty-printers are plain
+        -- python that loads into it, so drive the former and source the latter.
+        local printers = nil -- false once resolved and absent
+
+        local function arc_printers()
+            local out = vim.fn.system({ "ya", "gdb", "--print-path" })
+            if vim.v.shell_error ~= 0 then
+                return false
+            end
+            -- <tool>/bin/gdb -> <tool>/share/gdb/python/arc/__init__.py
+            local py = vim.fn.fnamemodify(vim.trim(out), ":h:h") .. "/share/gdb/python/arc/__init__.py"
+            return vim.uv.fs_stat(py) and py or false
+        end
+
+        dap.adapters["gdb"] = function(callback, _)
+            if printers == nil then
+                printers = arc_printers()
+            end
+            -- ~/.config/gdb/gdbinit turns per-command timing on, which under
+            -- DAP becomes a flood of output events in the console.
+            local args = { "-q", "-ex", "maint set per-command time off" }
+            if printers then
+                vim.list_extend(args, { "-ex", "source " .. printers })
+            end
+            -- Upstream DAP attach takes only pid/target; this adds `core`.
+            vim.list_extend(args, { "-ex", "source " .. vim.fn.stdpath("config") .. "/gdb/dap_core.py" })
+            vim.list_extend(args, { "--interpreter=dap" })
+            callback({ type = "executable", command = "gdb", args = args })
+        end
+
+        local function ask(label, default, kind)
+            return function()
+                return vim.fn.input(label, default or "", kind)
+            end
+        end
 
         -- brd used to answer "which binary" from a .brd.lua target; until its
         -- replacement lands, ask.
         dap.configurations["cpp"] = {
             {
-                name = "cpp",
-                type = "codelldb",
+                name = "gdb: launch binary",
+                type = "gdb",
                 request = "launch",
-                program = function()
-                    return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+                program = ask("Binary: ", vim.fn.getcwd() .. "/", "file"),
+                cwd = "${workspaceFolder}",
+            },
+            {
+                name = "gdb: open core",
+                type = "gdb",
+                request = "attach",
+                program = ask("Binary: ", vim.fn.getcwd() .. "/", "file"),
+                core = ask("Core: ", vim.fn.getcwd() .. "/", "file"),
+            },
+            {
+                name = "gdb: attach pid",
+                type = "gdb",
+                request = "attach",
+                pid = function()
+                    return tonumber(vim.fn.input("PID: "))
                 end,
-                cwd = '${workspaceFolder}',
-                stopOnEntry = false,
             },
         }
+        dap.configurations["c"] = dap.configurations["cpp"]
     end
 }
