@@ -22,6 +22,9 @@ vim.opt.linebreak = true
 
 vim.opt.undofile = true
 
+-- borders on all floats that don't set their own (dap widgets, lsp hover, cmp)
+vim.opt.winborder = "single"
+
 -- set filetypes
 vim.filetype.add({
     extension = { ["keymap"] = "cpp" },
