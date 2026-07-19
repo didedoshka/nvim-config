@@ -67,7 +67,14 @@ return
             -- Upstream DAP attach takes only pid/target; this adds `core`.
             vim.list_extend(args, { "-ex", "source " .. vim.fn.stdpath("config") .. "/gdb/dap_core.py" })
             vim.list_extend(args, { "--interpreter=dap" })
-            callback({ type = "executable", command = "gdb", args = args })
+            -- Sourcing the arc printers blows dap's default 4s initialize
+            -- budget, which triggers a scary "adapter didn't respond" warning.
+            callback({
+                type = "executable",
+                command = "gdb",
+                args = args,
+                options = { initialize_timeout_sec = 60 },
+            })
         end
 
         -- vim.ui.input, not vim.fn.input, so replacing vim.ui.input later
