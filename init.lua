@@ -352,4 +352,8 @@ require("lazy").setup({
         end
     },
 
+}, {
+    -- dev plugins (dev = true in a spec) come from ~/personal when the
+    -- checkout exists, and from github on machines that don't have it
+    dev = { path = "~/personal", fallback = true },
 })

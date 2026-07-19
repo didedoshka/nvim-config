@@ -2,6 +2,16 @@
 
 didedoshka's personal, minimalistic Neovim config (Lua, `lazy.nvim`).
 
+This config is the hub of a coupled stack: sessions rooted here can also work on
+`~/personal/arc-nvim`, `~/personal/debugmaster.nvim` and `~/personal/brd`
+(via `additionalDirectories`).
+Their instructions load with this file; when editing one of them, follow its rules —
+and read its `.claude/skills/verify/SKILL.md` for that repo's verify tiers, since only
+this repo's skills are listed here.
+
+@~/personal/arc-nvim/CLAUDE.md
+@~/personal/debugmaster.nvim/CLAUDE.md
+
 ## Philosophy
 - Keep the vim look and feel; avoid clutter, popups, and noisy UI.
 - Every line must be understandable — prefer small, explicit Lua over abstraction.

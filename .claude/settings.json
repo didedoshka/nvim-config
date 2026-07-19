@@ -6,13 +6,18 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/lua_check.sh"
+                        "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/lua_check_dispatch.sh"
                     }
                 ]
             }
         ]
     },
     "permissions": {
+        "additionalDirectories": [
+            "~/personal/arc-nvim",
+            "~/personal/debugmaster.nvim",
+            "~/personal/brd"
+        ],
         "allow": [
             "Bash(./tests/run.sh)",
             "Bash(./tests/run.sh --quick)",

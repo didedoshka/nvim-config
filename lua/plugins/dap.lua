@@ -1,7 +1,9 @@
 return
 {
-    -- fork of MironPascalCaseFan/debugmaster.nvim, local checkout
-    dir = vim.fn.expand("~/personal/debugmaster.nvim"),
+    -- fork of MironPascalCaseFan/debugmaster.nvim; dev=true picks the
+    -- ~/personal checkout when present, github clone otherwise
+    "didedoshka/debugmaster.nvim",
+    dev = true,
     dependencies = { "mfussenegger/nvim-dap", },
     config = function()
         local dm = require("debugmaster")
