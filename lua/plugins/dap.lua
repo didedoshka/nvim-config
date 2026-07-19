@@ -26,15 +26,15 @@ return
         dm.keys.oneshot("<bs>")
 
         vim.fn.sign_define('DapBreakpoint',
-            { text = '', texthl = 'DapBreakpoint', linehl = 'DapBreakpointLine', numhl = 'DapBreakpoint' })
+            { text = '●', texthl = 'DapBreakpoint', linehl = 'DapBreakpointLine', numhl = 'DapBreakpoint' })
         vim.fn.sign_define('DapBreakpointCondition',
-            { text = 'ﳁ', texthl = 'DapBreakpoint', linehl = 'DapBreakpointLine', numhl = 'DapBreakpoint' })
+            { text = '◆', texthl = 'DapBreakpoint', linehl = 'DapBreakpointLine', numhl = 'DapBreakpoint' })
         vim.fn.sign_define('DapBreakpointRejected',
-            { text = '', texthl = 'DapBreakpoint', linehl = 'DapBreakpointLine', numhl = 'DapBreakpoint' })
+            { text = '○', texthl = 'DapBreakpoint', linehl = 'DapBreakpointLine', numhl = 'DapBreakpoint' })
         vim.fn.sign_define('DapLogPoint',
-            { text = '', texthl = 'DapLogPoint', linehl = 'DapLogPoint', numhl = 'DapLogPoint' })
+            { text = '≡', texthl = 'DapLogPoint', linehl = 'DapLogPoint', numhl = 'DapLogPoint' })
         vim.fn.sign_define('DapStopped',
-            { text = '󰁔', texthl = 'DapStopped', linehl = 'DapStoppedLine', numhl = 'DapStopped' })
+            { text = '→', texthl = 'DapStopped', linehl = 'DapStoppedLine', numhl = 'DapStopped' })
 
         -- gdb >= 14 speaks DAP itself, so no separate adapter binary is needed.
         -- `ya gdb` cannot be that gdb: its patched 17.1 build segfaults as soon

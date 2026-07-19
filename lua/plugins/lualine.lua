@@ -90,6 +90,8 @@ return {
         require("lualine").setup({
             options = {
                 theme = "dide",
+                -- with icons on, the diagnostics symbols default to nerd-font
+                icons_enabled = false,
                 globalstatus = false,
                 component_separators = { left = '', right = '' },
                 section_separators = { left = '', right = '' },
