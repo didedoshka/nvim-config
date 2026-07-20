@@ -17,7 +17,6 @@ return
         state.sidepanel.direction = "below"
 
         dm.plugins.ui_auto_toggle.enabled = false
-        dm.plugins.last_config_rerunner.enabled = false
 
         -- No <bs>{key} one-shots: any mapping under <bs> would make a lone <bs>
         -- wait out timeoutlen before toggling. Sticky mode instead -- cheaper
@@ -66,6 +65,8 @@ return
             end
             -- Upstream DAP attach takes only pid/target; this adds `core`.
             vim.list_extend(args, { "-ex", "source " .. vim.fn.stdpath("config") .. "/gdb/dap_core.py" })
+            -- Uninitialised locals would otherwise hang the variables request.
+            vim.list_extend(args, { "-ex", "source " .. vim.fn.stdpath("config") .. "/gdb/dap_guard.py" })
             vim.list_extend(args, { "--interpreter=dap" })
             -- Sourcing the arc printers blows dap's default 4s initialize
             -- budget, which triggers a scary "adapter didn't respond" warning.
@@ -150,8 +151,9 @@ return
             return coroutine.yield()
         end
 
-        -- brd used to answer "which binary" from a .brd.lua target; until its
-        -- replacement lands, ask.
+        -- The project path is litre: debug("cpp", ...) in a .litre.lua names the
+        -- template registered in plugins/litre.lua. These configs are the
+        -- fallback for projects without one -- they ask.
         dap.configurations["cpp"] = {
             {
                 name = "gdb: launch binary",
