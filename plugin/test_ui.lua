@@ -22,5 +22,3 @@ local function f()
     co.resume(thread)
     -- g(thread)
 end
-
-vim.keymap.set("n", "<bs>y", f)
