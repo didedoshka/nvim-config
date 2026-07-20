@@ -77,6 +77,10 @@ test("custom commands are registered", function()
     eq(vim.fn.exists(":GdbBtQf"), 2, ":GdbBtQf (lua/gdb_bt_qf.lua)")
     eq(vim.fn.exists(":GdbBtQfSelection"), 2, ":GdbBtQfSelection (lua/gdb_bt_qf.lua)")
     eq(vim.fn.exists(":CopyLoc"), 2, ":CopyLoc (plugin/copyloc.lua)")
+    eq(vim.fn.exists(":Litre"), 2, ":Litre (plugins/litre.lua)")
+    -- guarded by native :restart/:connect, both present in this build
+    eq(vim.fn.exists(":Restart"), 2, ":Restart (plugin/server.lua)")
+    eq(vim.fn.exists(":Connect"), 2, ":Connect (plugin/server.lua)")
 end)
 
 -- --------------------------------------------------------------------- lazy
