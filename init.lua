@@ -90,7 +90,7 @@ vim.keymap.set("v", "s", function() print("habit") end, { desc = "" })
 vim.keymap.set("n", "S", function() print("habit") end, { desc = "" })
 vim.keymap.set("v", "S", function() print("habit") end, { desc = "" })
 
-vim.keymap.set("n", "x", function() print("habit") end, { desc = "" })
+-- normal-mode x is the litre task layer now (plugins/litre.lua)
 vim.keymap.set("v", "x", function() print("habit") end, { desc = "" })
 vim.keymap.set("n", "X", function() print("habit") end, { desc = "" })
 vim.keymap.set("v", "X", function() print("habit") end, { desc = "" })
@@ -98,6 +98,14 @@ vim.keymap.set("v", "X", function() print("habit") end, { desc = "" })
 -- running lua
 -- vim.keymap.set("n", "<bs>?", ":.lua<cr>", { desc = "execute current (l)ua code" })
 -- vim.keymap.set("v", "<bs>?", ":lua<cr>", { desc = "execute current (l)ua code" })
+
+-- headless box, no browser: gx (and anything else calling vim.ui.open)
+-- copies the url to the local clipboard through osc52 instead
+---@diagnostic disable-next-line: duplicate-set-field
+vim.ui.open = function(uri)
+    vim.fn.setreg("+", uri)
+    vim.notify("copied: " .. uri)
+end
 
 -- terminal
 vim.keymap.set("t", "<C-e>", "<c-\\><c-n>")
@@ -204,6 +212,16 @@ require("lazy").setup({
 
     require("plugins.dap"),
 
+    -- disk persistence for dap breakpoints; actions.lua in debugmaster's fork
+    -- saves through it when present, see that repo's CLAUDE.md
+    require("plugins.persistent-breakpoints"),
+
+    -- imperative project tasks from .litre.lua files, local checkout
+    require("plugins.litre"),
+
+    -- / and :s with pcre2 via rg, local checkout
+    require("plugins.pcre"),
+
     {
         "catgoose/nvim-colorizer.lua",
         config = function()
@@ -250,9 +268,9 @@ require("lazy").setup({
 
     -- arcadia work inside nvim (:Cs, :Prs, :PrView, :Blame, ...), local checkout
     {
-        dir = vim.fn.expand("~/personal/arc-nvim"),
+        dir = vim.fn.expand("~/personal/arc.nvim"),
         config = function()
-            require("arc-nvim").setup()
+            require("arc").setup()
         end,
     },
 
