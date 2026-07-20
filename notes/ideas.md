@@ -1,67 +1,65 @@
-# Ideas
-## TODO
-- подумать про буфер обмена (копировать в регистры, разобраться в какие регистры копируется и как этим нормально пользоваться)
-- по крону обновлять нужные ya tool, делать симлинки на низлежащий инструмент
-- сделать красивый markdown (см. markview)
-- как открывать ссылку в браузере?
-- fzf-lua grep in current directory/specify directory. :Cs as well
+# Plans, tasks
+S = short-term L = long-term
 
-## debugmaster.nvim/gdb
+## Config
+L fzf-lua grep in current directory/specify directory. :Cs as well
+L commit to no-tmux setup
+    L use terminals inside of nvim better (fzf to open terminal in specified directory, for example)
+    S leave terminal mode on enter
+L read done_todo_19_07.md
+S don't create KeyReport in new tab
+L analyze KeyReport and redo mappings (need to collect more data, one-two weeks)
+L start using litre.nvim
+L restructure
+L enhance render-markdown
+S stop claude introducing conflicting keymaps (and i already have keymaps_to_buffer.lua)
+S in pcre setup, rename ps variable to pcre
+
+
+## PCRE
+### Differences to default search:
+S visual selection AND breakpoint line background
+
+
+## arc-worktree
+L По хрону пуллить hot, запускать regen
+L Переместить из ~/a в отдельную директорию (или в ~/, или в junk)
 
 
 ## Плагины, которые возможно стоит добавить:
-- https://github.com/Wansmer/treesj (or splitjoin.nvim)
-- https://github.com/nvim-treesitter/nvim-treesitter-textobjects
-- https://github.com/JoosepAlviste/nvim-ts-context-commentstring
-- https://github.com/A7Lavinraj/fyler.nvim
-- https://arcanum.yandex-team.ru/arcadia/junk/magnickolas/arcblamer.nvim
-- плагины tpope
-- плагины chrisgrieser
-- подумать, стоит ли заменить render-markdown на markview
-- https://github.com/tiagovla/scope.nvim
-
-
-## BRD
-- посмотреть на альтернативы
-    - https://github.com/tpope/vim-dispatch
-- подумать над редизайном
-    - цепочки команд
-    - установка переменных (флагов итд) и их выбор
+L https://github.com/Wansmer/treesj (or splitjoin.nvim)
+L https://github.com/A7Lavinraj/fyler.nvim
+L плагины tpope
+L плагины chrisgrieser
+L https://github.com/tiagovla/scope.nvim (tab scoping, i don't use tabs)
 
 
 ## didecolors
-- не обрабатывать весь файл при запуске, вим зависает
-- разобраться как работает treesitter highlight в исходниках neovim
-    - для этого установить https://www.reddit.com/r/neovim/comments/1h43mjj/snacksprofiler_a_neovim_lua_profiler/
-- доделать для любой темы, выложить, сделать плагином
-- починить баг, что цвета не обновляются в строках, которые не изменились, но изменили семантику (цветной if, цветной private)
-- https://github.com/nvim-mini/mini.base16/tree/main
-- make fzf-lua more colorful (including preview)
+L не обрабатывать весь файл при запуске, вим зависает
+L разобраться как работает treesitter highlight в исходниках neovim
+L   - для этого установить https://www.reddit.com/r/neovim/comments/1h43mjj/snacksprofiler_a_neovim_lua_profiler/
+L доделать для любой темы, выложить, сделать плагином
+L починить баг, что цвета не обновляются в строках, которые не изменились, но изменили семантику (цветной if, цветной private)
+L https://github.com/nvim-mini/mini.base16/tree/main
+### make things more colorful
+L fzf-lua (including preview)
+L lualine
+L something else?
 
 
-### скрипт/по хрону строить протобуфы и compile_commands.json
-compile_commands.json в a/yt a/util a/library/cpp
-
-### vim-regex is stupid? https://github.com/chrisgrieser/nvim-rip-substitute
-- rewrite it to support pure search, n/N, * (search under cursor)
-- do I need regex syntax highlighting? (and thus a window instead of command line (though jumping between search/replace may be useful))
-https://github.com/google/re2/wiki/Syntax?clckid=4161aae6
-
-### work/personal 
+## work/personal 
 https://www.reddit.com/r/neovim/comments/1gesejh/comment/lucx4zy/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
-- важно что когда лежит сервер ya tool c++ не работает
-- как определять режим? если по имени пользователя/компьютера, то нельзя делиться конфигом в/вне яндекса, нельзя менять
-- ya tool ads-clang-format: перестать опираться на ya, хочется пользоваться даже когда ya лежит
+L важно что когда лежит сервер ya tool c++ не работает
+L как определять режим? если по имени пользователя/компьютера, то нельзя делиться конфигом в/вне яндекса, нельзя менять
+L ya tool ads-clang-format: перестать опираться на ya, хочется пользоваться даже когда ya лежит
 
 
+# Notes
 ## Keys that can start a layer in normal mode
-<BS> -- currently debugmaster (mode toggle + one-shot prefix)
+<BS> -- currently debugmaster
 s -- currently arrow
 <Tab> -- currently <C-w>
-x
+x -- currently litre
 <Esc>
 <Cr>
 
-
-## Thoughts
-Nvim = text editor + tmux + different tuis (like lazygit). Can it be used instead of tmux?
