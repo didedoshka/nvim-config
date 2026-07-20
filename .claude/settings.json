@@ -14,9 +14,10 @@
     },
     "permissions": {
         "additionalDirectories": [
-            "~/personal/arc-nvim",
+            "~/personal/arc.nvim",
             "~/personal/debugmaster.nvim",
-            "~/personal/brd"
+            "~/personal/litre.nvim",
+            "~/personal/pcre.nvim"
         ],
         "allow": [
             "Bash(./tests/run.sh)",

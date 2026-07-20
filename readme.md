@@ -13,7 +13,7 @@ The full list of installed plugins is the `lazy.setup{}` table in `init.lua`, pl
 - refactoring.nvim (:Refactor)
 - text-case.nvim (:Subs, gas - snake, gac - camel, gad - dash)
 
-Arcadia work inside nvim (codesearch, PRs, tracker issues, blame) lives in its own plugin: `~/personal/arc-nvim`, loaded via a local `dir` spec in `init.lua`.
+Arcadia work inside nvim (codesearch, PRs, tracker issues, blame) lives in its own plugin: `~/personal/arc.nvim`, loaded via a local `dir` spec in `init.lua`.
 
 ## Tests
 

@@ -3,13 +3,13 @@
 didedoshka's personal, minimalistic Neovim config (Lua, `lazy.nvim`).
 
 This config is the hub of a coupled stack: sessions rooted here can also work on
-`~/personal/arc-nvim`, `~/personal/debugmaster.nvim` and `~/personal/brd`
-(via `additionalDirectories`).
+`~/personal/arc.nvim`, `~/personal/debugmaster.nvim`, `~/personal/litre.nvim` and
+`~/personal/pcre.nvim` (via `additionalDirectories`).
 Their instructions load with this file; when editing one of them, follow its rules —
 and read its `.claude/skills/verify/SKILL.md` for that repo's verify tiers, since only
 this repo's skills are listed here.
 
-@~/personal/arc-nvim/CLAUDE.md
+@~/personal/arc.nvim/CLAUDE.md
 @~/personal/debugmaster.nvim/CLAUDE.md
 
 ## Philosophy
@@ -65,5 +65,5 @@ this repo's skills are listed here.
 
 ## Environment
 - Arcadia: clangd and ruff run via `ya tool`; the arcadia commands (`:Cs`, `:Prs`, `:Blame`, …)
-  live in a separate local plugin, `~/personal/arc-nvim`.
+  live in a separate local plugin, `~/personal/arc.nvim`.
 - No standalone `lua`/`luajit` on this box — `nvim --clean -l` **is** the Lua runtime for tests.

@@ -83,7 +83,7 @@ didedoshka to run these; don't fire them blind.
 
 ## Never fire just to "test it"
 
-- Anything in `~/personal/arc-nvim` that posts to Arcanum or the tracker
+- Anything in `~/personal/arc.nvim` that posts to Arcanum or the tracker
   (comments, PR actions). Writes to real systems; verify by reading.
 - Searching the arc mount to "check a path resolves" — the global traversal ban
   applies here like everywhere else.
