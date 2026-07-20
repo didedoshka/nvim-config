@@ -7,11 +7,6 @@
 - fzf-lua grep in current directory/specify directory. :Cs as well
 
 ## debugmaster.nvim/gdb
-- Running binary by specifying its full path is tedious: brd is needed
-- don't show dap "the adapter is slow message"
-- <Tab>-prefix doesn't work in debugmaster's panels
-- backtrace (and other windows) have no borders
-- would be nice to dump backtrace to quickfixlist/fzf-lua, like gdb_qf_bt
 
 
 ## Плагины, которые возможно стоит добавить:
@@ -57,7 +52,6 @@ https://www.reddit.com/r/neovim/comments/1gesejh/comment/lucx4zy/?utm_source=sha
 - важно что когда лежит сервер ya tool c++ не работает
 - как определять режим? если по имени пользователя/компьютера, то нельзя делиться конфигом в/вне яндекса, нельзя менять
 - ya tool ads-clang-format: перестать опираться на ya, хочется пользоваться даже когда ya лежит
-
 
 
 ## Keys that can start a layer in normal mode
