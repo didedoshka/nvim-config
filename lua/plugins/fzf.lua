@@ -84,15 +84,15 @@ return
             { desc = 'grep in files' }
         )
 
-        vim.keymap.set('n', '<leader>s', function()
-            local default = vim.fn.expand('%:h')
-            if default == '' then default = '.' end
-            vim.ui.input({ prompt = 'grep dir: ', default = default, completion = 'dir' }, function(dir)
-                if dir and dir ~= '' then
-                    fzf_lua.live_grep({ cwd = dir })
-                end
-            end)
-        end, { desc = '(s)earch in directory' })
+        -- vim.keymap.set('n', '<leader>s', function()
+        --     local default = vim.fn.expand('%:h')
+        --     if default == '' then default = '.' end
+        --     vim.ui.input({ prompt = 'grep dir: ', default = default, completion = 'dir' }, function(dir)
+        --         if dir and dir ~= '' then
+        --             fzf_lua.live_grep({ cwd = dir })
+        --         end
+        --     end)
+        -- end, { desc = '(s)earch in directory' })
 
         vim.keymap.set('n', '<leader>g',
             fzf_lua.grep_curbuf,
