@@ -21,7 +21,11 @@ return
         -- No <bs>{key} one-shots: any mapping under <bs> would make a lone <bs>
         -- wait out timeoutlen before toggling. Sticky mode instead -- cheaper
         -- for a stepping run, one extra <Esc> for a drive-by command.
-        vim.keymap.set("n", "<bs>", dm.mode.toggle, { desc = "toggle (d)ebug mode" })
+        -- Also in visual: selection happens outside the layer (v is nop'd
+        -- inside it), the commands consuming it live inside as visual maps, so
+        -- select -> <bs> -> p needs a visual toggle. The callback runs like
+        -- <Cmd>, so the selection survives it.
+        vim.keymap.set({ "n", "v" }, "<bs>", dm.mode.enable, { desc = "enable debug mode" })
         vim.keymap.set("n", "<Esc>", dm.mode.disable, { desc = "leave debug mode" })
 
         vim.fn.sign_define('DapBreakpoint',
