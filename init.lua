@@ -26,11 +26,23 @@ vim.opt.undofile = true
 vim.opt.winborder = "single"
 
 -- set filetypes
+-- .log files are only claimed as ytlog when the first line has the YTsaurus
+-- shape (<timestamp>\t<level>\t...); zst logs re-detect as .log after gzip.vim
+-- decompresses them, so one sniff covers both.
+local function is_ytlog(_, bufnr)
+    local line = vim.api.nvim_buf_get_lines(bufnr, 0, 1, false)[1]
+    if line and line:match("^%d%d%d%d%-%d%d%-%d%d %d%d:%d%d:%d%d,%d+%s+%a%s+") then
+        return "ytlog"
+    end
+end
+
 vim.filetype.add({
     extension = { ["keymap"] = "cpp" },
     pattern = {
         ['.*.cpp.inc'] = 'cpp',
         ['.*.h.inc'] = 'cpp',
+        ['.*%.log'] = is_ytlog,
+        ['.*%.log%.zst'] = is_ytlog,
     },
 })
 
