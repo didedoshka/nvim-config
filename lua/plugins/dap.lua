@@ -57,6 +57,20 @@ return
             return vim.uv.fs_stat(py) and py or false
         end
 
+        -- Arcadia records source paths under a /-S prefix, so gdb matches the
+        -- editor's absolute paths only through a substitute-path rule -- and the
+        -- rule has to exist before the breakpoints do. ~/.config/gdb/gdbinit
+        -- installs one on the first objfile, which is already too late: nvim-dap
+        -- sends setBreakpoints before the (deferred) launch/attach, so every
+        -- breakpoint is created against a symbol-less gdb and goes pending, and
+        -- nothing re-resolves a pending breakpoint when a rule appears later.
+        -- Measured on a yt test binary: with the rule up front the same pending
+        -- breakpoint binds the moment symbols arrive, without it it never does.
+        local function arc_root()
+            local out = vim.fn.system({ "arc", "root" })
+            return vim.v.shell_error == 0 and vim.trim(out) or nil
+        end
+
         dap.adapters["gdb"] = function(callback, _)
             if printers == nil then
                 printers = arc_printers()
@@ -64,6 +78,12 @@ return
             -- ~/.config/gdb/gdbinit turns per-command timing on, which under
             -- DAP becomes a flood of output events in the console.
             local args = { "-q", "-ex", "maint set per-command time off" }
+            -- Resolved per session, not cached: it follows nvim's cwd, and one
+            -- mount's root is wrong for the next.
+            local root = arc_root()
+            if root then
+                vim.list_extend(args, { "-ex", "set substitute-path /-S " .. root })
+            end
             if printers then
                 vim.list_extend(args, { "-ex", "source " .. printers })
             end
