@@ -5,7 +5,7 @@ S = short-term L = long-term
 L fzf-lua grep in current directory/specify directory. :Cs as well
 L commit to no-tmux setup
     L use terminals inside of nvim better (fzf to open terminal in specified directory, for example)
-    S leave terminal mode on enter
+    S leave terminal mode ~on enter~, on command start
 L read done_todo_19_07.md
 S don't create KeyReport in new tab
 L analyze KeyReport and redo mappings (need to collect more data, one-two weeks)
@@ -14,16 +14,34 @@ L restructure
 L enhance render-markdown
 S stop claude introducing conflicting keymaps (and i already have keymaps_to_buffer.lua)
 S in pcre setup, rename ps variable to pcre
+L improve start time
+
+
+## debugmaster/gdb/dap
+S run zz on next/step
+S if file with breakpoint wasn't open, persistente breakpoint didn't load?
+S `p` is inconcistent with lsp `K`. Only way to close `K` window is to move cursor, only way to close `p` is `q`. Maybe it's fine, because i can't move cursor in debug mode, but i keep pressing `<esc>`
+S `[b/]b` is next/prev buffer, not breakpoint
+S fzf-lua with breakpoints
 
 
 ## PCRE
 ### Differences to default search:
 S visual selection AND breakpoint line background
+### Other
+S show the amount of matches (as default)
+S pasting to / doesn't work
 
 
 ## arc-worktree
 L По хрону пуллить hot, запускать regen
 L Переместить из ~/a в отдельную директорию (или в ~/, или в junk)
+
+
+## litre
+- lsp doesn't work nicely in .litre.lua. Maybe make env/param upper-case, or do `l = require "litre"` in the beginning of .litre.lua files?
+- xx is definetly a bad idea for a picker, xs maybe, or x<cr>
+- which-key doesn't work after x
 
 
 ## Плагины, которые возможно стоит добавить:
