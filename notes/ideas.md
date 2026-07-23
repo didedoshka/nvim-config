@@ -27,10 +27,7 @@ S fzf-lua with breakpoints
 
 ## PCRE
 ### Differences to default search:
-S visual selection AND breakpoint line background
 ### Other
-S show the amount of matches (as default)
-S pasting to / doesn't work
 
 
 ## arc-worktree
@@ -39,9 +36,9 @@ L Переместить из ~/a в отдельную директорию (и
 
 
 ## litre
-- lsp doesn't work nicely in .litre.lua. Maybe make env/param upper-case, or do `l = require "litre"` in the beginning of .litre.lua files?
-- xx is definetly a bad idea for a picker, xs maybe, or x<cr>
-- which-key doesn't work after x
+L lsp doesn't work nicely in .litre.lua. Maybe make env/param upper-case, or do `l = require "litre"` in the beginning of .litre.lua files?
+L xx is definetly a bad idea for a picker, xs maybe, or x<cr>
+L which-key doesn't work after x
 
 
 ## Плагины, которые возможно стоит добавить:
