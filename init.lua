@@ -22,6 +22,9 @@ vim.opt.linebreak = true
 
 vim.opt.undofile = true
 
+-- searching should not move anything until <CR>; pcre.nvim honors this too
+vim.opt.incsearch = false
+
 -- borders on all floats that don't set their own (dap widgets, lsp hover, cmp)
 vim.opt.winborder = "single"
 
