@@ -69,18 +69,37 @@ return
 
         fzf_lua.register_ui_select()
 
+        -- <C-f> inside the picker reopens it in the current buffer's directory,
+        -- keeping the typed query (ported from the old telescope config).
+        -- The buffer dir is captured at launch: inside the action the current
+        -- buffer is no longer the one the picker was opened from.
+        local function with_buffer_dir(picker)
+            return function()
+                local dir = vim.fn.expand('%:h')
+                if dir == '' then dir = '.' end
+                picker({
+                    keymap = { fzf = { ['ctrl-f'] = false } }, -- default is preview-page-down
+                    actions = {
+                        ['ctrl-f'] = function(_, opts)
+                            picker({ cwd = dir, no_ignore = true, query = opts.last_query })
+                        end,
+                    },
+                })
+            end
+        end
+
         vim.keymap.set('n', '<leader>b',
             fzf_lua.buffers,
             { desc = 'look at open (b)uffers' }
         )
 
         vim.keymap.set('n', '<leader>o',
-            fzf_lua.files,
+            with_buffer_dir(fzf_lua.files),
             { desc = '(o)pen file' }
         )
 
         vim.keymap.set('n', '<leader>h',
-            fzf_lua.live_grep,
+            with_buffer_dir(fzf_lua.live_grep),
             { desc = 'grep in files' }
         )
 
