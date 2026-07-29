@@ -15,6 +15,8 @@ L enhance render-markdown
 S stop claude introducing conflicting keymaps (and i already have keymaps_to_buffer.lua)
 S in pcre setup, rename ps variable to pcre
 L improve start time
+S quit visual mode after <leader>f
+L in class definition, go to next methode definition
 
 
 ## debugmaster/gdb/dap
@@ -26,19 +28,37 @@ S fzf-lua with breakpoints
 
 
 ## PCRE
-### Differences to default search:
-### Other
+S why when i press * the search shows \<word\> and not \bword\b
 
 
 ## arc-worktree
 L По хрону пуллить hot, запускать regen
-L Переместить из ~/a в отдельную директорию (или в ~/, или в junk)
+L Переместить scripts из ~/a в отдельную директорию (или в `~/`, или в junk)
+S block until clangd regenerates, tell the progress, tell that it ended/exited with error
+L create a command that allows to change the worktree (`~/a/hot/yt/yt/http` -> ~/a/28581/yt/yt/http)
+S investigate why clangd works poorly (can't find implementation, definition)
 
 
 ## litre
 L lsp doesn't work nicely in .litre.lua. Maybe make env/param upper-case, or do `l = require "litre"` in the beginning of .litre.lua files?
 L xx is definetly a bad idea for a picker, xs maybe, or x<cr>
 L which-key doesn't work after x
+
+
+## arc
+S An issue is a pull request issue, ticket is a ticket. Now tickets are called issues for some reason. Needs to be changed
+L no diff in PR view
+
+### Compare to analogues
+Maybe it's better to fork one of them (or maybe extend if possible (or maybe make a pull request that makes it extensible)) than writing our own thing
+- https://github.com/justinmk/guh.nvim (i like this one because justinmk is nvim's main maintainer)
+- https://github.com/harrisoncramer/gitlab.nvim
+- https://github.com/pwntester/octo.nvim
+- other analogues
+
+### User story
+Task: implement a feature that is similar to another feature
+What I do: press "View blame prior to this change" until i find the pull request that added the feature, saving (havind open) the pull requests that changed it through time
 
 
 ## Плагины, которые возможно стоит добавить:
@@ -56,6 +76,7 @@ L   - для этого установить https://www.reddit.com/r/neovim/com
 L доделать для любой темы, выложить, сделать плагином
 L починить баг, что цвета не обновляются в строках, которые не изменились, но изменили семантику (цветной if, цветной private)
 L https://github.com/nvim-mini/mini.base16/tree/main
+
 ### make things more colorful
 L fzf-lua (including preview)
 L lualine
