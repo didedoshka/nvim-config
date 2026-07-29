@@ -130,7 +130,7 @@ vim.cmd.colorscheme('dide')
 vim.go.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:block-blinkon500-blinkoff500-TermCursor,a:Cursor"
 vim.diagnostic.config({ virtual_text = true })
 
-vim.keymap.set("n", "<leader>m", "<cmd>restart<cr>", { desc = "close buffer" })
+vim.keymap.set("n", "<leader>m", "<cmd>restart<cr>", { desc = "restart nvim" })
 
 require("gdb_bt_qf").setup({})
 
