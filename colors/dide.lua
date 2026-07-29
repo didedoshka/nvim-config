@@ -554,11 +554,20 @@ local function define_hlgroups()
     end
 end
 
+local function colorize_visible(win)
+    local bufnr = vim.api.nvim_win_get_buf(win)
+    if ns[bufnr] == nil then
+        return
+    end
+    colorize(bufnr, vim.fn.line('w0', win) - 1, vim.fn.line('w$', win))
+end
+
 local function start_treesitter_semantic_highlighting(bufnr, lang)
     parsers[bufnr] = vim.treesitter.get_parser(bufnr, lang)
     ns[bufnr] = vim.api.nvim_create_namespace('SemanticHighlighting' .. bufnr)
 
-    colorize(bufnr, 0, -1)
+    -- only the visible range: colorizing the whole file freezes nvim on big buffers
+    colorize_visible(vim.api.nvim_get_current_win())
 
     parsers[bufnr]:register_cbs({
         on_bytes = function(buffer_id, changed_tick, start_row, start_col, byte_offset, old_end_row, old_end_col,
@@ -589,6 +598,17 @@ vim.api.nvim_create_autocmd('FileType', {
     callback = function(args)
         -- print("called from didecolors")colo
         check_and_start_semantic_highlighting(args.match, args.buf)
+    end
+})
+
+vim.api.nvim_create_autocmd('WinScrolled', {
+    group = sh_augroup,
+    callback = function()
+        for win in pairs(vim.v.event) do
+            if win ~= "all" then
+                colorize_visible(tonumber(win))
+            end
+        end
     end
 })
 
