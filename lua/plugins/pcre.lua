@@ -1,21 +1,20 @@
 return {
     dir = vim.fn.expand("~/personal/pcre.nvim"),
     config = function()
-        local ps = require("pcre")
-        ps.setup({
+        local pcre = require("pcre")
+        pcre.setup({
             substitute_abbrev = true, -- :s, :%s, :'<,'>s all mean :S now
         })
-        vim.keymap.set("n", "/", ps.search, { desc = "pcre2 search (/)" })
-        vim.keymap.set("n", "n", ps.next, { desc = "(n)ext match" })
-        vim.keymap.set("n", "N", ps.prev, { desc = "previous match (N)" })
-        -- vim.keymap.set("n", "<leader>p", ps.toggle, { desc = "toggle (p)cre" })
-        -- * and # stay native, but the pcre highlights they replace have to go
-        -- at once -- n/N only notice the handover the next time they run
-        for _, key in ipairs({ "*", "#", "g*", "g#" }) do
-            vim.keymap.set("n", key, function()
-                ps.clear()
-                return key
-            end, { expr = true, desc = "native search for word under cursor" })
-        end
+        vim.keymap.set("n", "/", pcre.search, { desc = "pcre2 search (/)" })
+        vim.keymap.set("n", "n", pcre.next, { desc = "(n)ext match" })
+        vim.keymap.set("n", "N", pcre.prev, { desc = "previous match (N)" })
+        -- the whole search story speaks one regex syntax: * is \bword\b, not \<word\>
+        vim.keymap.set("n", "*", pcre.search_cword, { desc = "pcre2 search word forward (*)" })
+        vim.keymap.set("n", "#", function() pcre.search_cword({ backward = true }) end,
+            { desc = "pcre2 search word backward (#)" })
+        vim.keymap.set("n", "g*", function() pcre.search_cword({ exact = false }) end,
+            { desc = "pcre2 search word forward, partial (g*)" })
+        vim.keymap.set("n", "g#", function() pcre.search_cword({ backward = true, exact = false }) end,
+            { desc = "pcre2 search word backward, partial (g#)" })
     end,
 }
