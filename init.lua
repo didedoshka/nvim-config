@@ -94,9 +94,11 @@ vim.keymap.set("n", "<leader>q", "<cmd>bp<bar>sp<bar>bn<bar>bd<cr>", { desc = "c
 vim.keymap.set("n", "<C-j>", "<C-i>", { desc = "" })
 vim.keymap.set("n", "<C-k>", "<C-o>", { desc = "" })
 vim.keymap.set("n", "<C-o>", function() print("habit") end, { desc = "" })
-vim.keymap.set("n", "<tab>", "<C-w>", { desc = "" })
+vim.keymap.set("n", "m", "<C-w>", { desc = "" })
+vim.keymap.set("n", "gm", "m", { desc = "set mark" })
 
 -- habits
+vim.keymap.set("n", "<tab>", function() print("habit") end, { desc = "" })
 vim.keymap.set("n", "s", function() print("habit") end, { desc = "" })
 vim.keymap.set("v", "s", function() print("habit") end, { desc = "" })
 vim.keymap.set("n", "S", function() print("habit") end, { desc = "" })
