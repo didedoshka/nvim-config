@@ -13,7 +13,6 @@ L start using litre.nvim
 L restructure
 L enhance render-markdown
 S stop claude introducing conflicting keymaps (and i already have keymaps_to_buffer.lua)
-S in pcre setup, rename ps variable to pcre
 L improve start time
 S quit visual mode after <leader>f
 L in class definition, go to next methode definition
@@ -23,12 +22,7 @@ L in class definition, go to next methode definition
 S run zz on next/step
 S if file with breakpoint wasn't open, persistente breakpoint didn't load?
 S `p` is inconcistent with lsp `K`. Only way to close `K` window is to move cursor, only way to close `p` is `q`. Maybe it's fine, because i can't move cursor in debug mode, but i keep pressing `<esc>`
-S `[b/]b` is next/prev buffer, not breakpoint
 S fzf-lua with breakpoints
-
-
-## PCRE
-S why when i press * the search shows \<word\> and not \bword\b
 
 
 ## arc-worktree
