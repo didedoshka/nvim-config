@@ -16,5 +16,13 @@ return {
             { desc = "pcre2 search word forward, partial (g*)" })
         vim.keymap.set("n", "g#", function() pcre.search_cword({ backward = true, exact = false }) end,
             { desc = "pcre2 search word backward, partial (g#)" })
+        -- nvim's default <C-l> clears hlsearch via a <Cmd> mapping the plugin's
+        -- :noh hook cannot observe (no Cmdline events fire) -- chain the clear in
+        vim.keymap.set("n", "<C-l>", function()
+            pcre.clear()
+            vim.cmd.nohlsearch()
+            vim.cmd.diffupdate()
+            vim.cmd.normal({ vim.keycode("<C-l>"), bang = true })
+        end, { desc = "clear search highlights and redraw (<C-l>)" })
     end,
 }
