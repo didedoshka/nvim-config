@@ -3,7 +3,9 @@ return {
     config = function()
         local pcre = require("pcre")
         pcre.setup({
-            substitute_abbrev = true, -- :s, :%s, :'<,'>s all mean :S now
+            -- :s, :%s, :'<,'>s all run :S, swapped invisibly at <CR>; the
+            -- price is a native (not pcre) 'inccommand' preview while typing
+            substitute_abbrev = "enter",
         })
         -- the whole search story speaks one regex syntax, in every mode: the
         -- prompt extends a visual selection and serves as an operator motion
