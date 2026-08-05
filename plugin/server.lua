@@ -28,7 +28,7 @@ end
 -- Hop this UI to another project's server (sockets live where `nv` puts
 -- them) -- the tmux switch-client analogue.
 if vim.fn.exists(":connect") == 2 then
-    vim.api.nvim_create_user_command("Connect", function()
+    local function other_servers()
         local dir = vim.fs.joinpath(vim.fn.stdpath("cache"), "servers")
         local servers = {}
         for name in vim.fs.dir(dir) do
@@ -38,8 +38,19 @@ if vim.fn.exists(":connect") == 2 then
                 table.insert(servers, { path = path, label = (name:gsub("%%", "/")) })
             end
         end
+        return servers
+    end
+
+    -- :connect %-expands its argument, and every socket name contains % --
+    -- fnameescape or the hop dies with E499 (verified live).
+    local function hop(path)
+        vim.cmd("connect " .. vim.fn.fnameescape(path))
+    end
+
+    vim.api.nvim_create_user_command("Connect", function()
+        local servers = other_servers()
         if #servers == 0 then
-            vim.notify("no other servers under " .. dir, vim.log.levels.WARN)
+            vim.notify("no other servers", vim.log.levels.WARN)
             return
         end
         vim.ui.select(servers, {
@@ -49,8 +60,32 @@ if vim.fn.exists(":connect") == 2 then
             end,
         }, function(s)
             if s then
-                vim.cmd.connect(s.path)
+                hop(s.path)
             end
         end)
+    end, {})
+
+    vim.api.nvim_create_user_command("FzfConnect", function()
+        local servers = other_servers()
+        if #servers == 0 then
+            vim.notify("no other servers", vim.log.levels.WARN)
+            return
+        end
+        local by_label = {}
+        local labels = {}
+        for _, s in ipairs(servers) do
+            by_label[s.label] = s.path
+            table.insert(labels, s.label)
+        end
+        require("fzf-lua").fzf_exec(labels, {
+            prompt = "connect> ",
+            actions = {
+                default = function(selected)
+                    if selected[1] then
+                        hop(by_label[selected[1]])
+                    end
+                end,
+            },
+        })
     end, {})
 end

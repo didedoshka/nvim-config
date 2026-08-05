@@ -82,3 +82,21 @@ per-session var ever matters, the attach wrapper can push it before attaching:
   `:Restart` after the session flow proves itself.
 - Not yet done: actually living in it. tmux config untouched; nothing forces
   the migration.
+
+## Implemented 2026-08-06 — home server as the entry point
+
+The `tmux a || tmux` analogue: every connection lands in a server rooted at `~`,
+which acts as the hub — worktree prep happens in a terminal tab there (and so
+survives disconnects, unlike a raw ssh shell), then `nv <dir>` hops onward.
+
+- fish `nvsh` (replaces tmuxsh in iTerm): `ssh <host> -t 'fish -C "nv ~"'`.
+  After `:detach`, `fish -C` leaves an interactive shell on the box.
+- `nv` run inside a `:terminal` (`$NVIM` set) no longer nests a TUI: it starts
+  the target server, then swings the host's UI there with
+  `nvim --server $NVIM --remote-expr "execute('connect <sock>')"` (verified
+  live: the UI count moves from one server to the other).
+- Trap, measured: `:connect` %-expands its argument, and every socket name
+  contains `%` — without `fnameescape` the hop dies with E499. `:Connect` had
+  this bug for every real socket; all paths now go through fnameescape.
+- `:FzfConnect` — fzf_exec picker over the other servers; `:Connect`
+  (vim.ui.select) kept as the plain fallback. No keymaps by design.
