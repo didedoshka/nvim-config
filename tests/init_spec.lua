@@ -51,9 +51,9 @@ end)
 -- ------------------------------------------------------------------- keymaps
 
 test("habit-breaker keys are bound", function()
-    for _, key in ipairs({ "s", "S", "x", "X", "<C-o>" }) do
+    for _, key in ipairs({ "s", "S", "<C-o>" }) do
         for _, mode in ipairs({ "n", "v" }) do
-            -- s/S/x/X are bound in both modes; <C-o> is normal-mode only
+            -- s/S are bound in both modes; <C-o> is normal-mode only
             if not (key == "<C-o>" and mode == "v") then
                 local lhs = vim.api.nvim_replace_termcodes(key, true, false, true)
                 ok(vim.fn.maparg(lhs, mode) ~= "", ("%s not bound in %s mode"):format(key, mode))
@@ -81,6 +81,20 @@ test("custom commands are registered", function()
     -- guarded by native :restart/:connect, both present in this build
     eq(vim.fn.exists(":Restart"), 2, ":Restart (plugin/server.lua)")
     eq(vim.fn.exists(":Connect"), 2, ":Connect (plugin/server.lua)")
+    eq(vim.fn.exists(":Reload"), 2, ":Reload (plugin/reload.lua)")
+end)
+
+test(":Reload re-sources init.lua without duplicating its autocmds", function()
+    -- perturb an option init.lua sets: it coming back proves the re-source
+    -- actually ran rather than failing quietly
+    vim.o.tabstop = 8
+    vim.cmd("Reload")
+    eq(vim.o.tabstop, 4, ":Reload did not re-apply init.lua")
+    vim.cmd("Reload")
+    local autosave = vim.api.nvim_get_autocmds({ group = "init", event = "TextChanged" })
+    eq(#autosave, 1, "autosave autocmd duplicated by :Reload")
+    eq(vim.g.colors_name, "dide")
+    eq(vim.fn.exists(":GdbBtQf"), 2, "gdb_bt_qf did not survive the cache drop")
 end)
 
 -- --------------------------------------------------------------------- lazy

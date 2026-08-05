@@ -69,8 +69,13 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- init.lua's own autocmds live in one augroup, cleared on re-create, so
+-- :Reload (plugin/reload.lua) can re-source this file without duplicating them
+local init_group = vim.api.nvim_create_augroup("init", { clear = true })
+
 -- autocommand for opening typst file
 vim.api.nvim_create_autocmd("FileType", {
+    group = init_group,
     callback = function(args)
         if args['match'] == 'typst' then
             vim.keymap.set('i', '$', '$<C-l>', { remap = true, buffer = args.buf })
@@ -80,6 +85,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- autosaving
 vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
+    group = init_group,
     pattern = { "*.*" },
     callback = function()
         if vim.bo.buftype == "" and vim.bo.modifiable and vim.fn.expand("%") ~= "" and vim.bo.filetype ~= "" then
@@ -94,8 +100,8 @@ vim.keymap.set("n", "<leader>q", "<cmd>bp<bar>sp<bar>bn<bar>bd<cr>", { desc = "c
 vim.keymap.set("n", "<C-j>", "<C-i>", { desc = "" })
 vim.keymap.set("n", "<C-k>", "<C-o>", { desc = "" })
 vim.keymap.set("n", "<C-o>", function() print("habit") end, { desc = "" })
-vim.keymap.set("n", "m", "<C-w>", { desc = "" })
-vim.keymap.set("n", "gm", "m", { desc = "set mark" })
+vim.keymap.set("n", "y", "<C-w>", { desc = "Window commands *CTRL-W*" })
+-- vim.keymap.set("n", "gm", "m", { desc = "set mark" })
 
 -- habits
 vim.keymap.set("n", "<tab>", function() print("habit") end, { desc = "" })
@@ -103,11 +109,6 @@ vim.keymap.set("n", "s", function() print("habit") end, { desc = "" })
 vim.keymap.set("v", "s", function() print("habit") end, { desc = "" })
 vim.keymap.set("n", "S", function() print("habit") end, { desc = "" })
 vim.keymap.set("v", "S", function() print("habit") end, { desc = "" })
-
--- normal-mode x is the litre task layer now (plugins/litre.lua)
-vim.keymap.set("v", "x", function() print("habit") end, { desc = "" })
-vim.keymap.set("n", "X", function() print("habit") end, { desc = "" })
-vim.keymap.set("v", "X", function() print("habit") end, { desc = "" })
 
 -- running lua
 -- vim.keymap.set("n", "<bs>?", ":.lua<cr>", { desc = "execute current (l)ua code" })
@@ -257,6 +258,15 @@ require("lazy").setup({
                     "SemanticHighlightingColor9",
                     "SemanticHighlightingColor6",
                 },
+                condition = function(bufnr)
+                    local max_filesize = 10 * 1024     -- 10 MiB
+                    local ok, stats = pcall(
+                        vim.uv.fs_stat,
+                        vim.api.nvim_buf_get_name(bufnr)
+                    )
+
+                    return not ok or not stats or stats.size <= max_filesize
+                end,
             }
         end
     },
@@ -329,7 +339,7 @@ require("lazy").setup({
                     next_item = "]",
                     prev_item = "["
                 },
-                index_keys = "neailuoy",
+                index_keys = "neaiujolzqyhtrdpkgxfvmcbw", -- aptoshka key_costs asc, right hand first; no 's' (quit shadows it)
             })
         end,
     },

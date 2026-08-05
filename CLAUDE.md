@@ -37,8 +37,8 @@ this repo's skills are listed here.
 - Plugin specs always use `config = function()`, never the declarative `keys`/`opts` fields.
 - Leader is `<space>`; every keymap carries a `desc` with the mnemonic in parens, e.g. `(u)ndotree`.
 - 4 spaces, expandtab.
-- `s`, `S`, `x`, `X`, `<C-o>` deliberately print `"habit"` instead of their default. Not a bug;
-  don't "fix" them. `s` and `<bs>` are layer leaders (arrow.nvim, debug).
+- `s`, `S`, `<C-o>` deliberately print `"habit"` instead of their default. Not a bug;
+  don't "fix" them. `s`, `x` and `<bs>` are layer leaders (arrow.nvim, litre, debug).
 
 ## Verifying
 - Run `./tests/run.sh` after any Lua change — lint + both tiers, offline, ~1s. A `Write|Edit`
