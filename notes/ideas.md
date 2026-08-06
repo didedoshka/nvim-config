@@ -13,7 +13,7 @@ L restructure
 L enhance render-markdown
 L improve start time
 S quit visual mode after <leader>f
-L in class definition, go to next methode definition
+
 
 ## PCRE
 S when search moves the screen didecolors semantic highlighting starts working only after pressing enter
@@ -29,7 +29,6 @@ S fzf-lua with breakpoints
 
 ## arc-worktree
 L По хрону пуллить hot, запускать regen
-L Переместить scripts из ~/a в отдельную директорию (или в `~/`, или в junk)
 S block until clangd regenerates, tell the progress, tell that it ended/exited with error
 L create a command that allows to change the worktree (`~/a/hot/yt/yt/http` -> ~/a/28581/yt/yt/http)
 
