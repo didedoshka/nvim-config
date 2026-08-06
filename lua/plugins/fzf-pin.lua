@@ -5,22 +5,23 @@ return {
     dir = vim.fn.expand("~/personal/fzf-pin.nvim"),
     dependencies = { "ibhagwan/fzf-lua" },
     config = function()
-        local NS = "bookmarks"
+        -- one store file per project (cwd, / encoded as % like nv's sockets):
+        -- each per-project server only ever touches its own pins
+        local function ns()
+            return "bookmarks/" .. vim.fn.getcwd():gsub("/", "%%")
+        end
 
         local function pins()
-            local all = require("fzf-pin.store").load(NS)
-            return all, all[vim.fn.getcwd()] or {}
+            return require("fzf-pin.store").load(ns())
         end
 
         local function save(project)
-            local all = pins()
-            all[vim.fn.getcwd()] = next(project) and project or nil
-            require("fzf-pin.store").save(NS, all)
+            require("fzf-pin.store").save(ns(), project)
         end
 
         local function list()
             local items, pinned = {}, {}
-            local _, project = pins()
+            local project = pins()
             local chars = vim.tbl_keys(project)
             table.sort(chars)
             for _, c in ipairs(chars) do
@@ -56,7 +57,7 @@ return {
                     vim.notify("pins: current buffer has no file", vim.log.levels.WARN)
                     return
                 end
-                local _, project = pins()
+                local project = pins()
                 for c, path in pairs(project) do
                     if path == name then
                         vim.notify("pins: already on " .. c .. " (ctrl-x it to move)",
@@ -70,7 +71,7 @@ return {
             end,
             unpin = function(item)
                 if item.char then
-                    local _, project = pins()
+                    local project = pins()
                     project[item.char] = nil
                     save(project)
                 else
