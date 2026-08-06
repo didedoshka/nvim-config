@@ -32,7 +32,6 @@ L По хрону пуллить hot, запускать regen
 L Переместить scripts из ~/a в отдельную директорию (или в `~/`, или в junk)
 S block until clangd regenerates, tell the progress, tell that it ended/exited with error
 L create a command that allows to change the worktree (`~/a/hot/yt/yt/http` -> ~/a/28581/yt/yt/http)
-S investigate why clangd works poorly (can't find implementation, definition)
 
 
 ## litre

@@ -354,15 +354,15 @@ return
 
                 -- jump to enclosing function / class definition
                 if client.server_capabilities.documentSymbolProvider then
-                    vim.api.nvim_buf_create_user_command(bufnr, "LspEnclosingFunction", function()
+                    vim.api.nvim_buf_create_user_command(bufnr, "GoEnclosingFunction", function()
                         goto_enclosing(method_kinds)
                     end, { desc = "jump to enclosing function/method header" })
-                    vim.api.nvim_buf_create_user_command(bufnr, "LspEnclosingClass", function()
+                    vim.api.nvim_buf_create_user_command(bufnr, "GoEnclosingClass", function()
                         goto_enclosing(class_kinds)
                     end, { desc = "jump to enclosing class/struct header" })
-                    vim.api.nvim_buf_create_user_command(bufnr, "LspScopeUp", goto_scope_up,
+                    vim.api.nvim_buf_create_user_command(bufnr, "GoScopeUp", goto_scope_up,
                         { desc = "walk up the enclosing scope chain" })
-                    vim.api.nvim_buf_create_user_command(bufnr, "LspNextMethod", goto_next_method,
+                    vim.api.nvim_buf_create_user_command(bufnr, "GoNextMethod", goto_next_method,
                         { desc = "in a class, jump to the next method header" })
                 end
 
