@@ -54,13 +54,13 @@ return {
             pin = function(char)
                 local name = vim.api.nvim_buf_get_name(0)
                 if name == "" then
-                    vim.notify("pins: current buffer has no file", vim.log.levels.WARN)
+                    vim.notify("fzf-pin: current buffer has no file", vim.log.levels.WARN)
                     return
                 end
                 local project = pins()
                 for c, path in pairs(project) do
                     if path == name then
-                        vim.notify("pins: already on " .. c .. " (ctrl-x it to move)",
+                        vim.notify("fzf-pin: already on " .. c .. " (ctrl-x it to move)",
                             vim.log.levels.WARN)
                         return
                     end
