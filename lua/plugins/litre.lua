@@ -15,8 +15,8 @@ return {
         })
 
         -- x is the litre layer (the layer-key inventory in notes/ideas.md):
-        -- x<key> runs a map()ped task; xx picker, xv params, xc config,
-        -- xo last output, xr re-run, xk kill
+        -- opens the fzf-pin picker; x<key> runs a map()ped task, xv params,
+        -- xc config, xo last output, xr re-run, xk kill, xi search
         vim.keymap.set("n", "x", function()
             require("litre").layer()
         end, { desc = "litre" })
