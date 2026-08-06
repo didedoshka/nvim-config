@@ -325,27 +325,8 @@ require("lazy").setup({
         end
     },
 
-    {
-        "otavioschwanck/arrow.nvim",
-        config = function()
-            require("arrow").setup({
-                show_icons = false,
-                leader_key = 's',
-                mappings = {
-                    edit = "E",
-                    delete_mode = "D",
-                    clear_all_items = "<BS>",
-                    toggle = "<CR>", -- used as save if separate_save_and_remove is true
-                    open_vertical = "V",
-                    open_horizontal = "H",
-                    quit = "s",
-                    next_item = "]",
-                    prev_item = "["
-                },
-                index_keys = "neaiujolzqyhtrdpkgxfvmcbw", -- aptoshka key_costs asc, right hand first; no 's' (quit shadows it)
-            })
-        end,
-    },
+    -- files pinned to chars + open buffers on `s`, local checkout (arrow's successor)
+    require("plugins.fzf-pin"),
 
     {
         'MeanderingProgrammer/render-markdown.nvim',
