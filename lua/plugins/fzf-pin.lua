@@ -46,7 +46,7 @@ return {
         end
 
         local source = {
-            prompt = "pins> ",
+            prompt = "buffers> ",
             list = list,
             activate = function(item)
                 vim.cmd.edit(vim.fn.fnameescape(item.data))

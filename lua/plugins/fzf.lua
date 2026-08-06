@@ -107,11 +107,6 @@ return
             end
         end
 
-        vim.keymap.set('n', '<leader>b',
-            fzf_lua.buffers,
-            { desc = 'look at open (b)uffers' }
-        )
-
         vim.keymap.set('n', '<leader>o',
             with_buffer_dir(fzf_lua.files),
             { desc = '(o)pen file' }
