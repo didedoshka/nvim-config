@@ -5,8 +5,7 @@ S = short-term L = long-term
 L commit to no-tmux setup
     L use terminals inside of nvim better (fzf to open terminal in specified directory, for example)
     S leave terminal mode ~on enter~, on command start
-L read done_todo_19_07.md
-S don't create KeyReport in new tab
+L разобраться с `Обновление ya tools по крону + симлинки` notes/cron_ya_tool.md
 L analyze KeyReport and redo mappings (need to collect more data, one-two weeks)
 L start using litre.nvim
 L restructure
@@ -15,8 +14,6 @@ L improve start time
 
 
 ## PCRE
-S when search moves the screen didecolors semantic highlighting starts working only after pressing enter
-S insert mode breaks if inserted the matching stirng
 
 
 ## debugmaster/gdb/dap
@@ -28,7 +25,6 @@ S fzf-lua with breakpoints
 
 ## arc-worktree
 L По хрону пуллить hot, запускать regen
-S block until clangd regenerates, tell the progress, tell that it ended/exited with error
 L create a command that allows to change the worktree (`~/a/hot/yt/yt/http` -> ~/a/28581/yt/yt/http)
 
 
@@ -39,7 +35,7 @@ L which-key doesn't work after x
 
 
 ## arc
-S An issue is a pull request issue, ticket is a ticket. Now tickets are called issues for some reason. Needs to be changed
+S An issue is a pull request issue, ticket is a ticket. Currently tickets are called issues for some reason. Needs to be changed
 L no diff in PR view
 
 ### Compare to analogues
@@ -85,10 +81,9 @@ L ya tool ads-clang-format: перестать опираться на ya, хо�
 
 # Notes
 ## Keys that can start a layer in normal mode
-<BS> -- currently debugmaster
-s -- currently arrow
-<Tab> -- currently <C-w>
-x -- currently litre
+<BS> -- debugmaster
+s -- arrow
+x -- litre
 <Esc>
-<Cr>
+<Cr> -- no-tmux
 
