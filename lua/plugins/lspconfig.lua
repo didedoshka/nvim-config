@@ -8,10 +8,6 @@ return
     },
 
     config = function()
-        vim.keymap.set("n", "<leader>lh", function() vim.cmd("checkhealth vim.lsp") end, { desc = "(l)sp (h)ealth" })
-        vim.keymap.set("n", "<leader>le", function() vim.cmd("lsp enable") end, { desc = "(l)sp (e)nable" })
-        vim.keymap.set("n", "<leader>ld", function() vim.cmd("lsp disable") end, { desc = "(l)sp (d)isable" })
-
         local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
         function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
             opts = opts or {}
