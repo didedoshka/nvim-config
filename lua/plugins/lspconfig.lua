@@ -215,6 +215,60 @@ return
             vim.api.nvim_win_set_cursor(0, { p.line + 1, p.character })
         end
 
+        -- from inside a class, jump to the header of the next method below the cursor
+        local class_kinds = {
+            [SK.Class] = true, [SK.Struct] = true, [SK.Interface] = true, [SK.Enum] = true,
+        }
+        local method_kinds = { [SK.Method] = true, [SK.Function] = true, [SK.Constructor] = true }
+        local function goto_next_method()
+            local params = { textDocument = vim.lsp.util.make_text_document_params(0) }
+            local res = vim.lsp.buf_request_sync(0, "textDocument/documentSymbol", params, 1000)
+            if not res then return end
+
+            local cur = vim.api.nvim_win_get_cursor(0)
+            local row, col = cur[1] - 1, cur[2]
+            local function contains(r)
+                if row < r.start.line or row > r["end"].line then return false end
+                if row == r.start.line and col < r.start.character then return false end
+                if row == r["end"].line and col > r["end"].character then return false end
+                return true
+            end
+
+            local class -- innermost enclosing class-like symbol
+            local function walk(syms)
+                for _, s in ipairs(syms or {}) do
+                    local r = s.range or (s.location and s.location.range)
+                    if r and contains(r) then
+                        if class_kinds[s.kind] then class = s end
+                        walk(s.children)
+                    end
+                end
+            end
+            for _, r in pairs(res) do walk(r.result) end
+            if not class then
+                vim.notify("not inside a class", vim.log.levels.INFO)
+                return
+            end
+
+            local next_p
+            for _, s in ipairs(class.children or {}) do
+                if method_kinds[s.kind] then
+                    local p = (s.selectionRange or s.range).start
+                    if (p.line > row or (p.line == row and p.character > col))
+                        and (not next_p or p.line < next_p.line
+                            or (p.line == next_p.line and p.character < next_p.character)) then
+                        next_p = p
+                    end
+                end
+            end
+            if not next_p then
+                vim.notify("no method below the cursor", vim.log.levels.INFO)
+                return
+            end
+            vim.cmd("normal! m'")
+            vim.api.nvim_win_set_cursor(0, { next_p.line + 1, next_p.character })
+        end
+
         -- walk up the enclosing scope chain: innermost first, then one level up per press
         local scope_kinds = {
             [SK.Function] = true, [SK.Method] = true, [SK.Constructor] = true,
@@ -300,13 +354,16 @@ return
 
                 -- jump to enclosing function / class definition
                 if client.server_capabilities.documentSymbolProvider then
-                    vim.keymap.set("n", "[f", function()
-                        goto_enclosing({ [SK.Function] = true, [SK.Method] = true, [SK.Constructor] = true })
-                    end, { buffer = bufnr, desc = "enclosing (f)unction" })
-                    vim.keymap.set("n", "[c", function()
-                        goto_enclosing({ [SK.Class] = true, [SK.Struct] = true, [SK.Interface] = true, [SK.Enum] = true })
-                    end, { buffer = bufnr, desc = "enclosing (c)lass" })
-                    vim.keymap.set("n", "go", goto_scope_up, { buffer = bufnr, desc = "(g)o to enclosing scope/(o)ut" })
+                    vim.api.nvim_buf_create_user_command(bufnr, "LspEnclosingFunction", function()
+                        goto_enclosing(method_kinds)
+                    end, { desc = "jump to enclosing function/method header" })
+                    vim.api.nvim_buf_create_user_command(bufnr, "LspEnclosingClass", function()
+                        goto_enclosing(class_kinds)
+                    end, { desc = "jump to enclosing class/struct header" })
+                    vim.api.nvim_buf_create_user_command(bufnr, "LspScopeUp", goto_scope_up,
+                        { desc = "walk up the enclosing scope chain" })
+                    vim.api.nvim_buf_create_user_command(bufnr, "LspNextMethod", goto_next_method,
+                        { desc = "in a class, jump to the next method header" })
                 end
 
                 -- basic keymaps
