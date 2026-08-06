@@ -1,7 +1,7 @@
 return {
     dir = vim.fn.expand("~/personal/no-tmux.nvim"),
     config = function()
-        require("nv").setup()
+        require("no-tmux").setup()
 
         -- <CR> is the server layer (the layer-key inventory in notes/ideas.md):
         -- pinned chars hop, a free char pins the current server, i searches
