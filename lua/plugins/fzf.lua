@@ -65,6 +65,25 @@ return
             grep = {
                 multiline = 1,
             },
+            -- ctrl-q dumps every result to a new quickfix list, from any picker.
+            -- [1] = true keeps the default actions: without it this table
+            -- replaces them wholesale (config.lua build_bind_tables).
+            actions = {
+                files = {
+                    [1] = true,
+                    ["ctrl-q"] = {
+                        fn = require("fzf-lua.actions").file_sel_to_qf,
+                        prefix = "select-all+accept",
+                    },
+                },
+                buffers = {
+                    [1] = true,
+                    ["ctrl-q"] = {
+                        fn = require("fzf-lua.actions").buf_sel_to_qf,
+                        prefix = "select-all+accept",
+                    },
+                },
+            },
         })
 
         fzf_lua.register_ui_select()
