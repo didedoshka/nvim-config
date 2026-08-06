@@ -36,6 +36,9 @@ this repo's skills are listed here.
 ## Conventions
 - Plugin specs always use `config = function()`, never the declarative `keys`/`opts` fields.
 - Leader is `<space>`; every keymap carries a `desc` with the mnemonic in parens, e.g. `(u)ndotree`.
+  Before binding a key, check what already holds it:
+  `nvim --headless -u init.lua -l tests/keymap_dump.lua '<leader>g'`. Global maps only —
+  buffer-local ones (LspAttach, the layer modes) don't exist at startup, so it can't list them.
 - 4 spaces, expandtab.
 - `s`, `S`, `<C-o>` deliberately print `"habit"` instead of their default. Not a bug;
   don't "fix" them. `s`, `x` and `<bs>` are layer leaders (arrow.nvim, litre, debug).
