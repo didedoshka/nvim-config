@@ -237,6 +237,14 @@ require("lazy").setup({
     -- / and :s with pcre2 via rg, local checkout
     require("plugins.pcre"),
 
+    -- nvim-as-tmux: per-project servers, :Connect hops, quitguard; local checkout
+    {
+        dir = vim.fn.expand("~/personal/nv.nvim"),
+        config = function()
+            require("nv").setup()
+        end,
+    },
+
     {
         "catgoose/nvim-colorizer.lua",
         config = function()
