@@ -604,10 +604,22 @@ vim.api.nvim_create_autocmd('FileType', {
 vim.api.nvim_create_autocmd('WinScrolled', {
     group = sh_augroup,
     callback = function()
-        for win in pairs(vim.v.event) do
-            if win ~= "all" then
-                colorize_visible(tonumber(win))
+        local scrolled = false
+        for key in pairs(vim.v.event) do
+            local win = tonumber(key) -- "all", and any foreign key, is not one
+            if win and vim.api.nvim_win_is_valid(win) then
+                scrolled = true
+                colorize_visible(win)
             end
+        end
+        -- A synthesised WinScrolled has no window list: nvim_exec_autocmds
+        -- cannot fill v:event, which then still holds the dict of whatever
+        -- event we are nested in (measured: cmdtype/cmdlevel from
+        -- CmdlineChanged -- tonumber() of those used to raise here). pcre.nvim
+        -- fires one while the "/" prompt scrolls the view, where nvim fires
+        -- none of its own.
+        if not scrolled then
+            colorize_visible(vim.api.nvim_get_current_win())
         end
     end
 })
