@@ -391,7 +391,12 @@ return
                     { buffer = args.buf, desc = "code (a)ction" })
                 vim.keymap.set('n', 'gr', require('fzf-lua').lsp_references, opts)
                 vim.keymap.set({ 'n', 'v' }, '<leader>f', function()
+                    -- format() snapshots the visual range before it sends the async request,
+                    -- so dropping out of visual mode right after is safe
                     vim.lsp.buf.format { async = true }
+                    if vim.fn.mode():match("^[vV\22]") then
+                        vim.cmd("normal! \27")
+                    end
                 end, { buffer = args.buf, desc = "(f)ormat" })
             end,
         })

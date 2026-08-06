@@ -12,7 +12,6 @@ L start using litre.nvim
 L restructure
 L enhance render-markdown
 L improve start time
-S quit visual mode after <leader>f
 
 
 ## PCRE
