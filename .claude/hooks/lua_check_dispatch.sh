@@ -24,8 +24,8 @@ case "$file_path" in
         hook="$HOME/personal/debugmaster.nvim/.claude/hooks/lua-check.sh" ;;
     "$HOME"/personal/litre.nvim/*)
         hook="$HOME/personal/litre.nvim/.claude/hooks/lua-check.sh" ;;
-    "$HOME"/personal/nv.nvim/*)
-        hook="$HOME/personal/nv.nvim/.claude/hooks/lua-check.sh" ;;
+    "$HOME"/personal/no-tmux.nvim/*)
+        hook="$HOME/personal/no-tmux.nvim/.claude/hooks/lua-check.sh" ;;
     *)
         hook="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lua_check.sh" ;;
 esac

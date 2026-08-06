@@ -4,7 +4,7 @@ didedoshka's personal, minimalistic Neovim config (Lua, `lazy.nvim`).
 
 This config is the hub of a coupled stack: sessions rooted here can also work on
 `~/personal/arc.nvim`, `~/personal/debugmaster.nvim`, `~/personal/litre.nvim`,
-`~/personal/nv.nvim` and `~/personal/pcre.nvim` (via `additionalDirectories`).
+`~/personal/no-tmux.nvim` and `~/personal/pcre.nvim` (via `additionalDirectories`).
 Their instructions load with this file; when editing one of them, follow its rules —
 and read its `.claude/skills/verify/SKILL.md` for that repo's verify tiers, since only
 this repo's skills are listed here.

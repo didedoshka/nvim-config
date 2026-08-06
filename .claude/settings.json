@@ -17,7 +17,7 @@
             "~/personal/arc.nvim",
             "~/personal/debugmaster.nvim",
             "~/personal/litre.nvim",
-            "~/personal/nv.nvim",
+            "~/personal/no-tmux.nvim",
             "~/personal/pcre.nvim"
         ],
         "allow": [

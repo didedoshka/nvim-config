@@ -19,6 +19,6 @@ return {
         -- xo last output, xr re-run, xk kill
         vim.keymap.set("n", "x", function()
             require("litre").layer()
-        end, { desc = "litre task la(x)er" })
+        end, { desc = "litre" })
     end,
 }
