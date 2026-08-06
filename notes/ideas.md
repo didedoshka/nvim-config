@@ -2,7 +2,6 @@
 S = short-term L = long-term
 
 ## Config
-L fzf-lua grep in current directory/specify directory. :Cs as well
 L commit to no-tmux setup
     L use terminals inside of nvim better (fzf to open terminal in specified directory, for example)
     S leave terminal mode ~on enter~, on command start
@@ -12,10 +11,13 @@ L analyze KeyReport and redo mappings (need to collect more data, one-two weeks)
 L start using litre.nvim
 L restructure
 L enhance render-markdown
-S stop claude introducing conflicting keymaps (and i already have keymaps_to_buffer.lua)
 L improve start time
 S quit visual mode after <leader>f
 L in class definition, go to next methode definition
+
+## PCRE
+S when search moves the screen didecolors semantic highlighting starts working only after pressing enter
+S insert mode breaks if inserted the matching stirng
 
 
 ## debugmaster/gdb/dap
@@ -64,7 +66,7 @@ L https://github.com/tiagovla/scope.nvim (tab scoping, i don't use tabs)
 
 
 ## didecolors
-L не обрабатывать весь файл при запуске, вим зависает
+S большие файлы все еще долго открываются, возможно из-за rainbow delimeters
 L разобраться как работает treesitter highlight в исходниках neovim
 L   - для этого установить https://www.reddit.com/r/neovim/comments/1h43mjj/snacksprofiler_a_neovim_lua_profiler/
 L доделать для любой темы, выложить, сделать плагином
