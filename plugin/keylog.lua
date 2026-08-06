@@ -168,12 +168,13 @@ local function report()
         lines = { "no data recorded yet" }
     end
 
-    vim.cmd("tabnew")
-    local buf = vim.api.nvim_get_current_buf()
+    -- show it in the current window; <C-^> goes back to what was there
+    local buf = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
     vim.bo[buf].buftype = "nofile"
     vim.bo[buf].bufhidden = "wipe"
     vim.bo[buf].modifiable = false
+    vim.api.nvim_win_set_buf(0, buf)
 end
 
 vim.api.nvim_create_user_command("KeyReport", report, { desc = "show recorded key/command usage" })
