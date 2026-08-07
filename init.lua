@@ -179,6 +179,9 @@ require("lazy").setup({
     -- lazygit
     require("plugins.lazygit"),
 
+    -- nvim launched inside :terminal opens in this instance instead of nesting
+    require("plugins.flatten"),
+
     {
         "folke/which-key.nvim",
         config = function()
