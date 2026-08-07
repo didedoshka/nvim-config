@@ -35,8 +35,18 @@ return {
             for _, b in ipairs(vim.api.nvim_list_bufs()) do
                 local name = vim.api.nvim_buf_get_name(b)
                 if vim.bo[b].buflisted and name ~= "" and not pinned[name] then
+                    local label
+                    if vim.bo[b].buftype == "terminal" then
+                        -- term:// names differ only by the pid; the title (fish keeps
+                        -- it at "[user] <command> <cwd>") actually tells them apart.
+                        -- The bufnr keeps labels unique for the picker's display map.
+                        local title = vim.b[b].term_title or ""
+                        label = ("term %d: %s"):format(b, title ~= "" and title or name)
+                    else
+                        label = vim.fn.fnamemodify(name, ":~:.")
+                    end
                     table.insert(items, {
-                        label = vim.fn.fnamemodify(name, ":~:."),
+                        label = label,
                         data = name,
                         buf = b,
                     })
