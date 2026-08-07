@@ -83,6 +83,15 @@ vim.api.nvim_create_autocmd("FileType", {
     end
 })
 
+-- terminals default to nonumber (:h terminal-config); re-enable for jumps in output
+vim.api.nvim_create_autocmd("TermOpen", {
+    group = init_group,
+    callback = function()
+        vim.wo.number = true
+        vim.wo.relativenumber = true
+    end,
+})
+
 -- autosaving
 vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
     group = init_group,
