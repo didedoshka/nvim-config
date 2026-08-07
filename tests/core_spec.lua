@@ -136,6 +136,19 @@ end)
 
 -- ------------------------------------------------------------- plugin/ features
 
+-- the copyloc tests go through the + register, which needs a clipboard
+-- provider -- absent on a headless box (no $DISPLAY, no xclip). A fake
+-- in-memory provider keeps the tier offline; must be set before the first
+-- + access, since providers initialize once (:h g:clipboard).
+local clip = {}
+vim.g.clipboard = {
+    name = "spec-fake",
+    copy = { ["+"] = function(lines) clip["+"] = lines end,
+        ["*"] = function(lines) clip["*"] = lines end },
+    paste = { ["+"] = function() return clip["+"] or {} end,
+        ["*"] = function() return clip["*"] or {} end },
+}
+
 test("copyloc yanks path:line and path:line1-line2", function()
     vim.cmd.source(root .. "/plugin/copyloc.lua")
     eq(vim.fn.exists(":CopyLoc"), 2, ":CopyLoc not registered")
