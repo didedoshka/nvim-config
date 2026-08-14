@@ -89,7 +89,6 @@ return {
                     -- same as fzf-lua's buffers picker
                     vim.api.nvim_buf_delete(item.buf, {})
                 end
-                return true
             end,
         }
 
