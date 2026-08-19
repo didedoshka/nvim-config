@@ -22,6 +22,8 @@ case "$file_path" in
         hook="$HOME/personal/arc.nvim/.claude/hooks/lua-check.sh" ;;
     "$HOME"/personal/debugmaster.nvim/*)
         hook="$HOME/personal/debugmaster.nvim/.claude/hooks/lua-check.sh" ;;
+    "$HOME"/personal/fzf-pin.nvim/*)
+        hook="$HOME/personal/fzf-pin.nvim/.claude/hooks/lua-check.sh" ;;
     "$HOME"/personal/litre.nvim/*)
         hook="$HOME/personal/litre.nvim/.claude/hooks/lua-check.sh" ;;
     "$HOME"/personal/no-tmux.nvim/*)

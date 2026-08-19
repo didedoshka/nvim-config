@@ -81,6 +81,23 @@ didedoshka to run these; don't fire them blind.
 - **`:GdbBtQf`** — the suite covers parsing with `arc root` stubbed. The real
   path resolution needs an actual arc checkout.
 
+## Driving the real config in a pty (semi-live, no human)
+
+Some interactive behaviour (modes, pickers, terminal buffers) can be verified without
+real eyes: run the real config under `jobstart{pty = true}` from a headless driver nvim,
+send keys with `chansend`, and inspect state over RPC (`--listen` + `sockconnect`).
+Four traps, all measured here:
+
+- **flatten.nvim hijacks nested nvim.** The inner instance sees `$NVIM` from the driver
+  and forwards to it instead of starting. Launch via `env -u NVIM -u NVIM_LISTEN_ADDRESS`.
+- **Unix socket paths cap at ~107 chars.** A `--listen` socket under the session
+  scratchpad silently never appears; `sockconnect` then hangs on the stale path. Put the
+  socket somewhere short.
+- **Startup lands in a no-tmux terminal, mode `t`.** Keys sent naively go to that shell.
+  Open a file first (`nvim_command "stopinsert | edit …"`) before sending keys.
+- **Keys can outrun async UI.** `xt` sent as one chunk fires the layer key before fzf
+  has listed entries ("nothing on t"); pause between chord and key.
+
 ## Never fire just to "test it"
 
 - Anything in `~/personal/arc.nvim` that posts to Arcanum or the tracker
