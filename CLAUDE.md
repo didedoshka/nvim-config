@@ -34,7 +34,7 @@ tiers, since only this repo's skills are listed here.
 - Plugin specs always use `config = function()`, never the declarative `keys`/`opts` fields.
 - Leader is `<space>`; every keymap carries a `desc` with the mnemonic in parens, e.g. `(u)ndotree`.
   Before binding a key, check what already holds it:
-  `nvim --headless -u init.lua -l tests/keymap_dump.lua '<leader>g'`. It covers global maps and
+  `env -u NVIM nvim --headless -u init.lua -l tests/keymap_dump.lua '<leader>g'`. It covers global maps and
   the LspAttach ones (marked `buf`), but not maps that live inside a layer mode.
 - 4 spaces, expandtab.
 - `s`, `S`, `<C-o>` deliberately print `"habit"` instead of their default. Not a bug;
@@ -46,7 +46,11 @@ tiers, since only this repo's skills are listed here.
 - Commit each verified change without asking (`area: lowercase summary`). Never rewrite
   history — no amend, rebase, or reset past a commit; fix forward with a new commit,
   so nothing is ever lost.
-- Three traps, all measured in this repo:
+- Four traps, all measured in this repo:
+  - **`$NVIM` in the environment turns any `nvim -u init.lua` into a no-op.** From a terminal inside
+    Neovim, flatten.nvim sees `$NVIM`, hands the process to the host and exits 0 without a byte of
+    output — so a headless check or an `-l` script silently runs nothing. `env -u NVIM` in front
+    of every such command; `tests/run.sh` already does it for the init tier.
   - **`nvim` exits 0 even when `init.lua` throws** — the traceback only reaches stderr. Never
     verify an init.lua change by exit code alone.
   - **`lua-language-server` does not catch cross-module breakage.** Renaming `gdb_bt_qf`'s

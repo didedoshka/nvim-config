@@ -55,7 +55,10 @@ else
     # nvim exits 0 even when init.lua raises -- the traceback only goes to
     # stderr. So the exit code alone cannot prove init.lua loaded cleanly:
     # treat any stderr output as a failure too.
-    if ! nvim --headless -u init.lua -l tests/init_spec.lua 2>"$TMP/init.err"; then
+    # Run from a terminal inside nvim, $NVIM is set and flatten.nvim hands the
+    # whole process to the host, which exits 0 with no output at all -- the
+    # spec never runs and this tier passes vacuously (measured). Drop it.
+    if ! env -u NVIM nvim --headless -u init.lua -l tests/init_spec.lua 2>"$TMP/init.err"; then
         fail "tests/init_spec.lua"
     fi
     if [[ -s "$TMP/init.err" ]]; then
