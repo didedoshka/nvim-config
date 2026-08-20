@@ -18,6 +18,8 @@ vim.opt.clipboard = "unnamed,unnamedplus"
 -- set wrap and max text width
 vim.opt.wrap = false
 vim.opt.linebreak = true
+-- vertical screens: zt alone puts the line at the very top, keep some context above it
+vim.opt.scrolloff = 5
 -- vim.opt.colorcolumn = "120"
 
 vim.opt.undofile = true

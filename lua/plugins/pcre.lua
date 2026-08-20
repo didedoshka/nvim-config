@@ -12,8 +12,18 @@ return {
         vim.keymap.set({ "n", "x", "o" }, "/", pcre.search, { desc = "pcre2 search (/)" })
         vim.keymap.set({ "n", "x", "o" }, "?", function() pcre.search({ backward = true }) end,
             { desc = "pcre2 search backward (?)" })
-        vim.keymap.set({ "n", "x", "o" }, "n", pcre.next, { desc = "(n)ext match" })
-        vim.keymap.set({ "n", "x", "o" }, "N", pcre.prev, { desc = "previous match (N)" })
+        -- vertical screens: the middle is low, so every match is shown near the
+        -- top instead (zt honours 'scrolloff'); not as an operator motion
+        vim.keymap.set({ "n", "x" }, "n", function()
+            pcre.next()
+            vim.cmd.normal({ "zt", bang = true })
+        end, { desc = "(n)ext match, scrolled to top" })
+        vim.keymap.set({ "n", "x" }, "N", function()
+            pcre.prev()
+            vim.cmd.normal({ "zt", bang = true })
+        end, { desc = "previous match (N), scrolled to top" })
+        vim.keymap.set("o", "n", pcre.next, { desc = "(n)ext match" })
+        vim.keymap.set("o", "N", pcre.prev, { desc = "previous match (N)" })
         vim.keymap.set({ "n", "x", "o" }, "gn", function() pcre.select_match() end,
             { desc = "select (n)ext match (gn)" })
         vim.keymap.set({ "n", "x", "o" }, "gN", function() pcre.select_match({ backward = true }) end,
