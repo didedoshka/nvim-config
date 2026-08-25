@@ -7,10 +7,5 @@ return
         vim.keymap.set("n", "<leader>w", "<cmd>Oil<cr>",
             { desc = "(w)orking file tree" }
         )
-
-        -- tree for project directory. <leader> project
-        vim.keymap.set("n", "<leader>t", "<cmd>Oil " .. vim.fn.getcwd() .. "<cr>",
-            { desc = "(p)roject tree" }
-        )
     end
 }

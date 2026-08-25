@@ -127,10 +127,6 @@ return
         --     end)
         -- end, { desc = '(s)earch in directory' })
 
-        vim.keymap.set('n', '<leader>g',
-            fzf_lua.grep_curbuf,
-            { desc = '(g)rep current buffer' }
-        )
 
         vim.keymap.set('n', '<leader>p',
             fzf_lua.helptags,

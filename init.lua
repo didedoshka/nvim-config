@@ -233,9 +233,6 @@ require("lazy").setup({
                     },
                 },
             })
-            vim.keymap.set("n", "<leader>?", function()
-                require("which-key").show({ global = false })
-            end, { desc = "buffer-local mappings" })
         end,
     },
 
@@ -276,7 +273,7 @@ require("lazy").setup({
                     "SemanticHighlightingColor6",
                 },
                 condition = function(bufnr)
-                    local max_filesize = 10 * 1024     -- 10 MiB
+                    local max_filesize = 1024 * 1024 -- 1 MiB
                     local ok, stats = pcall(
                         vim.uv.fs_stat,
                         vim.api.nvim_buf_get_name(bufnr)
@@ -292,9 +289,6 @@ require("lazy").setup({
         "zk-org/zk-nvim",
         config = function()
             require("zk").setup()
-            vim.keymap.set("n", "<leader>zn", "<cmd>ZkNew<cr>", { desc = "(z)k (n)ew" })
-            vim.keymap.set("n", "<leader>zi", "<cmd>ZkInsertLink<cr>", { desc = "(z)k (i)nsert" })
-            vim.keymap.set("n", "<leader>zb", "<cmd>ZkBacklinks<cr>", { desc = "(z)k (b)acklinks" })
         end
     },
 
@@ -405,23 +399,8 @@ require("lazy").setup({
     },
 
     {
-        "chrisgrieser/nvim-rip-substitute",
-        config = function()
-            require("rip-substitute").setup()
-
-            vim.keymap.set(
-                { "n", "x" },
-                "<leader>rs",
-                function() require("rip-substitute").sub() end,
-                { desc = "rip substitute" }
-            )
-        end,
-    },
-
-    {
         "mbbill/undotree",
         config = function()
-            vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<cr>", { desc = "(u)ndotree" })
             vim.g.undotree_WindowLayout = 2
         end
     },
