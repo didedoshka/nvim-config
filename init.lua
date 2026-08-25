@@ -112,6 +112,7 @@ vim.keymap.set("n", "<C-j>", "<C-i>", { desc = "" })
 vim.keymap.set("n", "<C-k>", "<C-o>", { desc = "" })
 vim.keymap.set("n", "<C-o>", function() print("habit") end, { desc = "" })
 vim.keymap.set("n", "y", "<C-w>", { desc = "Window commands *CTRL-W*" })
+vim.keymap.set("n", "<leader>t", "<cmd>terminal<cr>", { desc = "(t)erminal" })
 -- vim.keymap.set("n", "gm", "m", { desc = "set mark" })
 
 -- habits
@@ -306,6 +307,13 @@ require("lazy").setup({
         dir = vim.fn.expand("~/personal/arc.nvim"),
         config = function()
             require("arc").setup()
+            -- the next letter is the same thing on the PR instead of the checkout
+            vim.keymap.set("n", "<leader>ab", "<cmd>ArcBlame<cr>", { desc = "(a)rc (b)lame" })
+            vim.keymap.set("n", "<leader>ac", "<cmd>ArcPrBlame<cr>", { desc = "(a)rc PR blame" })
+            vim.keymap.set("n", "<leader>ad", "<cmd>ArcDiff<cr>", { desc = "(a)rc (d)iff" })
+            vim.keymap.set("n", "<leader>ae", "<cmd>ArcPrDiff<cr>", { desc = "(a)rc PR diff" })
+            vim.keymap.set("n", "<leader>al", "<cmd>ArcLinkCreate<cr>", { desc = "(a)rc (l)ink" })
+            vim.keymap.set("n", "<leader>ap", "<cmd>ArcPrView<cr>", { desc = "(a)rc (p)r view" })
         end,
     },
 
