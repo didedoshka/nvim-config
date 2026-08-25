@@ -33,8 +33,8 @@ Gardé malgré 1 usage : `<C-l>` de pcre, qui efface les surlignages pcre avant 
 | `:ArcPrView` | 1 | `<Space>ap` |
 
 Règle du préfixe `<Space>a` : la lettre suivante fait la même chose sur la PR au lieu du
-checkout (`ab`/`ac`, `ad`/`ae`). Dans arc.nvim, `:ArcBlamePr` a été renommé `:ArcPrBlame` pour que
-toutes les commandes PR commencent par `ArcPr`.
+checkout (`ab`/`ac`, `ad`/`ae`). Dans arc.nvim, `:ArcBlamePr` a été renommé `:ArcPrBlame`
+pour que toutes les commandes PR commencent par `ArcPr`.
 
 Restées en commandes, trop rares : `:Diff`, `:ArcFzfPrFiles` (12), `:ArcFzfDirty`, `:ArcPrIssues`,
 `:ArcLinkOpen`, `:ArcBlameLine`, `:ArcFzfCs`, `:Pcre` (23), `:Restart` (30, `<Space>m` fait pareil).
