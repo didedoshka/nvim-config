@@ -43,19 +43,8 @@ return
         -- `ya gdb` cannot be that gdb: its patched 17.1 build segfaults as soon
         -- as a DAP session runs the inferior (measured with a plain launch, no
         -- core, arcadia printers disabled -- so it is the build, not the
-        -- python). The system gdb works, and ya gdb's pretty-printers are plain
-        -- python that loads into it, so drive the former and source the latter.
-        local printers = nil -- false once resolved and absent
-
-        local function arc_printers()
-            local out = vim.fn.system({ "ya", "gdb", "--print-path" })
-            if vim.v.shell_error ~= 0 then
-                return false
-            end
-            -- <tool>/bin/gdb -> <tool>/share/gdb/python/arc/__init__.py
-            local py = vim.fn.fnamemodify(vim.trim(out), ":h:h") .. "/share/gdb/python/arc/__init__.py"
-            return vim.uv.fs_stat(py) and py or false
-        end
+        -- python). The system gdb works, and ~/.config/gdb/gdbinit sources the
+        -- arcadia pretty-printers (devtools/gdb from the hot mount) into it.
 
         -- Arcadia records source paths under a /-S prefix, so gdb matches the
         -- editor's absolute paths only through a substitute-path rule -- and the
@@ -72,9 +61,6 @@ return
         end
 
         dap.adapters["gdb"] = function(callback, _)
-            if printers == nil then
-                printers = arc_printers()
-            end
             -- ~/.config/gdb/gdbinit turns per-command timing on, which under
             -- DAP becomes a flood of output events in the console.
             local args = { "-q", "-ex", "maint set per-command time off" }
@@ -84,16 +70,17 @@ return
             if root then
                 vim.list_extend(args, { "-ex", "set substitute-path /-S " .. root })
             end
-            if printers then
-                vim.list_extend(args, { "-ex", "source " .. printers })
-            end
             -- Upstream DAP attach takes only pid/target; this adds `core`.
             vim.list_extend(args, { "-ex", "source " .. vim.fn.stdpath("config") .. "/gdb/dap_core.py" })
             -- Uninitialised locals would otherwise hang the variables request.
             vim.list_extend(args, { "-ex", "source " .. vim.fn.stdpath("config") .. "/gdb/dap_guard.py" })
+            -- Serves this gdb to Claude Code over MCP (127.0.0.1:3333) for the
+            -- session's lifetime; nothing to start by hand.
+            vim.list_extend(args, { "-ex", "source " .. vim.fn.stdpath("config") .. "/gdb/mcp.py" })
             vim.list_extend(args, { "--interpreter=dap" })
-            -- Sourcing the arc printers blows dap's default 4s initialize
-            -- budget, which triggers a scary "adapter didn't respond" warning.
+            -- Sourcing the arc printers (from gdbinit) blows dap's default 4s
+            -- initialize budget, which triggers a scary "adapter didn't respond"
+            -- warning.
             callback({
                 type = "executable",
                 command = "gdb",
