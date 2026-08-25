@@ -2,7 +2,7 @@
 # Semi-live check of gdb/mcp.py: a real nvim (this config) in a tmux pane runs a
 # DAP session on a small C++ program, and an MCP client talks to the gdb behind
 # it. Asserts both directions: what the client reads matches the program, and
-# a `next` sent over MCP moves nvim's frame. Needs gdb >= 14, g++, tmux, and
+# a `next` sent over MCP moves nvim's frame. Needs gdb >= 14, clang++, tmux, and
 # the venv from gdb/mcp-venv.sh. Not part of run.sh (~15s, real processes).
 #
 #   tests/mcp_live.sh
@@ -28,7 +28,7 @@ fail() {
     printf '  FAIL  %s\n' "$1"
 }
 
-for tool in gdb g++ tmux; do
+for tool in gdb clang++ tmux; do
     command -v "$tool" >/dev/null || { echo "mcp_live: SKIPPED ($tool not on PATH)"; exit 0; }
 done
 [[ -x "$VENV/bin/python" ]] || { echo "mcp_live: SKIPPED (no venv; run gdb/mcp-venv.sh)"; exit 0; }
@@ -50,7 +50,7 @@ int main() {
     return total(values) == 320 ? 0 : 1;
 }
 CPP
-g++ -g -O0 -o "$TMP/main" "$TMP/main.cpp" || { fail "g++"; exit 1; }
+clang++ -g -O0 -o "$TMP/main" "$TMP/main.cpp" || { fail "clang++"; exit 1; }
 
 # --- nvim in a pty, driven over RPC ----------------------------------------
 # env -u NVIM: from a terminal inside nvim, flatten.nvim would hand this
