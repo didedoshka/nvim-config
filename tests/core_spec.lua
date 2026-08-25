@@ -175,10 +175,15 @@ test("copyloc refuses a nameless buffer", function()
     eq(vim.fn.getreg("+"), "untouched", "should not have yanked anything")
 end)
 
-test("keymaps_to_buffer maps <leader>y", function()
+test("copyloc maps <leader>y", function()
     vim.g.mapleader = " "
-    vim.cmd.source(root .. "/plugin/keymaps_to_buffer.lua")
+    vim.cmd.source(root .. "/plugin/copyloc.lua")
     ok(vim.fn.maparg(" y", "n") ~= "", "<leader>y not mapped")
+end)
+
+test("keymaps_to_buffer registers :Keymaps", function()
+    vim.cmd.source(root .. "/plugin/keymaps_to_buffer.lua")
+    eq(vim.fn.exists(":Keymaps"), 2, ":Keymaps not registered")
 end)
 
 -- ------------------------------------------------------------- colorscheme
