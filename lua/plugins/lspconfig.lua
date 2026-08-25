@@ -387,8 +387,16 @@ return
                 -- end, opts)
                 -- vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
                 vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, { buffer = args.buf, desc = "(r)ename" })
-                vim.keymap.set({ 'n', 'v' }, '<leader>a', vim.lsp.buf.code_action,
-                    { buffer = args.buf, desc = "code (a)ction" })
+                vim.api.nvim_create_user_command("CodeAction", function(o)
+                    if o.range > 0 then
+                        vim.lsp.buf.code_action({ range = {
+                            start = { o.line1, 0 },
+                            ["end"] = { o.line2, 0 },
+                        } })
+                    else
+                        vim.lsp.buf.code_action()
+                    end
+                end, { range = true, desc = "lsp code action, buffer-local" })
                 vim.keymap.set('n', 'gr', require('fzf-lua').lsp_references, opts)
                 vim.keymap.set({ 'n', 'v' }, '<leader>f', function()
                     -- format() snapshots the visual range before it sends the async request,
