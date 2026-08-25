@@ -1,4 +1,4 @@
-vim.keymap.set("n", "<leader>y", function ()
+vim.api.nvim_create_user_command("Keymaps", function()
     local buf = vim.api.nvim_create_buf(false, false)
     local result_leader = vim.api.nvim_exec2("nmap <leader>", {output = true})
     local result_backspace = vim.api.nvim_exec2("nmap <bs>", {output = true})
@@ -11,5 +11,5 @@ vim.keymap.set("n", "<leader>y", function ()
     vim.cmd("%s/^\\n/")
     vim.cmd("sort")
     vim.cmd.noh()
-end, {desc = "output keymaps to a buffer"})
+end, { desc = "output keymaps to a buffer" })
 

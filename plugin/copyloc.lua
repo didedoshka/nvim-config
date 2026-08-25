@@ -19,3 +19,5 @@ vim.api.nvim_create_user_command("CopyLoc", function(o)
     vim.fn.setreg("+", loc)
     vim.notify(loc)
 end, { range = true, desc = "copy absolute path:line to clipboard" })
+
+vim.keymap.set({ "n", "x" }, "<leader>y", ":CopyLoc<cr>", { desc = "(y)ank path:line" })
