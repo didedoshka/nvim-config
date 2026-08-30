@@ -71,6 +71,16 @@ test("jump and window keys are remapped", function()
     ok(mapped("<Tab>"), "<Tab> (window prefix) not mapped")
 end)
 
+test("range-taking keymaps are also bound in visual mode", function()
+    for _, key in ipairs({ "<leader>y", "<leader>al" }) do
+        local lhs = vim.api.nvim_replace_termcodes(key, true, false, true)
+        local rhs = vim.fn.maparg(lhs, "x")
+        ok(rhs ~= "", key .. " not bound in visual mode")
+        -- `:` (not <cmd>) so the '<,'> range reaches the command
+        ok(rhs:sub(1, 1) == ":", key .. " visual map must start with `:` to pass the range")
+    end
+end)
+
 -- ------------------------------------------------------------------ commands
 
 test("custom commands are registered", function()

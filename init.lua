@@ -312,7 +312,8 @@ require("lazy").setup({
             vim.keymap.set("n", "<leader>ac", "<cmd>ArcPrBlame<cr>", { desc = "(a)rc PR blame" })
             vim.keymap.set("n", "<leader>ad", "<cmd>ArcDiff<cr>", { desc = "(a)rc (d)iff" })
             vim.keymap.set("n", "<leader>ae", "<cmd>ArcPrDiff<cr>", { desc = "(a)rc PR diff" })
-            vim.keymap.set("n", "<leader>al", "<cmd>ArcLinkCreate<cr>", { desc = "(a)rc (l)ink" })
+            -- `:` not <cmd>: in visual mode it carries the selection as the range (#L2-4)
+            vim.keymap.set({ "n", "x" }, "<leader>al", ":ArcLinkCreate<cr>", { desc = "(a)rc (l)ink" })
             vim.keymap.set("n", "<leader>ap", "<cmd>ArcPrView<cr>", { desc = "(a)rc (p)r view" })
         end,
     },
