@@ -22,6 +22,9 @@ vim.opt.linebreak = true
 vim.opt.scrolloff = 5
 -- vim.opt.colorcolumn = "120"
 
+-- highlight the line of the cursor in every window
+vim.opt.cursorline = true
+
 vim.opt.undofile = true
 
 -- borders on all floats that don't set their own (dap widgets, lsp hover, cmp)

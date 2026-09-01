@@ -16,7 +16,8 @@ return
                 -- preview_border = "Normal",
                 -- preview_title  = "Normal",
                 -- cursor         = "Normal",
-                -- cursorline     = "Normal",
+                -- editor CursorLine is subtle; the picker's selected line keeps the old loud look
+                cursorline     = "CurSearch",
                 -- cursorlinenr   = "Normal",
                 -- search         = "Normal",
                 -- scrollborder_e = "Normal",
