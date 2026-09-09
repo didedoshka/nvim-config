@@ -67,6 +67,9 @@ return
                 multiline = 1,
             },
             -- ctrl-q dumps every result to a new quickfix list, from any picker.
+            -- The prefix must not contain "accept": fzf-lua runs the action through
+            -- execute-silent, and accept would close fzf before it ran (measured:
+            -- "unsupported action: <first entry>", empty quickfix).
             -- [1] = true keeps the default actions: without it this table
             -- replaces them wholesale (config.lua build_bind_tables).
             actions = {
@@ -74,14 +77,14 @@ return
                     [1] = true,
                     ["ctrl-q"] = {
                         fn = require("fzf-lua.actions").file_sel_to_qf,
-                        prefix = "select-all+accept",
+                        prefix = "select-all",
                     },
                 },
                 buffers = {
                     [1] = true,
                     ["ctrl-q"] = {
                         fn = require("fzf-lua.actions").buf_sel_to_qf,
-                        prefix = "select-all+accept",
+                        prefix = "select-all",
                     },
                 },
             },
