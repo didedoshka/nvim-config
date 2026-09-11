@@ -372,8 +372,8 @@ return
                 vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
                 vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
                 -- vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, opts)
-                vim.keymap.set("n", "<leader>j", vim.diagnostic.setqflist,
-                    { buffer = args.buf, desc = "diagnostics to quickfixlist" })
+                vim.keymap.set("n", "<leader>j", require('fzf-lua').diagnostics_workspace,
+                    { buffer = args.buf, desc = "diagnostics in fzf (ctrl-q for quickfix)" })
                 vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
                 -- route jumps through fzf-lua (like gr) so they never clobber the quickfix list
                 vim.keymap.set('n', 'gd', require('fzf-lua').lsp_definitions, opts)
