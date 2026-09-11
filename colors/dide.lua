@@ -47,8 +47,8 @@ local colors = {
     vcs_modified = '#478ACC',
     vcs_removed = '#FF7383',
 
-    vcs_added_bg = '#E0E7CD',
-    vcs_removed_bg = '#F9EBE4',
+    vcs_added_bg = '#E4F8E0',
+    vcs_removed_bg = '#FCE8E7',
 
     fg_idle = '#8A9199',
     warning = '#FA8D3E',
