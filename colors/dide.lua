@@ -552,6 +552,13 @@ local function define_hlgroups()
     for i, color in ipairs(semantic_highlighting_colors) do
         vim.api.nvim_set_hl(0, 'SemanticHighlightingColor' .. (i - 1), { fg = color })
     end
+    -- markdown headings cycle through the same colours as rainbow-delimiters (init.lua)
+    local heading_colors = { 1, 11, 9, 6 }
+    for level = 1, 6 do
+        local n = heading_colors[(level - 1) % #heading_colors + 1]
+        vim.api.nvim_set_hl(0, '@markup.heading.' .. level,
+            { fg = semantic_highlighting_colors[n + 1], bold = true })
+    end
 end
 
 local function colorize_visible(win)

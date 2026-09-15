@@ -358,8 +358,14 @@ require("lazy").setup({
                 sign = { enabled = false },
 
                 heading = {
-                    icons = {}, -- Disables heading icons (like 󰲡, 󰲣)
-                    signs = {}, -- Disables the heading indicators in the gutter
+                    -- '#'s are concealed and nothing is inlined in their place; an
+                    -- empty `icons` would leave the '#'s visible instead.
+                    icons = { '' },
+                    position = 'inline',
+                    signs = {},
+                    -- no line background: colour and bold come from
+                    -- @markup.heading.N in colors/dide.lua
+                    backgrounds = {},
                 },
 
                 bullet = {
