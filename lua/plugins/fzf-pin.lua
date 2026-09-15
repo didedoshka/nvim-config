@@ -1,6 +1,7 @@
 -- Bookmarks on `s`: files pinned to single chars, then the open buffers,
 -- through fzf-pin's picker. Pins are per-project (cwd) and survive restarts;
--- a free char pins the current file, ctrl-x unpins a pin or deletes a buffer.
+-- a free char pins the current file, ctrl-x unpins a pin or deletes a buffer
+-- (a terminal only after a confirm naming what its shell runs).
 return {
     dir = vim.fn.expand("~/personal/fzf-pin.nvim"),
     dependencies = { "ibhagwan/fzf-lua" },
@@ -86,6 +87,20 @@ return {
                     local project = pins()
                     project[item.char] = nil
                     save(project)
+                elseif vim.bo[item.buf].buftype == "terminal" then
+                    -- a shell is a running job, so a plain delete is E89: ask
+                    -- first, naming what the shell runs, then kill. confirm()
+                    -- works from inside the reload action -- the prompt draws
+                    -- under the picker and the list reloads after the answer
+                    -- (measured under a pty)
+                    local running = require("no-tmux.quitguard").running(item.buf)
+                    local msg = "kill " .. item.label .. "?"
+                    if #running > 0 then
+                        msg = msg .. "\nrunning: " .. table.concat(running, ", ")
+                    end
+                    if vim.fn.confirm(msg, "&kill\n&cancel", 2) == 1 then
+                        vim.api.nvim_buf_delete(item.buf, { force = true })
+                    end
                 else
                     -- unpinned entries are plain open buffers: ctrl-x closes,
                     -- same as fzf-lua's buffers picker
