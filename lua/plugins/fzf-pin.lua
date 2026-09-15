@@ -98,7 +98,8 @@ return {
                     if #running > 0 then
                         msg = msg .. "\nrunning: " .. table.concat(running, ", ")
                     end
-                    if vim.fn.confirm(msg, "&kill\n&cancel", 2) == 1 then
+                    -- kill is the default so enter confirms; esc answers 0, cancel
+                    if vim.fn.confirm(msg, "&kill\n&cancel", 1) == 1 then
                         vim.api.nvim_buf_delete(item.buf, { force = true })
                     end
                 else
