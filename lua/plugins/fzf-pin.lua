@@ -89,15 +89,13 @@ return {
                     save(project)
                 elseif vim.bo[item.buf].buftype == "terminal" then
                     -- a shell is a running job, so a plain delete is E89: ask
-                    -- first, naming what the shell runs, then kill. confirm()
-                    -- works from inside the reload action -- the prompt draws
-                    -- under the picker and the list reloads after the answer
-                    -- (measured under a pty)
-                    local running = require("no-tmux.quitguard").running(item.buf)
-                    local msg = "kill " .. item.label .. "?"
-                    if #running > 0 then
-                        msg = msg .. "\nrunning: " .. table.concat(running, ", ")
-                    end
+                    -- first (quitguard.describe: cwd, commands, screen), then
+                    -- kill. confirm() works from inside the reload action --
+                    -- the prompt draws under the picker and the list reloads
+                    -- after the answer (measured under a pty)
+                    local lines = require("no-tmux.quitguard").describe(item.buf)
+                    lines[1] = "kill " .. lines[1] .. "?"
+                    local msg = table.concat(lines, "\n")
                     -- kill is the default so enter confirms; esc answers 0, cancel
                     if vim.fn.confirm(msg, "&kill\n&cancel", 1) == 1 then
                         vim.api.nvim_buf_delete(item.buf, { force = true })
