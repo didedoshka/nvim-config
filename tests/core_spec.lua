@@ -186,6 +186,51 @@ test("keymaps_to_buffer registers :Keymaps", function()
     eq(vim.fn.exists(":Keymaps"), 2, ":Keymaps not registered")
 end)
 
+-- --------------------------------------------------------------- workspace
+
+-- Required before any cd: `root` is relative when the spec is run as
+-- `nvim -l tests/core_spec.lua`, so the rtp entry only resolves from there.
+local workspace = require("workspace")
+
+-- Runs fn with the cwd inside a fresh temp tree (dir .. "/sub" exists), then
+-- restores the cwd whatever happened, since later tests glob from `root`.
+local function in_tmp_tree(fn)
+    local dir = vim.fn.tempname()
+    vim.fn.mkdir(dir .. "/sub", "p")
+    local before = vim.fn.getcwd()
+    vim.cmd.cd(dir .. "/sub")
+    local passed, err = pcall(fn, vim.uv.fs_realpath(dir))
+    vim.cmd.cd(before)
+    vim.fn.delete(dir, "rf")
+    if not passed then error(err, 0) end
+end
+
+test("workspace.find walks up from the cwd and skips blanks and comments", function()
+    in_tmp_tree(function(dir)
+        vim.fn.writefile({ "# usual set", "", "yt/yt", "  library/cpp  " }, dir .. "/.workspace")
+        eq(workspace.find(), { root = dir, dirs = { "yt/yt", "library/cpp" } })
+    end)
+end)
+
+test("workspace.find is nil without a .workspace", function()
+    in_tmp_tree(function()
+        eq(workspace.find(), nil)
+    end)
+end)
+
+test("workspace.relative strips the root, falls back to ~ and cwd", function()
+    local relative = workspace.relative
+    local ws = { root = "/r", dirs = {} }
+    eq(relative(ws, "/r/yt/yt/a.cpp"), "yt/yt/a.cpp")
+    eq(relative(ws, "/rx/a.cpp"), vim.fn.fnamemodify("/rx/a.cpp", ":~:."), "prefix must end at /")
+    eq(relative(nil, "/r/a.cpp"), vim.fn.fnamemodify("/r/a.cpp", ":~:."))
+end)
+
+test("workspace registers :Workspace", function()
+    vim.cmd.source(root .. "/plugin/workspace.lua")
+    eq(vim.fn.exists(":Workspace"), 2, ":Workspace not registered")
+end)
+
 -- ------------------------------------------------------------- colorscheme
 
 test("dide colorscheme applies", function()

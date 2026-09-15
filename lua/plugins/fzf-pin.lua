@@ -21,13 +21,15 @@ return {
 
         local function list()
             local items, pinned = {}, {}
+            -- labels read like <leader>o entries: relative to the .workspace root
+            local ws = require("workspace").find()
             local project = pins()
             local chars = vim.tbl_keys(project)
             table.sort(chars)
             for _, c in ipairs(chars) do
                 pinned[project[c]] = true
                 table.insert(items, {
-                    label = vim.fn.fnamemodify(project[c], ":~:."),
+                    label = require("workspace").relative(ws, project[c]),
                     char = c,
                     data = project[c],
                 })
@@ -43,7 +45,7 @@ return {
                         local title = vim.b[b].term_title or ""
                         label = ("term %d: %s"):format(b, title ~= "" and title or name)
                     else
-                        label = vim.fn.fnamemodify(name, ":~:.")
+                        label = require("workspace").relative(ws, name)
                     end
                     table.insert(items, {
                         label = label,

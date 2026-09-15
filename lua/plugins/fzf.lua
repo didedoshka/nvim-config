@@ -92,6 +92,8 @@ return
 
         fzf_lua.register_ui_select()
 
+        -- With a .workspace (lua/workspace.lua) the picker searches its directories
+        -- from its root instead of the cwd; entries then read yt/yt/..., library/cpp/...
         -- <C-f> inside the picker reopens it in the current buffer's directory,
         -- keeping the typed query (ported from the old telescope config).
         -- The buffer dir is captured at launch: inside the action the current
@@ -100,7 +102,11 @@ return
             return function()
                 local dir = vim.fn.expand('%:h')
                 if dir == '' then dir = '.' end
+                local ws = require('workspace').find()
                 picker({
+                    cwd = ws and ws.root,
+                    -- an empty .workspace means the root itself: {} makes rg search nothing
+                    search_paths = ws and #ws.dirs > 0 and ws.dirs or nil,
                     keymap = { fzf = { ['ctrl-f'] = false } }, -- default is preview-page-down
                     actions = {
                         ['ctrl-f'] = function(_, opts)
