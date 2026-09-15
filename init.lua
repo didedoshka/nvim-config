@@ -354,7 +354,6 @@ require("lazy").setup({
         'MeanderingProgrammer/render-markdown.nvim',
         config = function()
             require("render-markdown").setup({
-                -- Disable gutter signs globally (optional, but recommended if you hate clutter)
                 sign = { enabled = false },
 
                 heading = {
@@ -362,36 +361,30 @@ require("lazy").setup({
                     -- empty `icons` would leave the '#'s visible instead.
                     icons = { '' },
                     position = 'inline',
-                    signs = {},
                     -- no line background: colour and bold come from
                     -- @markup.heading.N in colors/dide.lua
                     backgrounds = {},
                 },
 
-                bullet = {
-                    icons = {}, -- Disables custom bullet point icons
-                },
+                bullet = { icons = {} },
 
                 checkbox = {
-                    -- Instead of Nerd Font icons, revert to standard text brackets
                     unchecked = { icon = '[ ]' },
-                    checked   = { icon = '[x]' },
-                    -- (Alternatively, use icon = '' to remove them completely)
+                    checked = { icon = '[x]' },
+                    custom = {}, -- the default '[-]' state renders a nerd-font glyph
                 },
 
-                code = {
-                    sign = false,   -- Disables the language icon in the gutter
-                    style = 'none', -- Keeps the background highlighting but removes extra flair
-                },
+                -- 'none' is { enabled = false }: no code block background, inline
+                -- code left as is
+                code = { style = 'none' },
 
-                callout = {
-                    -- If you use Obsidian-style callouts (> [!INFO]), you may need to
-                    -- overwrite the defaults to strip their icons as well.
-                    note = { icon = '' },
-                    tip = { icon = '' },
-                    warning = { icon = '' },
-                    -- etc...
-                }
+                -- nerd-font icons in front of every link
+                link = { enabled = false },
+
+                -- neither parser is installed, and no latex converter is on PATH;
+                -- html would also conceal html comments
+                html = { enabled = false },
+                latex = { enabled = false },
             })
         end,
     },
