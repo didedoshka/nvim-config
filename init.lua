@@ -309,7 +309,7 @@ require("lazy").setup({
     {
         dir = vim.fn.expand("~/personal/arc.nvim"),
         config = function()
-            require("arc").setup()
+            require("arc").setup({ base = "app/build-cache/hot" })
             -- the next letter is the same thing on the PR instead of the checkout
             vim.keymap.set("n", "<leader>ab", "<cmd>ArcBlame<cr>", { desc = "(a)rc (b)lame" })
             vim.keymap.set("n", "<leader>ac", "<cmd>ArcPrBlame<cr>", { desc = "(a)rc PR blame" })
