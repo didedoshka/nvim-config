@@ -71,6 +71,20 @@ test("jump and window keys are remapped", function()
     ok(mapped("<Tab>"), "<Tab> (window prefix) not mapped")
 end)
 
+test("TermOpen numbers real terminals but not fzf's picker", function()
+    local function open_term(filetype)
+        local buf = vim.api.nvim_create_buf(false, true)
+        vim.api.nvim_set_current_buf(buf)
+        vim.bo[buf].filetype = filetype
+        -- like fzf-lua's float (style = "minimal"): numbers off before the job starts
+        vim.wo.number, vim.wo.relativenumber = false, false
+        vim.api.nvim_open_term(buf, {})
+        return vim.wo.number
+    end
+    eq(open_term(""), true, "a plain terminal should get line numbers")
+    eq(open_term("fzf"), false, "fzf's terminal should keep its minimal style")
+end)
+
 test("fzf keeps a query history per picker and <leader>l resumes", function()
     local lhs = vim.api.nvim_replace_termcodes("<leader>l", true, false, true)
     ok(vim.fn.maparg(lhs, "n") ~= "", "<leader>l (resume last picker) not bound")

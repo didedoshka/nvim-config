@@ -88,10 +88,13 @@ vim.api.nvim_create_autocmd("FileType", {
     end
 })
 
--- terminals default to nonumber (:h terminal-config); re-enable for jumps in output
+-- terminals default to nonumber (:h terminal-config); re-enable for jumps in output.
+-- fzf-lua's picker is a terminal too, but it sets filetype=fzf before starting
+-- the job (fzf.lua), so it is left alone with its minimal-style window.
 vim.api.nvim_create_autocmd("TermOpen", {
     group = init_group,
-    callback = function()
+    callback = function(args)
+        if vim.bo[args.buf].filetype == "fzf" then return end
         vim.wo.number = true
         vim.wo.relativenumber = true
     end,
