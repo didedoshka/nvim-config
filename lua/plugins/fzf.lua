@@ -151,8 +151,10 @@ return
             { desc = 'neovim help' }
         )
 
-        -- Reopens the last picker with its last query (the .workspace cwd and
-        -- the ctrl-f action come back with it: resume replays the call opts).
+        -- ivy builds on the default profile, which includes "hide": esc only
+        -- hides the fzf terminal, so this brings the same process back (query,
+        -- cursor, selection). Once the picker has exited (enter, ctrl-q) it
+        -- replays the last call with its opts and query instead.
         vim.keymap.set('n', '<leader>l',
             fzf_lua.resume,
             { desc = 'resume (l)ast picker' }
