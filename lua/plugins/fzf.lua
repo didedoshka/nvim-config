@@ -14,6 +14,8 @@ return
         fzf_lua.setup({
             "ivy",
             fzf_colors = { true },
+            -- the builtin previewer numbers its lines by default
+            winopts = { preview = { winopts = { number = false } } },
             hls = {
                 -- normal         = "Normal",
                 -- border         = "Normal",
