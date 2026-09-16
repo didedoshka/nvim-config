@@ -71,6 +71,17 @@ test("jump and window keys are remapped", function()
     ok(mapped("<Tab>"), "<Tab> (window prefix) not mapped")
 end)
 
+test("fzf keeps a query history per picker and <leader>l resumes", function()
+    local lhs = vim.api.nvim_replace_termcodes("<leader>l", true, false, true)
+    ok(vim.fn.maparg(lhs, "n") ~= "", "<leader>l (resume last picker) not bound")
+    -- the g:fzf_history_dir shim gives each picker its own file, named by its
+    -- resume key; a plugin update dropping the shim would silently lose this
+    local opts = require("fzf-lua.config").normalize_opts({}, "files")
+    local hist = opts and opts.fzf_opts and opts.fzf_opts["--history"]
+    ok(type(hist) == "string" and hist:match("/fzf%-history/files$"),
+        "files picker --history is " .. vim.inspect(hist))
+end)
+
 test("range-taking keymaps are also bound in visual mode", function()
     for _, key in ipairs({ "<leader>y", "<leader>al" }) do
         local lhs = vim.api.nvim_replace_termcodes(key, true, false, true)

@@ -3,6 +3,14 @@ return
     "ibhagwan/fzf-lua",
     config = function()
         local fzf_lua = require("fzf-lua")
+
+        -- One query history file per picker (files, grep, helptags, ...), read
+        -- through fzf.vim's g:fzf_history_dir shim (config.lua, #1127): fzf-lua
+        -- appends the picker's resume key to it as --history. Inside a picker
+        -- ctrl-p / ctrl-n step through the earlier queries (fzf remaps them
+        -- from up/down when --history is set; ctrl-k / ctrl-j still move).
+        vim.g.fzf_history_dir = vim.fn.stdpath("data") .. "/fzf-history"
+
         fzf_lua.setup({
             "ivy",
             fzf_colors = { true },
@@ -141,6 +149,13 @@ return
         vim.keymap.set('n', '<leader>p',
             fzf_lua.helptags,
             { desc = 'neovim help' }
+        )
+
+        -- Reopens the last picker with its last query (the .workspace cwd and
+        -- the ctrl-f action come back with it: resume replays the call opts).
+        vim.keymap.set('n', '<leader>l',
+            fzf_lua.resume,
+            { desc = 'resume (l)ast picker' }
         )
     end
 }
