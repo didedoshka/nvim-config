@@ -107,11 +107,11 @@ return
         -- The buffer dir is captured at launch: inside the action the current
         -- buffer is no longer the one the picker was opened from.
         local function with_buffer_dir(picker)
-            return function()
+            return function(extra)
                 local dir = vim.fn.expand('%:h')
                 if dir == '' then dir = '.' end
                 local ws = require('workspace').find()
-                picker({
+                picker(vim.tbl_extend('force', {
                     cwd = ws and ws.root,
                     -- an empty .workspace means the root itself: {} makes rg search nothing
                     search_paths = ws and #ws.dirs > 0 and ws.dirs or nil,
@@ -121,19 +121,25 @@ return
                             picker({ cwd = dir, no_ignore = true, query = opts.last_query })
                         end,
                     },
-                })
+                }, extra or {}))
             end
         end
 
-        vim.keymap.set('n', '<leader>o',
-            with_buffer_dir(fzf_lua.files),
-            { desc = '(o)pen file' }
-        )
+        -- Visual-mode variant: the selection becomes the initial query.
+        -- live_grep promotes `query` to its rg search (providers/grep.lua).
+        local function with_selection(picker)
+            return function()
+                picker({ query = require('fzf-lua.utils').get_visual_selection() })
+            end
+        end
 
-        vim.keymap.set('n', '<leader>h',
-            with_buffer_dir(fzf_lua.live_grep),
-            { desc = 'grep in files' }
-        )
+        local files = with_buffer_dir(fzf_lua.files)
+        vim.keymap.set('n', '<leader>o', files, { desc = '(o)pen file' })
+        vim.keymap.set('x', '<leader>o', with_selection(files), { desc = '(o)pen file named like the selection' })
+
+        local grep = with_buffer_dir(fzf_lua.live_grep)
+        vim.keymap.set('n', '<leader>h', grep, { desc = 'grep in files' })
+        vim.keymap.set('x', '<leader>h', with_selection(grep), { desc = 'grep the selection in files' })
 
         -- vim.keymap.set('n', '<leader>s', function()
         --     local default = vim.fn.expand('%:h')
@@ -146,10 +152,8 @@ return
         -- end, { desc = '(s)earch in directory' })
 
 
-        vim.keymap.set('n', '<leader>p',
-            fzf_lua.helptags,
-            { desc = 'neovim help' }
-        )
+        vim.keymap.set('n', '<leader>p', fzf_lua.helptags, { desc = 'neovim help' })
+        vim.keymap.set('x', '<leader>p', with_selection(fzf_lua.helptags), { desc = 'neovim help for the selection' })
 
         -- ivy builds on the default profile, which includes "hide": esc only
         -- hides the fzf terminal, so this brings the same process back (query,
