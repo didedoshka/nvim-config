@@ -1,4 +1,4 @@
--- .workspace -- the directories <leader>o / <leader>h search and the base the
+-- .workspace -- the directories <leader>o / <leader>g search and the base the
 -- `s` menu shows paths against: a VS Code multi-root workspace for an arc
 -- checkout, where nvim runs at the root but the work lives in yt/yt, yt/cpp,
 -- library/cpp and a playground, and a search over the whole tree is useless.

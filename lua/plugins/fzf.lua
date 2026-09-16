@@ -138,8 +138,8 @@ return
         vim.keymap.set('x', '<leader>o', with_selection(files), { desc = '(o)pen file named like the selection' })
 
         local grep = with_buffer_dir(fzf_lua.live_grep)
-        vim.keymap.set('n', '<leader>h', grep, { desc = 'grep in files' })
-        vim.keymap.set('x', '<leader>h', with_selection(grep), { desc = 'grep the selection in files' })
+        vim.keymap.set('n', '<leader>g', grep, { desc = 'grep in files' })
+        vim.keymap.set('x', '<leader>g', with_selection(grep), { desc = 'grep the selection in files' })
 
         -- vim.keymap.set('n', '<leader>s', function()
         --     local default = vim.fn.expand('%:h')
