@@ -9,10 +9,10 @@ $0]]
 
     {
         prefix = "task",
-        desc = "litre task: global function, sh streams into its buffer",
+        desc = "litre task: global function, one live command",
         body = [[
 function ${1:Name}()
-    l.sh("$2")
+    l.command("$2"):run()
 end
 $0]]
     },
@@ -34,12 +34,12 @@ local target = l.param("target", function() return cm.executables(dir) end)
 local b = l.with { dir = dir }
 
 function Build()
-    b.sh("cmake --build . --target " .. target)
+    b.command("cmake --build . --target " .. target):run()
 end
 
 function Run()
     Build()
-    b.sh("./" .. cm.executable_path(dir, target))
+    b.command("./" .. cm.executable_path(dir, target)):run()
 end
 l.map("r", Run)
 
