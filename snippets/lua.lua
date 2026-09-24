@@ -31,7 +31,7 @@ local l = require("litre")
 local cm = require("litre.cmake")
 local dir = "${1:build}"
 local target = l.param("target", function() return cm.executables(dir) end)
-local b = l.env { dir = dir }
+local b = l.with { dir = dir }
 
 function Build()
     b.sh("cmake --build . --target " .. target)
