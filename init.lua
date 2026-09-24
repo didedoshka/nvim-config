@@ -191,6 +191,21 @@ require("lazy").setup({
     -- lspconfig
     require("plugins.lspconfig"),
 
+    -- lua_ls's library: the nvim runtime plus, per open file, the plugins it
+    -- requires. A runtime-path snapshot at config time was both slow (every
+    -- plugin indexed on every start) and nondeterministic (12 to 50 entries
+    -- across launches, measured)
+    {
+        "folke/lazydev.nvim",
+        config = function()
+            require("lazydev").setup({
+                library = {
+                    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+                },
+            })
+        end,
+    },
+
     -- comment
     require("plugins.comment"),
 

@@ -36,9 +36,9 @@ return
                         globals = { 'vim' },
                     },
                     workspace = {
-                        -- Make the server aware of Neovim runtime files
+                        -- the library is lazydev's: the runtime plus, per open
+                        -- file, the plugins it requires (init.lua spec)
                         checkThirdParty = false,
-                        library = vim.api.nvim_get_runtime_file("", true),
                     },
                     -- Do not send telemetry data containing a randomized but unique identifier
                     telemetry = {
