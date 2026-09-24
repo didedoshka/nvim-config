@@ -30,7 +30,7 @@ $0]]
 local l = require("litre")
 local cm = require("litre.cmake")
 local dir = "${1:build}"
-local target = l.param("target", function() return cm.targets(dir) end)
+local target = l.param("target", function() return cm.executables(dir) end)
 local b = l.env { dir = dir }
 
 function Build()
@@ -39,13 +39,13 @@ end
 
 function Run()
     Build()
-    b.sh("./" .. cm.exe(dir, target))
+    b.sh("./" .. cm.executable_path(dir, target))
 end
 l.map("r", Run)
 
 function Debug()
     Build()
-    l.debug("cpp", { program = cm.exe(dir, target), dir = dir })
+    l.debug("cpp", { program = cm.executable_path(dir, target), dir = dir })
 end
 $0]]
     },
