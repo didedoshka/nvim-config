@@ -22,4 +22,31 @@ $0]]
         desc = "litre param: literal list, xV picks and writes new values back",
         body = [[local ${1:name} = l.param("$1", { "$2" })$0]]
     },
+
+    {
+        prefix = "litre_cmake",
+        desc = "whole .litre.lua for a cmake project: xV lists the executable targets",
+        body = [[
+local l = require("litre")
+local cm = require("litre.cmake")
+local dir = "${1:build}"
+local target = l.param("target", function() return cm.targets(dir) end)
+local b = l.env { dir = dir }
+
+function Build()
+    b.sh("cmake --build . --target " .. target)
+end
+
+function Run()
+    Build()
+    b.sh("./" .. cm.exe(dir, target))
+end
+l.map("r", Run)
+
+function Debug()
+    Build()
+    l.debug("cpp", { program = cm.exe(dir, target), dir = dir })
+end
+$0]]
+    },
 }

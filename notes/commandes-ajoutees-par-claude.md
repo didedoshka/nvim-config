@@ -88,7 +88,6 @@ Task runner impératif (brd v2), fichiers `.litre.lua`.
 | --- | --- |
 | `:Litre [tâche]` | lance une tâche (picker sans argument) |
 | `:LitreConfig` | ouvre le `.litre.lua` le plus proche |
-| `:LitreCmake` | helper cmake |
 | `x` (layer) | `x<touche>` tâche `map()`ée · `xx` picker · `xv` params · `xc` config · `xo` dernière sortie · `xr` relancer · `xk` tuer |
 
 ## debugmaster.nvim (`~/personal/debugmaster.nvim`)
