@@ -264,8 +264,8 @@ require("lazy").setup({
     -- saves through it when present, see that repo's CLAUDE.md
     require("plugins.persistent-breakpoints"),
 
-    -- imperative project tasks from .litre.lua files, local checkout
-    require("plugins.litre"),
+    -- imperative project tasks from .liter.lua files, local checkout
+    require("plugins.liter"),
 
     -- / and :s with pcre2 via rg, local checkout
     require("plugins.pcre"),

@@ -38,7 +38,7 @@ tiers, since only this repo's skills are listed here.
   the LspAttach ones (marked `buf`), but not maps that live inside a layer mode.
 - 4 spaces, expandtab.
 - `s`, `S`, `<C-o>` deliberately print `"habit"` instead of their default. Not a bug;
-  don't "fix" them. `s`, `x` and `<bs>` are layer leaders (arrow.nvim, litre, debug).
+  don't "fix" them. `s`, `x` and `<bs>` are layer leaders (arrow.nvim, liter, debug).
 
 ## Verifying
 - Run `./tests/run.sh` after any Lua change — lint + both tiers, offline, ~1s. A `Write|Edit`

@@ -1,15 +1,15 @@
--- .litre.lua building blocks (litre.nvim; readme.md there is the spec)
+-- .liter.lua building blocks (liter.nvim; readme.md there is the spec)
 return {
     {
-        prefix = "litre_header",
-        desc = ".litre.lua header",
-        body = [[local l = require("litre")
+        prefix = "liter_header",
+        desc = ".liter.lua header",
+        body = [[local l = require("liter")
 $0]]
     },
 
     {
-        prefix = "litre_task",
-        desc = "litre task: global function, one live command",
+        prefix = "liter_task",
+        desc = "liter task: global function, one live command",
         body = [[
 function ${1:Name}()
     l.command("$2"):run()
@@ -18,17 +18,17 @@ $0]]
     },
 
     {
-        prefix = "litre_parameter",
-        desc = "litre parameter: literal list, xV picks and writes new values back",
+        prefix = "liter_parameter",
+        desc = "liter parameter: literal list, xV picks and writes new values back",
         body = [[local ${1:name} = l.parameter("$1", { "$2" })$0]]
     },
 
     {
-        prefix = "litre_cmake",
-        desc = "whole .litre.lua for a cmake project: xV lists the executable targets",
+        prefix = "liter_cmake",
+        desc = "whole .liter.lua for a cmake project: xV lists the executable targets",
         body = [[
-local l = require("litre")
-local cm = require("litre.cmake")
+local l = require("liter")
+local cm = require("liter.cmake")
 local dir = "${1:build}"
 local target = l.parameter("target", function() return cm.executables(dir) end)
 local b = l.with { dir = dir }

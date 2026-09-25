@@ -4,7 +4,7 @@
 -- library/cpp and a playground, and a search over the whole tree is useless.
 --
 -- One directory per line, relative to the file (absolute and ~ also work);
--- blank lines and # comments are skipped. Found like .litre.lua, walking up
+-- blank lines and # comments are skipped. Found like .liter.lua, walking up
 -- from the cwd, so a server started in a subdirectory sees the same file.
 local M = {}
 

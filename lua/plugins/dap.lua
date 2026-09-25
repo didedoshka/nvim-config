@@ -162,8 +162,8 @@ return
             return coroutine.yield()
         end
 
-        -- The project path is litre: debug("cpp", ...) in a .litre.lua names the
-        -- template registered in plugins/litre.lua. These configs are the
+        -- The project path is liter: debug("cpp", ...) in a .liter.lua names the
+        -- template registered in plugins/liter.lua. These configs are the
         -- fallback for projects without one -- they ask.
         dap.configurations["cpp"] = {
             {

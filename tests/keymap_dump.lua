@@ -11,7 +11,7 @@
 -- several keymaps hang off exactly those two capabilities.
 --
 -- Still missing, and not fixable from here: maps that only exist inside a layer
--- mode (litre, debug mode), and clangd's own on_attach, which needs clangd.
+-- mode (liter, debug mode), and clangd's own on_attach, which needs clangd.
 
 local prefix = arg[1] or ""
 local modes = arg[2] and { arg[2] } or { "n", "i", "v", "x", "s", "o", "t", "c" }
