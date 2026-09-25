@@ -1,14 +1,14 @@
 -- .litre.lua building blocks (litre.nvim; readme.md there is the spec)
 return {
     {
-        prefix = "litre",
+        prefix = "litre_header",
         desc = ".litre.lua header",
         body = [[local l = require("litre")
 $0]]
     },
 
     {
-        prefix = "task",
+        prefix = "litre_task",
         desc = "litre task: global function, one live command",
         body = [[
 function ${1:Name}()
@@ -18,7 +18,7 @@ $0]]
     },
 
     {
-        prefix = "param",
+        prefix = "litre_parameter",
         desc = "litre parameter: literal list, xV picks and writes new values back",
         body = [[local ${1:name} = l.parameter("$1", { "$2" })$0]]
     },
