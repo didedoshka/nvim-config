@@ -19,8 +19,8 @@ $0]]
 
     {
         prefix = "param",
-        desc = "litre param: literal list, xV picks and writes new values back",
-        body = [[local ${1:name} = l.param("$1", { "$2" })$0]]
+        desc = "litre parameter: literal list, xV picks and writes new values back",
+        body = [[local ${1:name} = l.parameter("$1", { "$2" })$0]]
     },
 
     {
@@ -30,7 +30,7 @@ $0]]
 local l = require("litre")
 local cm = require("litre.cmake")
 local dir = "${1:build}"
-local target = l.param("target", function() return cm.executables(dir) end)
+local target = l.parameter("target", function() return cm.executables(dir) end)
 local b = l.with { dir = dir }
 
 function Build()
