@@ -511,14 +511,19 @@ local function colorize(bufnr, start_row, end_row)
         parsers[bufnr]:for_each_tree(
             function(tree, langtree)
                 local lang = langtree:lang()
+                local query = get_query(lang)
+                -- a parser without a highlights query, e.g. yamake whose query link is dangling
+                if query == nil then
+                    return
+                end
                 if to_print_hashes then
                     strings_hashes = {}
                 end
                 vim.api.nvim_buf_clear_namespace(bufnr, ns[bufnr], start_row, end_row)
 
-                for pattern, match, metadata in get_query(lang):iter_matches(tree:root(), bufnr, start_row, end_row) do
+                for pattern, match, metadata in query:iter_matches(tree:root(), bufnr, start_row, end_row) do
                     for id, nodes in pairs(match) do
-                        local name = get_query(lang).captures[id]
+                        local name = query.captures[id]
                         if vim.tbl_contains(considered_variable, name) then
                             for _, node in ipairs(nodes) do
                                 local node_start_row, node_start_col, node_end_row, node_end_col = node:range()
