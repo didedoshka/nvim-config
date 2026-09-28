@@ -144,7 +144,7 @@ return
             cmd = { "ya", "tool", "ruff", "server" },
             init_options = {
                 settings = {
-                    -- mirror CI flake8 (~/arc/build/config/tests/flake8/flake8.conf):
+                    -- mirror CI flake8 (~/a/hot/build/config/tests/flake8/flake8.conf):
                     -- it selects E,W,F,C9,N8,PL, but PL is ignored wholesale and C9 has no
                     -- max-complexity, so the effective rule set is pycodestyle + pyflakes + naming.
                     -- (PL is left off on purpose: ruff's pylint codes differ from flake8-pylint's,

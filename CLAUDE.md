@@ -68,7 +68,7 @@ tiers, since only this repo's skills are listed here.
 - Python is split: `pyright` type-checks, `ruff` lints and formats. To avoid duplicate reports
   pyright's `reportUnused*` are set to `none`, and its always-on greyed "not accessed" hints are
   filtered out at `vim.diagnostic.set`. Ruff's lint mirrors CI flake8
-  (`~/arc/build/config/tests/flake8/flake8.conf`).
+  (`~/a/hot/build/config/tests/flake8/flake8.conf`).
 
 ## Environment
 - Arcadia: clangd and ruff run via `ya tool`; the arcadia commands (`:ArcFzfCs`, `:ArcFzfPrs`, `:ArcBlame`, …)
