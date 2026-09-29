@@ -613,6 +613,18 @@ vim.api.nvim_create_autocmd('FileType', {
     end
 })
 
+-- a plugin's scratch buffer (:ArcDiff) gets its filetype before it is shown, when there is
+-- nothing visible to colour yet
+vim.api.nvim_create_autocmd('BufWinEnter', {
+    group = sh_augroup,
+    callback = function(args)
+        local win = vim.fn.bufwinid(args.buf)
+        if win ~= -1 then
+            colorize_visible(win)
+        end
+    end
+})
+
 vim.api.nvim_create_autocmd('WinScrolled', {
     group = sh_augroup,
     callback = function()
