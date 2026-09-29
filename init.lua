@@ -442,6 +442,14 @@ require("lazy").setup({
         end
     },
 
+    -- editable quickfix: dd + :w drops entries, edited text is written back to the files
+    {
+        "stevearc/quicker.nvim",
+        config = function()
+            require("quicker").setup()
+        end
+    },
+
 }, {
     -- dev plugins (dev = true in a spec) come from ~/personal when the
     -- checkout exists, and from github on machines that don't have it
