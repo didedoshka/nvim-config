@@ -74,6 +74,9 @@ return
             vim.list_extend(args, { "-ex", "source " .. vim.fn.stdpath("config") .. "/gdb/dap_core.py" })
             -- Uninitialised locals would otherwise hang the variables request.
             vim.list_extend(args, { "-ex", "source " .. vim.fn.stdpath("config") .. "/gdb/dap_guard.py" })
+            -- stepIn reaches user callbacks through skipped library code
+            -- (std::function, comparators) instead of stepping over them.
+            vim.list_extend(args, { "-ex", "source " .. vim.fn.stdpath("config") .. "/gdb/dap_step.py" })
             -- Serves this gdb to Claude Code over MCP (127.0.0.1:3333) for the
             -- session's lifetime; nothing to start by hand.
             vim.list_extend(args, { "-ex", "source " .. vim.fn.stdpath("config") .. "/gdb/mcp.py" })
