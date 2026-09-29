@@ -71,6 +71,6 @@ tiers, since only this repo's skills are listed here.
   (`~/a/hot/build/config/tests/flake8/flake8.conf`).
 
 ## Environment
-- Arcadia: clangd and ruff run via `ya tool`; the arcadia commands (`:ArcFzfCs`, `:ArcFzfPrs`, `:ArcBlame`, …)
+- Arcadia: clangd and ruff run via `ya tool`; the arcadia commands (`:ArcFzfPrs`, `:ArcBlame`, …)
   live in a separate local plugin, `~/personal/arc.nvim`.
 - No standalone `lua`/`luajit` on this box — `nvim --clean -l` **is** the Lua runtime for tests.

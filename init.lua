@@ -323,7 +323,7 @@ require("lazy").setup({
 
     require("plugins.lualine"),
 
-    -- arcadia work inside nvim (:ArcFzfCs, :ArcFzfPrs, :ArcPrView, :ArcBlame, ...), local checkout
+    -- arcadia work inside nvim (:ArcGrep, :ArcFzfPrs, :ArcPrView, :ArcBlame, ...), local checkout
     {
         dir = vim.fn.expand("~/personal/arc.nvim"),
         config = function()
@@ -333,12 +333,12 @@ require("lazy").setup({
             vim.keymap.set("n", "<leader>ac", "<cmd>ArcPrBlame<cr>", { desc = "(a)rc PR blame" })
             vim.keymap.set("n", "<leader>ad", "<cmd>ArcDiff<cr>", { desc = "(a)rc (d)iff" })
             vim.keymap.set("n", "<leader>ae", "<cmd>ArcPrDiff<cr>", { desc = "(a)rc PR diff" })
-            vim.keymap.set("n", "<leader>ag", "<cmd>ArcFzfCs<cr>", { desc = "(a)rc codesearch (g)rep" })
-            -- cs takes a regex, so the selection is escaped the way live_grep does it
+            vim.keymap.set("n", "<leader>ag", "<cmd>ArcGrep<cr>", { desc = "(a)rc (g)rep" })
+            -- ArcGrep takes a regex, so the selection is escaped the way live_grep does it
             vim.keymap.set("x", "<leader>ag", function()
                 local utils = require("fzf-lua.utils")
-                require("arc.cs").open({ query = utils.rg_escape(utils.get_visual_selection()) })
-            end, { desc = "(a)rc codesearch (g)rep the selection" })
+                require("arc.grep").open({ query = utils.rg_escape(utils.get_visual_selection()) })
+            end, { desc = "(a)rc (g)rep the selection" })
             vim.keymap.set("n", "<leader>ah", "<cmd>ArcDiffHl<cr>", { desc = "(a)rc diff (h)ighlight in buffer" })
             vim.keymap.set("n", "<leader>ar", "<cmd>ArcDiffHlDeleted<cr>", { desc = "(a)rc diff highlight: (r)emoved lines" })
             -- `:` not <cmd>: in visual mode it carries the selection as the range (#L2-4)
