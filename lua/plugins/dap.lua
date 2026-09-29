@@ -9,12 +9,7 @@ return
         local dm = require("debugmaster")
         local dap = require("dap")
 
-        -- Must precede the debugmaster.state require below: loading state
-        -- builds the help panel, which resolves the scheme and freezes it.
         dm.cfg.keymaps = "gdb"
-
-        local state = require("debugmaster.state")
-        state.sidepanel.inplace = true
 
         dm.plugins.ui_auto_toggle.enabled = false
 
