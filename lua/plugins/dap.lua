@@ -14,7 +14,7 @@ return
         dm.cfg.keymaps = "gdb"
 
         local state = require("debugmaster.state")
-        state.sidepanel.direction = "below"
+        state.sidepanel.inplace = true
 
         dm.plugins.ui_auto_toggle.enabled = false
 
