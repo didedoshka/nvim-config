@@ -446,7 +446,19 @@ require("lazy").setup({
     {
         "stevearc/quicker.nvim",
         config = function()
-            require("quicker").setup()
+            require("quicker").setup({
+                -- the letters vim.diagnostic puts in the sign column, not nerd-font icons
+                type_icons = { E = "E", W = "W", I = "I", N = "N", H = "H" },
+                borders = {
+                    vert = "│",
+                    strong_header = "─",
+                    strong_cross = "┼",
+                    strong_end = "┤",
+                    soft_header = "╌",
+                    soft_cross = "┼",
+                    soft_end = "┤",
+                },
+            })
         end
     },
 
