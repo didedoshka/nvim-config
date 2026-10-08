@@ -43,7 +43,8 @@ tiers, since only this repo's skills are listed here.
 ## Verifying
 - Run `./tests/run.sh` after any Lua change — lint + both tiers, offline, ~1s. A `Write|Edit`
   hook runs it automatically. `.claude/skills/verify/SKILL.md` has the tiers and what needs a human.
-- Commit each verified change without asking (`area: lowercase summary`). Never rewrite
+- Commit each verified change without asking (`area: lowercase summary`), and push it
+  right after — here and in the `~/personal/*.nvim` repos alike. Never rewrite
   history — no amend, rebase, or reset past a commit; fix forward with a new commit,
   so nothing is ever lost.
 - Four traps, all measured in this repo:
