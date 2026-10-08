@@ -11,6 +11,9 @@ L start using litre.nvim
 L restructure
 L enhance render-markdown
 L improve start time
+S разобраться с jump-list
+S работать с library/cpp, yt/yt, нужные подпапки yt/ одновременно (<leader>o, <leader>h), а так же playground/ticket_name; как workplace в vscode
+S режим в котором строчки из ArcDiff/ArcPrDiff имеют светло-зеленый фон, с возможностью включить удаленные строчки с красным фоном
 
 
 ## PCRE
@@ -21,6 +24,7 @@ S run zz on next/step
 S if file with breakpoint wasn't open, persistente breakpoint didn't load?
 S `p` is inconcistent with lsp `K`. Only way to close `K` window is to move cursor, only way to close `p` is `q`. Maybe it's fine, because i can't move cursor in debug mode, but i keep pressing `<esc>`
 S fzf-lua with breakpoints
+S debugmaster, sections' names have different styles in the help window
 
 
 ## arc-worktree
@@ -30,13 +34,12 @@ L create a command that allows to change the worktree (`~/a/hot/yt/yt/http` -> ~
 
 ## litre
 L lsp doesn't work nicely in .litre.lua. Maybe make env/param upper-case, or do `l = require "litre"` in the beginning of .litre.lua files?
-L xx is definetly a bad idea for a picker, xs maybe, or x<cr>
 L which-key doesn't work after x
 
 
 ## arc
-S An issue is a pull request issue, ticket is a ticket. Currently tickets are called issues for some reason. Needs to be changed
-L no diff in PR view
+1. An issue is a pull request issue, ticket is a ticket. Currently tickets are called issues for some reason. Needs to be changed
+2. no diff in PR view
 
 ### Compare to analogues
 Maybe it's better to fork one of them (or maybe extend if possible (or maybe make a pull request that makes it extensible)) than writing our own thing
