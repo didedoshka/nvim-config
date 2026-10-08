@@ -72,6 +72,9 @@ return
             -- stepIn reaches user callbacks through skipped library code
             -- (std::function, comparators) instead of stepping over them.
             vim.list_extend(args, { "-ex", "source " .. vim.fn.stdpath("config") .. "/gdb/dap_step.py" })
+            -- A step cut short by a throw stops at the throw, then at each
+            -- cleanup landing pad, then in the catch. Needs dap_step.py first.
+            vim.list_extend(args, { "-ex", "source " .. vim.fn.stdpath("config") .. "/gdb/dap_exception.py" })
             -- Serves this gdb to Claude Code over MCP (127.0.0.1:3333) for the
             -- session's lifetime; nothing to start by hand.
             vim.list_extend(args, { "-ex", "source " .. vim.fn.stdpath("config") .. "/gdb/mcp.py" })

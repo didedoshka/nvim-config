@@ -25,7 +25,11 @@ without debug info count as skipped.
 
 Library code that loops for long is stepped line by line, not run at full
 speed; progressStart/Update/End events report it (dap.status()), and `pause`
-ends the chain wherever it is. See
+ends the chain wherever it is. The unwinder is the exception: when the chain
+enters it (`__cxa_throw`, `_Unwind_Resume`, ...) and dap_exception.py is
+loaded, the chain `continue`s and dap_exception stops it at the exception's
+next landing pad or catch body (or at the throw, if the exception escapes the
+stepped frame), instead of stepping tens of thousands of unwinder lines. See
 ~/a/notes/gdb-dap-step-into-callbacks-through-skipped-code.md.
 """
 
@@ -165,6 +169,8 @@ def _step_through(skips):
     announced = None  # time of the last progress event, None before the first
     steps = 0
     report = None
+    # dap_exception.py, sourced after this file (both live in __main__).
+    exceptions = globals().get("_DapExc")
     _chain_active = True
     events._expected_pause = False
     gdb.execute("skip disable " + numbers, to_string=True)
@@ -172,10 +178,12 @@ def _step_through(skips):
         while True:
             _swallowed = None
             events._suppress_cont = True
+            fast = exceptions is not None and exceptions.chain_fast(gdb.newest_frame())
+            command = "continue" if fast else "step"
             try:
-                gdb.execute("step", from_tty=True, to_string=True)
+                gdb.execute(command, from_tty=True, to_string=True)
             except gdb.error as e:
-                log("dap_step: step failed: %s" % e)
+                log("dap_step: %s failed: %s" % (command, e))
                 break
             if _swallowed is None:
                 # No stop: the process exited (upstream already said so), or
@@ -185,7 +193,15 @@ def _step_through(skips):
                 break
             report = _swallowed
             steps += 1
-            if events._expected_pause or _reason(report) != "end-stepping-range":
+            if events._expected_pause:
+                break
+            if fast:
+                landed = exceptions.chain_landed(report)
+                if landed is None:
+                    continue  # a breakpoint was planted on the way: continue again
+                if not landed:
+                    break
+            elif _reason(report) != "end-stepping-range":
                 break
             frame = gdb.newest_frame()
             if not _in_skipped_code(frame, skips):
