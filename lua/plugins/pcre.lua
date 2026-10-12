@@ -1,5 +1,6 @@
 return {
-    dir = vim.fn.expand("~/p/pcre.nvim"),
+    "didedoshka/pcre.nvim",
+    dev = true,
     config = function()
         local pcre = require("pcre")
         pcre.setup({

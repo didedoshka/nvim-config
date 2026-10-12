@@ -325,7 +325,8 @@ require("lazy").setup({
 
     -- arcadia work inside nvim (:ArcGrep, :ArcFzfPrs, :ArcPrView, :ArcBlame, ...), local checkout
     {
-        dir = vim.fn.expand("~/p/arc.nvim"),
+        "didedoshka/arc.nvim",
+        dev = true,
         config = function()
             require("arc").setup({ base = "app/build-cache/hot" })
             -- the next letter is the same thing on the PR instead of the checkout
