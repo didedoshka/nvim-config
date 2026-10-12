@@ -1,5 +1,5 @@
 return {
-    dir = vim.fn.expand("~/personal/no-tmux.nvim"),
+    dir = vim.fn.expand("~/p/no-tmux.nvim"),
     config = function()
         require("no-tmux").setup()
 

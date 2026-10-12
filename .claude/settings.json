@@ -14,12 +14,12 @@
     },
     "permissions": {
         "additionalDirectories": [
-            "~/personal/arc.nvim",
-            "~/personal/debugmaster.nvim",
-            "~/personal/fzf-pin.nvim",
-            "~/personal/liter.nvim",
-            "~/personal/no-tmux.nvim",
-            "~/personal/pcre.nvim"
+            "~/p/arc.nvim",
+            "~/p/debugmaster.nvim",
+            "~/p/fzf-pin.nvim",
+            "~/p/liter.nvim",
+            "~/p/no-tmux.nvim",
+            "~/p/pcre.nvim"
         ],
         "allow": [
             "Bash(./tests/run.sh)",

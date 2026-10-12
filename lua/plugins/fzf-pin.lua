@@ -3,7 +3,7 @@
 -- a free char pins the current file, ctrl-x unpins a pin or deletes a buffer
 -- (a terminal only after a confirm naming what its shell runs).
 return {
-    dir = vim.fn.expand("~/personal/fzf-pin.nvim"),
+    dir = vim.fn.expand("~/p/fzf-pin.nvim"),
     dependencies = { "ibhagwan/fzf-lua" },
     config = function()
         -- one store file per project (cwd, / encoded as % like nv's sockets):

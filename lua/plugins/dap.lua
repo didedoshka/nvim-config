@@ -1,7 +1,7 @@
 return
 {
     -- fork of MironPascalCaseFan/debugmaster.nvim; dev=true picks the
-    -- ~/personal checkout when present, github clone otherwise
+    -- ~/p checkout when present, github clone otherwise
     "didedoshka/debugmaster.nvim",
     dev = true,
     dependencies = { "mfussenegger/nvim-dap", },

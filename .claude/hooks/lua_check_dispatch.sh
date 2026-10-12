@@ -2,13 +2,13 @@
 # PostToolUse router for cross-repo sessions rooted in this config.
 #
 # Hooks only load from the session root's settings, so when a session here
-# edits a repo under ~/personal (reachable via permissions.additionalDirectories),
+# edits a repo under ~/p (reachable via permissions.additionalDirectories),
 # that repo's own lua-check hook never fires. This routes the payload to the
 # check of whichever repo owns the edited file; each repo's script computes its
 # own root from its location, so they run unmodified.
 #
 # The repo is derived from the path, not enumerated: an enumerated list here
-# already diverged once (pcre.nvim was silently unchecked). A ~/personal repo
+# already diverged once (pcre.nvim was silently unchecked). A ~/p repo
 # missing its hook is a loud exit 2, not a silent pass.
 set -uo pipefail
 
@@ -21,9 +21,9 @@ else
 fi
 
 case "$file_path" in
-    "$HOME"/personal/*/*)
-        repo="${file_path#"$HOME"/personal/}"
-        repo="$HOME/personal/${repo%%/*}"
+    "$HOME"/p/*/*)
+        repo="${file_path#"$HOME"/p/}"
+        repo="$HOME/p/${repo%%/*}"
         hook="$repo/.claude/hooks/lua-check.sh"
         if [[ ! -x "$hook" ]]; then
             [[ "$file_path" == *.lua ]] || exit 0

@@ -1,5 +1,5 @@
 return {
-    dir = vim.fn.expand("~/personal/liter.nvim"),
+    dir = vim.fn.expand("~/p/liter.nvim"),
     dependencies = { "mfussenegger/nvim-dap" },
     config = function()
         require("liter").setup({
