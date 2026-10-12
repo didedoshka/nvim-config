@@ -37,7 +37,7 @@ return
             },
         })
 
-        local dir = vim.fn.expand("~/a/hot/devtools/ide/tree-sitter-yamake")
+        local dir = vim.fn.expand("~/w/a/h/devtools/ide/tree-sitter-yamake")
         vim.api.nvim_create_autocmd('User', {
             pattern = 'TSUpdate',
             callback = function()

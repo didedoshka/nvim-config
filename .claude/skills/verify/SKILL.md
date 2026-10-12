@@ -73,8 +73,8 @@ didedoshka to run these; don't fire them blind.
   a real file.
 - **Semantic highlighting** (`<leader>s`) — needs treesitter parsers and a real
   buffer.
-- **LSP** — servers only attach to a real file in a real project. Several run
-  through `ya tool …` (clangd, ruff) and need the arc mount.
+- **LSP** — servers only attach to a real file in a real project. clangd needs
+  the arc mount (`~/w/a/h`) and its compile_commands.json.
   **Do not try to attach `lua_ls` headlessly to test formatting: it hangs.**
   Ask didedoshka to run `:lua vim.lsp.buf.format()` instead.
 - **Completion, dap/debugging, fzf-lua, oil, lazygit** — all interactive.

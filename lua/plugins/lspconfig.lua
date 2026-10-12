@@ -109,7 +109,7 @@ return
             -- cmd = { "docker", "exec", "-i", "name", "clangd" },
             -- cmd = { "/Users/didedoshka/.local/bin/clangd", }, -- clangd 21
             cmd = {
-                vim.fn.expand("~/.local/bin/clangd"),  -- self-built clangd 23 (+clangd-remap) for cross-mount index reuse
+                vim.fn.expand("~/.local/bin/clangd"),  -- llvm main, built by dotfiles/llvm/build-clangd.sh (+clangd-remap for arc-wt)
                 "--background-index",
                 "-j=32",
                 "--header-insertion=never",
@@ -141,10 +141,10 @@ return
         vim.lsp.enable("rust_analyzer")
 
         vim.lsp.config("ruff", {
-            cmd = { "ya", "tool", "ruff", "server" },
+            cmd = { "ruff", "server" }, -- from mise
             init_options = {
                 settings = {
-                    -- mirror CI flake8 (~/a/hot/build/config/tests/flake8/flake8.conf):
+                    -- mirror CI flake8 (~/w/a/h/build/config/tests/flake8/flake8.conf):
                     -- it selects E,W,F,C9,N8,PL, but PL is ignored wholesale and C9 has no
                     -- max-complexity, so the effective rule set is pycodestyle + pyflakes + naming.
                     -- (PL is left off on purpose: ruff's pylint codes differ from flake8-pylint's,

@@ -29,7 +29,6 @@ S debugmaster, sections' names have different styles in the help window
 
 ## arc-worktree
 L По хрону пуллить hot, запускать regen
-L create a command that allows to change the worktree (`~/a/hot/yt/yt/http` -> ~/a/28581/yt/yt/http)
 
 
 ## litre
