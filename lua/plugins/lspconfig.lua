@@ -387,6 +387,8 @@ return
                 -- end, opts)
                 -- vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
                 vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, { buffer = args.buf, desc = "(r)ename" })
+                vim.keymap.set({ 'n', 'x' }, '<leader>b', vim.lsp.buf.code_action,
+                    { buffer = args.buf, desc = "code action ((b) is between (a)ction and (c)ode)" })
                 vim.api.nvim_create_user_command("CodeAction", function(o)
                     if o.range > 0 then
                         vim.lsp.buf.code_action({ range = {

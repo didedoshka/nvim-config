@@ -439,6 +439,7 @@ require("lazy").setup({
     {
         "mbbill/undotree",
         config = function()
+            vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<cr>", { desc = "(u)ndotree" })
             vim.g.undotree_WindowLayout = 2
         end
     },
