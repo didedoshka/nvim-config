@@ -147,6 +147,8 @@ wait_traces() {
 }
 wait_traces 1 || { fail "nvim-dap never stopped at the first breakpoint"; exit 1; }
 [[ "$(expr "T.where()")" == "main:27" ]] || fail "first stop: expected main:27, got '$(expr "T.where()")'"
+# Count only what the stepIns below send, not the launch.
+expr "(function() T.continued = 0 end)() or 'reset'" >/dev/null
 
 # step <expected frame> <what>: one stepIn, then the frame nvim-dap shows.
 # An empty expected frame accepts any.

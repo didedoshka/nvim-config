@@ -59,6 +59,11 @@ return
             -- ~/.config/gdb/gdbinit turns per-command timing on, which under
             -- DAP becomes a flood of output events in the console.
             local args = { "-q", "-ex", "maint set per-command time off" }
+            -- gdb execs the inferior itself, not through $SHELL: fish starts
+            -- threads before its exec, each a resume past the one continued
+            -- event gdb suppresses per command -- spurious continued events
+            -- at every launch. The args list below never wanted a shell anyway.
+            vim.list_extend(args, { "-ex", "set startup-with-shell off" })
             -- Resolved per session, not cached: it follows nvim's cwd, and one
             -- mount's root is wrong for the next.
             local root = arc_root()
