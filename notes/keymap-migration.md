@@ -38,3 +38,13 @@ pour que toutes les commandes PR commencent par `ArcPr`.
 
 Restées en commandes, trop rares : `:Diff`, `:ArcFzfPrFiles` (12), `:ArcFzfDirty`, `:ArcPrIssues`,
 `:ArcLinkOpen`, `:ArcBlameLine`, `:ArcFzfCs`, `:Pcre` (23), `:Restart` (30, `<Space>m` fait pareil).
+
+## Retours du 2026-10-14
+
+| Keymap | Fait | Avant |
+| --- | --- | --- |
+| `<Space>u` | `:UndotreeToggle` | supprimé le 25/08 |
+| `<Space>c` (n + v, buffer LSP) | code action | supprimé le 25/08 depuis `<Space>a`, devenu le préfixe arc |
+
+`<Space>c` ouvrait lazygit : tapez `:LazyGit` à la place. `:CodeAction` reste, avec son range
+en visuel.
