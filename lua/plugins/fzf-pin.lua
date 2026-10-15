@@ -68,10 +68,22 @@ return {
             end,
             preview = function(item)
                 local buf = item.buf or vim.fn.bufnr(item.data)
-                if buf ~= -1 and vim.api.nvim_buf_is_loaded(buf) then
-                    return { bufnr = buf, path = item.data }
+                if buf == -1 then
+                    return { path = item.data }
                 end
-                return { path = item.data }
+                -- where the buffer is now: the cursor of a window showing it
+                -- (the picker's own float never does), else where it was last left
+                local line = vim.api.nvim_buf_get_mark(buf, '"')[1]
+                for _, win in ipairs(vim.fn.win_findbuf(buf)) do
+                    if vim.api.nvim_win_get_config(win).relative == "" then
+                        line = vim.api.nvim_win_get_cursor(win)[1]
+                        break
+                    end
+                end
+                if vim.api.nvim_buf_is_loaded(buf) then
+                    return { bufnr = buf, path = item.data, line = line }
+                end
+                return { path = item.data, line = line }
             end,
             pin = function(char)
                 local name = vim.api.nvim_buf_get_name(0)
