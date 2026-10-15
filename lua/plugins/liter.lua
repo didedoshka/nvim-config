@@ -16,9 +16,10 @@ return {
         })
 
         -- x is the liter layer (the layer-key inventory in notes/ideas.md):
-        -- opens the fzf-pin picker; x<key> runs a map()ped task, xV params,
-        -- xC config, xO last output, xR re-run, xi search; ctrl-c in a
-        -- liter:// buffer kills its task
+        -- opens the fzf-pin picker over tasks and params; x<key> activates a
+        -- pinned one (a free key pins the highlighted entry), xC config,
+        -- xO last output, xR re-run, xi search; ctrl-c in a liter:// buffer
+        -- kills its task
         vim.keymap.set("n", "x", function()
             require("liter").layer()
         end, { desc = "liter" })

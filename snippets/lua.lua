@@ -19,13 +19,13 @@ $0]]
 
     {
         prefix = "liter_parameter",
-        desc = "liter parameter: literal list, xV picks and writes new values back",
+        desc = "liter parameter: literal list, picked in the x layer, new values written back",
         body = [[local ${1:name} = l.parameter("$1", { "$2" })$0]]
     },
 
     {
         prefix = "liter_cmake",
-        desc = "whole .liter.lua for a cmake project: xV lists the executable targets",
+        desc = "whole .liter.lua for a cmake project: the target param lists the executables",
         body = [[
 local l = require("liter")
 local cm = require("liter.cmake")
@@ -41,7 +41,6 @@ function Run()
     Build()
     b.command("./" .. cm.executable_path(dir, target)):run()
 end
-l.map("r", Run)
 
 function Debug()
     Build()

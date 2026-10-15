@@ -1,7 +1,8 @@
 -- Bookmarks on `s`: files pinned to single chars, then the open buffers,
 -- through fzf-pin's picker. Pins are per-project (cwd) and survive restarts;
 -- a free char pins the current file, ctrl-x unpins a pin or deletes a buffer
--- (a terminal only after a confirm naming what its shell runs).
+-- (a terminal only after a confirm naming what its shell runs). The preview
+-- shows the highlighted buffer, or the pinned file when it is not loaded.
 return {
     "didedoshka/fzf-pin.nvim",
     dev = true,
@@ -64,6 +65,13 @@ return {
             list = list,
             activate = function(item)
                 vim.cmd.edit(vim.fn.fnameescape(item.data))
+            end,
+            preview = function(item)
+                local buf = item.buf or vim.fn.bufnr(item.data)
+                if buf ~= -1 and vim.api.nvim_buf_is_loaded(buf) then
+                    return { bufnr = buf, path = item.data }
+                end
+                return { path = item.data }
             end,
             pin = function(char)
                 local name = vim.api.nvim_buf_get_name(0)
