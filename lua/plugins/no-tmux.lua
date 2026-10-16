@@ -5,7 +5,8 @@ return {
         require("no-tmux").setup()
 
         -- <CR> is the server layer (the layer-key inventory in notes/ideas.md):
-        -- pinned chars hop, a free char pins the current server, i searches
+        -- pinned chars hop, a free char pins the highlighted server, ctrl-x
+        -- kills an unpinned one, i searches
         vim.keymap.set("n", "<CR>", function()
             if vim.fn.exists(":FzfConnect") == 2 then
                 vim.cmd.FzfConnect()
