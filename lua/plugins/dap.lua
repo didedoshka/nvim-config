@@ -95,6 +95,14 @@ return
             })
         end
 
+        -- For my own projects: gdb's config above is arcadia's. llvm's lldb-dap
+        -- (mise) has libc++'s formatters built in, and they track the libc++ of
+        -- the same release -- lldb 22 already can't read libc++ 23's vector.
+        dap.adapters["lldb"] = {
+            type = "executable",
+            command = "lldb-dap",
+        }
+
         -- vim.ui.input, not vim.fn.input, so replacing vim.ui.input later
         -- replaces these prompts too. The stock implementation calls back
         -- synchronously, a buffer-backed one will not -- hence the status
@@ -168,58 +176,62 @@ return
             return coroutine.yield()
         end
 
-        -- The project path is liter: debug("cpp", ...) in a .liter.lua names the
-        -- template registered in plugins/liter.lua. These configs are the
-        -- fallback for projects without one -- they ask.
-        dap.configurations["cpp"] = {
-            {
-                name = "gdb: launch binary",
-                type = "gdb",
-                request = "launch",
-                program = ask("Binary: ", vim.fn.getcwd() .. "/", "file"),
-                args = ask_args,
-                cwd = "${workspaceFolder}",
-            },
-            -- A callable config: dap calls it, in a coroutine, before resolving
-            -- anything else, so the picker can be fed by the binary just asked
-            -- for. Plain function fields could not -- dap expands them through
-            -- vim.tbl_map, in no defined order.
-            setmetatable({
-                name = "gdb: launch gtest",
-                type = "gdb",
-                request = "launch",
-            }, {
-                __call = function(self)
-                    local binary = input("Binary: ", vim.fn.getcwd() .. "/", "file")
-                    local tests = binary and #binary > 0 and gtest_list(binary) or {}
-                    local selected = #tests > 0 and gtest_pick(tests) or nil
-                    if not selected or #selected == 0 then
-                        return vim.tbl_extend("force", self, { program = dap.ABORT })
-                    end
-                    return vim.tbl_extend("force", self, {
-                        program = binary,
-                        args = { "--gtest_filter=" .. table.concat(selected, ":") },
-                        -- Test binaries resolve data relative to themselves.
-                        cwd = vim.fn.fnamemodify(binary, ":h"),
-                    })
-                end,
-            }),
-            {
-                name = "gdb: open core",
-                type = "gdb",
-                request = "attach",
-                program = ask("Binary: ", vim.fn.getcwd() .. "/", "file"),
-                core = ask("Core: ", vim.fn.getcwd() .. "/", "file"),
-            },
-            {
-                name = "gdb: attach pid",
-                type = "gdb",
-                request = "attach",
-                pid = function()
-                    return tonumber(input("PID: "))
-                end,
-            },
-        }
+        -- The project path is liter: debug("gdb" or "lldb", ...) in a .liter.lua
+        -- names the template registered in plugins/liter.lua. These configs are
+        -- the fallback for projects without one -- they ask. The same four for
+        -- each adapter; only the core dump's key differs.
+        local function configs(adapter, core_key)
+            return {
+                {
+                    name = adapter .. ": launch binary",
+                    type = adapter,
+                    request = "launch",
+                    program = ask("Binary: ", vim.fn.getcwd() .. "/", "file"),
+                    args = ask_args,
+                    cwd = "${workspaceFolder}",
+                },
+                -- A callable config: dap calls it, in a coroutine, before resolving
+                -- anything else, so the picker can be fed by the binary just asked
+                -- for. Plain function fields could not -- dap expands them through
+                -- vim.tbl_map, in no defined order.
+                setmetatable({
+                    name = adapter .. ": launch gtest",
+                    type = adapter,
+                    request = "launch",
+                }, {
+                    __call = function(self)
+                        local binary = input("Binary: ", vim.fn.getcwd() .. "/", "file")
+                        local tests = binary and #binary > 0 and gtest_list(binary) or {}
+                        local selected = #tests > 0 and gtest_pick(tests) or nil
+                        if not selected or #selected == 0 then
+                            return vim.tbl_extend("force", self, { program = dap.ABORT })
+                        end
+                        return vim.tbl_extend("force", self, {
+                            program = binary,
+                            args = { "--gtest_filter=" .. table.concat(selected, ":") },
+                            -- Test binaries resolve data relative to themselves.
+                            cwd = vim.fn.fnamemodify(binary, ":h"),
+                        })
+                    end,
+                }),
+                {
+                    name = adapter .. ": open core",
+                    type = adapter,
+                    request = "attach",
+                    program = ask("Binary: ", vim.fn.getcwd() .. "/", "file"),
+                    [core_key] = ask("Core: ", vim.fn.getcwd() .. "/", "file"),
+                },
+                {
+                    name = adapter .. ": attach pid",
+                    type = adapter,
+                    request = "attach",
+                    pid = function()
+                        return tonumber(input("PID: "))
+                    end,
+                },
+            }
+        end
+        dap.configurations["cpp"] = vim.list_extend(configs("gdb", "core"), configs("lldb", "coreFile"))
         dap.configurations["c"] = dap.configurations["cpp"]
     end
 }

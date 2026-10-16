@@ -4,12 +4,16 @@ return {
     dependencies = { "mfussenegger/nvim-dap" },
     config = function()
         require("liter").setup({
-            -- machine side of the `debug("cpp", ...)` primitive: the gdb
-            -- adapter and its arc quirks live in plugins/dap.lua; .liter.lua
-            -- files supply only program/args/cwd
+            -- machine side of the `debug("gdb" or "lldb", ...)` primitive: the
+            -- adapters (gdb with its arc quirks) live in plugins/dap.lua;
+            -- .liter.lua files pick one and supply only program/args/cwd
             dap_templates = {
-                cpp = {
+                gdb = {
                     type = "gdb",
+                    request = "launch",
+                },
+                lldb = {
+                    type = "lldb",
                     request = "launch",
                 },
             },
