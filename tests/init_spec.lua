@@ -226,4 +226,44 @@ test("autosave leaves scratch buffers alone", function()
     vim.cmd("bwipeout!")
 end)
 
+-- ---------------------------------------------------------------- bookmarks
+
+test("s pins the highlighted file, never a terminal", function()
+    -- the fzf-pin source behind s, caught from the mapping without a picker.
+    -- The :Reload test re-sourced init.lua, whose habit map for s shadows
+    -- the picker's from then on, so the spec's own config maps it again
+    require("plugins.fzf-pin").config()
+    local fzfpin = require("fzf-pin")
+    local pick, source = fzfpin.pick, {} ---@type function, table
+    fzfpin.pick = function(s)
+        source = s
+    end
+    vim.fn.maparg("s", "n", false, true).callback()
+    fzfpin.pick = pick
+    eq(source.pin("a", nil), "nothing highlighted to pin")
+    eq(source.pin("a", { char = "e", data = "/x" }), "already on e (ctrl-x it to move)")
+    local term = vim.api.nvim_create_buf(true, false)
+    vim.api.nvim_buf_call(term, function()
+        vim.fn.jobstart({ "sh" }, { term = true })
+    end)
+    eq(source.pin("a", { buf = term, data = vim.api.nvim_buf_get_name(term) }),
+        "a terminal is not pinnable")
+    vim.api.nvim_buf_delete(term, { force = true })
+    -- pins are stored per cwd, so this one lands in a scratch cwd's file,
+    -- removed afterwards: the real state dir keeps nothing
+    local dir = vim.fn.tempname()
+    vim.fn.mkdir(dir, "p")
+    dir = assert(vim.uv.fs_realpath(dir))
+    local before = vim.fn.getcwd()
+    vim.cmd.cd(dir)
+    local file = vim.fs.joinpath(dir, "main.c")
+    local ns = "bookmarks/" .. dir:gsub("/", "%%")
+    eq(source.pin("a", { buf = vim.fn.bufadd(file), data = file }), "pinned main.c to a")
+    eq(require("fzf-pin.store").load(ns), { a = file })
+    os.remove(vim.fs.joinpath(vim.fn.stdpath("state"), "fzf-pin", ns .. ".json"))
+    vim.cmd("bwipeout! " .. vim.fn.fnameescape(file))
+    vim.cmd.cd(before)
+    vim.fn.delete(dir, "rf")
+end)
+
 h.finish("init")

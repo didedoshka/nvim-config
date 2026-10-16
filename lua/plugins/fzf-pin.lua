@@ -1,6 +1,6 @@
 -- Bookmarks on `s`: files pinned to single chars, then the open buffers,
 -- through fzf-pin's picker. Pins are per-project (cwd) and survive restarts;
--- a free char pins the current file, ctrl-x unpins a pin or deletes a buffer
+-- a free char pins the highlighted file, ctrl-x unpins a pin or deletes a buffer
 -- (a terminal only after a confirm naming what its shell runs). The preview
 -- shows the highlighted buffer, or the pinned file when it is not loaded.
 return {
@@ -85,23 +85,23 @@ return {
                 end
                 return { path = item.data, line = line }
             end,
-            pin = function(char)
-                local name = vim.api.nvim_buf_get_name(0)
-                if name == "" then
-                    vim.notify("fzf-pin: current buffer has no file", vim.log.levels.WARN)
-                    return
+            -- what it returns is the picker's footer: the window stays up on a pin
+            pin = function(char, item)
+                if not item then
+                    return "nothing highlighted to pin"
+                end
+                if item.char then
+                    return "already on " .. item.char .. " (ctrl-x it to move)"
+                end
+                -- a term:// name carries the shell's pid: once that shell is
+                -- gone, the pin would start a new one (measured)
+                if vim.bo[item.buf].buftype == "terminal" then
+                    return "a terminal is not pinnable"
                 end
                 local project = pins()
-                for c, path in pairs(project) do
-                    if path == name then
-                        vim.notify("fzf-pin: already on " .. c .. " (ctrl-x it to move)",
-                            vim.log.levels.WARN)
-                        return
-                    end
-                end
-                project[char] = name
+                project[char] = item.data
                 save(project)
-                vim.notify(("pinned %s to %s"):format(vim.fn.fnamemodify(name, ":~:."), char))
+                return ("pinned %s to %s"):format(vim.fn.fnamemodify(item.data, ":~:."), char)
             end,
             unpin = function(item)
                 if item.char then
