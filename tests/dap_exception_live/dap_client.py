@@ -1,4 +1,4 @@
-"""Minimal DAP client driving gdb the way ~/.config/nvim/lua/plugins/dap.lua does (without mcp.py)."""
+"""Minimal DAP client driving gdb the way ~/.config/nvim/lua/plugins/dap.lua does."""
 
 import json
 import os

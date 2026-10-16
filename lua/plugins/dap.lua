@@ -80,9 +80,6 @@ return
             -- A step cut short by a throw stops at the throw, then at each
             -- cleanup landing pad, then in the catch. Needs dap_step.py first.
             vim.list_extend(args, { "-ex", "source " .. vim.fn.stdpath("config") .. "/gdb/dap_exception.py" })
-            -- Serves this gdb to Claude Code over MCP (127.0.0.1:3333) for the
-            -- session's lifetime; nothing to start by hand.
-            vim.list_extend(args, { "-ex", "source " .. vim.fn.stdpath("config") .. "/gdb/mcp.py" })
             vim.list_extend(args, { "--interpreter=dap" })
             -- Sourcing the arc printers (from gdbinit) blows dap's default 4s
             -- initialize budget, which triggers a scary "adapter didn't respond"

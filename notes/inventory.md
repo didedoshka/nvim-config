@@ -302,8 +302,7 @@ In the panels: watches `a` add, `i` insert, `d` delete, `e` edit, `s` set the va
 
 `c` with no session offers, for C/C++: launch binary, launch gtest (tests picked in fzf), open
 core, attach pid. A `.liter.lua` starts one with `l.debug("cpp", …)`. yt tests attach on their own
-through `$YT_GDB_ATTACH_COMMAND` (`lua/yt_gdb.lua`, notes/gdb-setup.md). During a session gdb
-serves itself to Claude Code over MCP on 127.0.0.1:3333.
+through `$YT_GDB_ATTACH_COMMAND` (`lua/yt_gdb.lua`, notes/gdb-setup.md).
 
 | Command | Does | From |
 | --- | --- | --- |
