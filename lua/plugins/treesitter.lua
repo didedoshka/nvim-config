@@ -26,7 +26,8 @@ return
                 local is_available = vim.tbl_contains(available_langs, lang)
                 if is_available then
                     require('nvim-treesitter').install(lang):wait()
-                    vim.treesitter.start()
+                    -- explicit: fzf-lua's preview buffer fires FileType=diff with 'filetype' unset
+                    vim.treesitter.start(args.buf, lang)
                 end
             end,
         })
