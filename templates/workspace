@@ -1,0 +1,4 @@
+# one directory per line, relative to this file
+yt/yt
+yt/cpp
+library/cpp
