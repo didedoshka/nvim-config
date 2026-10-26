@@ -71,6 +71,22 @@ test("jump and window keys are remapped", function()
     ok(mapped("<Tab>"), "<Tab> (window prefix) not mapped")
 end)
 
+test("<C-l> switches russian in its buffer only, a new buffer starts latin", function()
+    local buf = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_set_current_buf(buf)
+    -- headless, `-- INSERT --` goes to stderr, which run.sh counts as a failure
+    local showmode = vim.o.showmode
+    vim.o.showmode = false
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("i<C-l><Esc>", true, false, true), "xt", false)
+    vim.o.showmode = showmode
+    eq(vim.bo[buf].iminsert, 1, "<C-l> did not switch the buffer to russian")
+    eq(vim.go.iminsert, 0, "<C-l> leaked russian into the global 'iminsert'")
+    local fresh = vim.api.nvim_create_buf(false, true)
+    eq(vim.bo[fresh].iminsert, 0, "a new buffer started in russian")
+    vim.api.nvim_buf_delete(fresh, { force = true })
+    vim.api.nvim_buf_delete(buf, { force = true })
+end)
+
 test("TermOpen numbers real terminals but not fzf's picker", function()
     local function open_term(filetype)
         local buf = vim.api.nvim_create_buf(false, true)

@@ -54,7 +54,9 @@ vim.filetype.add({
 -- set russian
 vim.opt.keymap = "russian-yasherty"
 vim.opt.iminsert = 0
-vim.keymap.set('i', '<C-l>', '<C-^>', { remap = true })
+-- <C-^> also sets the global 'iminsert', which every buffer created afterwards starts with:
+-- a scratch buffer has no insert mode to switch it back, and its / searches in russian
+vim.keymap.set('i', '<C-l>', '<C-^><Cmd>setglobal iminsert=0<CR>', { remap = true })
 
 -- set listchars
 vim.opt.list = true
