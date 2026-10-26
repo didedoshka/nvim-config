@@ -333,7 +333,7 @@ require("lazy").setup({
             require("arc").setup({ base = "app/build-cache/hot" })
             -- the next letter is the same thing on the PR instead of the checkout
             vim.keymap.set("n", "<leader>ab", "<cmd>ArcBlame<cr>", { desc = "(a)rc (b)lame" })
-            vim.keymap.set("n", "<leader>ac", "<cmd>ArcPrBlame<cr>", { desc = "(a)rc PR blame" })
+            vim.keymap.set("n", "<leader>ac", "<cmd>ArcBlamePr<cr>", { desc = "(a)rc PR blame" })
             vim.keymap.set("n", "<leader>ad", "<cmd>ArcDiff<cr>", { desc = "(a)rc (d)iff" })
             vim.keymap.set("n", "<leader>ae", "<cmd>ArcPrDiff<cr>", { desc = "(a)rc PR diff" })
             vim.keymap.set("n", "<leader>ag", "<cmd>ArcGrep<cr>", { desc = "(a)rc (g)rep" })
