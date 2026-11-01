@@ -163,6 +163,14 @@ return
 
         vim.lsp.enable("gopls")
 
+        -- solidity: the language server built into forge (mise's foundry)
+        vim.lsp.config("forge_lsp", {
+            cmd = { "forge", "lsp", "--stdio" },
+            filetypes = { "solidity" },
+            root_markers = { "foundry.toml", ".git" },
+        })
+        vim.lsp.enable("forge_lsp")
+
         local null_ls = require("null-ls")
         null_ls.setup({
             sources = {
