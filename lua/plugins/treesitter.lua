@@ -22,13 +22,21 @@ return
         vim.api.nvim_create_autocmd('FileType', {
             callback = function(args)
                 local lang = vim.treesitter.language.get_lang(args.match)
-                local available_langs = require('nvim-treesitter').get_available()
-                local is_available = vim.tbl_contains(available_langs, lang)
-                if is_available then
-                    require('nvim-treesitter').install(lang):wait()
+                if not lang then return end
+                if vim.treesitter.language.add(lang) then
                     -- explicit: fzf-lua's preview buffer fires FileType=diff with 'filetype' unset
                     vim.treesitter.start(args.buf, lang)
+                    return
                 end
+                local ts = require('nvim-treesitter')
+                if not vim.list_contains(ts.get_available(), lang) then return end
+                -- no :wait() here: it spins the event loop, and anything it runs that fires
+                -- FileType (nightly's autoread :checktime) nests inside this autocmd (E218)
+                ts.install(lang):await(function(err)
+                    if err or not vim.api.nvim_buf_is_valid(args.buf) then return end
+                    if vim.bo[args.buf].filetype ~= args.match then return end
+                    vim.treesitter.start(args.buf, lang)
+                end)
             end,
         })
 
