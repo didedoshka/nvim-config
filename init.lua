@@ -263,7 +263,7 @@ require("lazy").setup({
     require("plugins.dap"),
 
     -- disk persistence for dap breakpoints; actions.lua in debugmaster's fork
-    -- saves through it when present, see that repo's CLAUDE.md
+    -- saves through it when present, see that repo's AGENTS.md
     require("plugins.persistent-breakpoints"),
 
     -- imperative project tasks from .liter.lua files, local checkout

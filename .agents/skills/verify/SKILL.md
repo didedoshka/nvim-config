@@ -18,8 +18,9 @@ tier that actually covers your change is green.
 Non-zero exit means something broke. This is also what the `Write|Edit` hook
 runs, so a Lua edit that breaks it comes back immediately.
 
-Three things it does, and why:
+What it checks, and why:
 
+- **`tests/agent_hooks_spec.py`** — both agents' edit payloads, multi-file patches, and cross-repo routing.
 - **lint** — `lua-language-server --check` at the **workspace root**. It must be
   the root: given a subdirectory or a single file it never finds `.luarc.json`,
   and then every `vim` is an undefined global. Default checklevel (Warning) is

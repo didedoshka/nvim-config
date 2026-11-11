@@ -20,6 +20,11 @@ fail() {
     printf '\n=== FAILED: %s ===\n' "$1"
 }
 
+# --- agent edit hooks ---------------------------------------------------------
+if ! python3 -B tests/agent_hooks_spec.py; then
+    fail "tests/agent_hooks_spec.py"
+fi
+
 # --- 1. lint -----------------------------------------------------------------
 # lua-language-server must be pointed at the workspace root: given a single file
 # or a subdirectory it never finds .luarc.json, and then every `vim` is an

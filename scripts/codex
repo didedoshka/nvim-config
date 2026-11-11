@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+"""Start Codex in the config with the same plugin access as Claude."""
+
+import json
+import os
+from pathlib import Path
+import sys
+
+
+root = Path(__file__).resolve().parents[1]
+settings = json.loads((root / ".claude/settings.json").read_text())
+args = ["codex", "--cd", str(root)]
+for directory in settings["permissions"]["additionalDirectories"]:
+    args.extend(["--add-dir", str(Path(directory).expanduser())])
+os.execvp("codex", [*args, *sys.argv[1:]])

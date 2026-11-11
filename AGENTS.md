@@ -1,12 +1,12 @@
-# CLAUDE.md
+# Neovim config
 
 didedoshka's personal, minimalistic Neovim config (Lua, `lazy.nvim`).
 
 This config is the hub of a coupled stack: sessions rooted here can also work on the
 `~/p/*.nvim` repos listed in `.claude/settings.json` (`additionalDirectories`) —
-that file is the one source of truth for the set; nothing else enumerates it.
-Their instructions do NOT load with this file: before editing one of them, read its
-`CLAUDE.md` and its `.claude/skills/verify/SKILL.md` for that repo's rules and verify
+that file is the one source of truth for the set; `scripts/codex` uses it for Codex access.
+Start a coupled Codex session with `scripts/codex`. Their instructions do NOT load with this file: before editing one of them, read its
+`AGENTS.md` and, if present, `.agents/skills/verify/SKILL.md` for that repo's rules and verify
 tiers, since only this repo's skills are listed here.
 
 ## Philosophy
@@ -42,7 +42,7 @@ tiers, since only this repo's skills are listed here.
 
 ## Verifying
 - Run `./tests/run.sh` after any Lua change — lint + both tiers, offline, ~1s. A `Write|Edit`
-  hook runs it automatically. `.claude/skills/verify/SKILL.md` has the tiers and what needs a human.
+  hook runs it automatically. `.agents/skills/verify/SKILL.md` has the tiers and what needs a human.
 - Commit each verified change without asking (`area: lowercase summary`), and push it
   right after — here and in the `~/p/*.nvim` repos alike. Never rewrite
   history — no amend, rebase, or reset past a commit; fix forward with a new commit,

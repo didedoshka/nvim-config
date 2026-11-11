@@ -140,7 +140,7 @@ opposed to launching one from nvim). Full story in
 Straight `Weissle/persistent-breakpoints.nvim`, loaded with
 `load_breakpoints_event = {"BufReadPost"}` — breakpoints reload as soon as a
 file is opened, not lazily on first dap session. debugmaster's fork saves
-through it automatically (see that repo's `actions.lua` / CLAUDE.md);
+through it automatically (see that repo's `actions.lua` / AGENTS.md);
 nothing else here talks to it directly.
 
 ## Debug-mode keymaps: `cfg.keymaps = "gdb"` (Design C)
