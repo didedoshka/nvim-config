@@ -203,33 +203,48 @@ test("autosave writes the buffer on TextChanged", function()
     os.remove(tmp)
 end)
 
--- ---------------------------------------------------------------- workspace
+-- ------------------------------------------------------------------ pickers
 
-test(":Workspace starts a prefilled .workspace in the cwd", function()
+test("file and grep mappings respect a local .ignore over inherited exclusions", function()
     local dir = vim.fn.tempname()
-    vim.fn.mkdir(dir, "p")
+    vim.fn.mkdir(dir .. "/project/src/nested", "p")
+    vim.fn.mkdir(dir .. "/project/other", "p")
+    vim.fn.writefile({ "*" }, dir .. "/.ignore")
+    vim.fn.writefile({ "*", "!/src/", "!/src/**" }, dir .. "/project/.ignore")
+    vim.fn.writefile({ "needle" }, dir .. "/project/src/nested/allowed.txt")
+    vim.fn.writefile({ "needle" }, dir .. "/project/other/blocked.txt")
     local before = vim.fn.getcwd()
-    vim.cmd.cd(dir)
-    vim.cmd("Workspace")
-    eq(vim.fn.expand("%:p"), vim.uv.fs_realpath(dir) .. "/.workspace")
-    eq(vim.api.nvim_buf_get_lines(0, 0, -1, false), vim.fn.readfile(vim.fn.stdpath("config") .. "/templates/workspace"))
-    vim.cmd("bwipeout!")
+    local fzf = require("fzf-lua")
+    local files, grep, register = fzf.files, fzf.live_grep, fzf.register_ui_select
+    local captured = {}
+    fzf.files = function(opts) captured.files = opts end
+    fzf.live_grep = function(opts) captured.grep = opts end
+    fzf.register_ui_select = function() end
+    local passed, err = pcall(function()
+        vim.cmd.cd(dir .. "/project")
+        require("plugins.fzf").config()
+        vim.fn.maparg(" o", "n", false, true).callback()
+        vim.fn.maparg(" g", "n", false, true).callback()
+        local config = require("fzf-lua.config")
+        local file_opts = config.normalize_opts(captured.files, "files")
+        local grep_opts = config.normalize_opts(captured.grep, "grep")
+        local commands = {
+            require("fzf-lua.providers.files").get_files_cmd(file_opts),
+            require("fzf-lua.make_entry").get_grep_cmd(grep_opts, "needle", false),
+        }
+        for _, cmd in ipairs(commands) do
+            local result = vim.system({ vim.o.shell, "-c", cmd }, { text = true }):wait()
+            eq(result.code, 0, result.stderr)
+            ok(result.stdout:find("src/nested/allowed.txt", 1, true), "allowed file missing: " .. cmd)
+            ok(not result.stdout:find("blocked.txt", 1, true), "excluded file returned: " .. cmd)
+        end
+    end)
+    fzf.files, fzf.live_grep = files, grep
+    require("plugins.fzf").config()
+    fzf.register_ui_select = register
     vim.cmd.cd(before)
     vim.fn.delete(dir, "rf")
-end)
-
-test(":Workspace edits the file in force from a subdirectory", function()
-    local dir = vim.fn.tempname()
-    vim.fn.mkdir(dir .. "/sub", "p")
-    vim.fn.writefile({ "yt/yt" }, dir .. "/.workspace")
-    local before = vim.fn.getcwd()
-    vim.cmd.cd(dir .. "/sub")
-    vim.cmd("Workspace")
-    eq(vim.fn.expand("%:p"), vim.uv.fs_realpath(dir) .. "/.workspace")
-    eq(vim.api.nvim_buf_get_lines(0, 0, -1, false), { "yt/yt" }, "existing file must not be overwritten")
-    vim.cmd("bwipeout!")
-    vim.cmd.cd(before)
-    vim.fn.delete(dir, "rf")
+    if not passed then error(err, 0) end
 end)
 
 test("autosave leaves scratch buffers alone", function()

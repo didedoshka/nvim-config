@@ -83,10 +83,6 @@ Free: `b` `e` `h` `i` `x` `z`.
 | `<Space>w`, `:Oil [dir]` | directory as an editable buffer (also `-`, `:e dir`) | oil |
 | `<Space>q` | close the buffer, keep the window | config |
 | `<Space>y`, `:CopyLoc` | absolute `path:line` to the clipboard; visual: `path:l1-l2` | config |
-| `:Workspace` | edit the `.workspace` in force, or start one with `yt/yt` `yt/cpp` `library/cpp` | config |
-
-A `.workspace` (one directory per line, found walking up from the cwd) makes `<Space>o` and
-`<Space>g` search only those directories from its root, and `s` show paths relative to it.
 
 More pickers, no key: `:FzfLua` + `buffers` `oldfiles` `grep_curbuf` `blines` `lines` `marks`
 `jumps` `changes` `registers` `command_history` `search_history` `quickfix` `quickfix_stack`
