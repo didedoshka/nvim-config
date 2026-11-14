@@ -51,7 +51,6 @@ Patterns this should catch:
 
 - `<leader>g` landing on a file already pinned on `s` or open in the buffer list
 - a grep or `/` query equal to the word under the cursor → `gd`, `gr`, `*`
-- `<C-k>` six times to get back somewhere → a mark or `''`
 - the same file:line reached repeatedly by scrolling → a pin or a mark
 - what the `<ScrollWheelDown>` and `j` runs were looking for
 

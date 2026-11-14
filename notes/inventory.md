@@ -1,11 +1,5 @@
 # Inventory: keymaps, commands, plugins
 
-What this config gives you on 2026-10-14 (commit 058cf40, quicker.nvim commented out): every
-keymap and `:Command` defined by the config, its plugins and the `~/p` plugins, then all 43
-plugins. Collected from a headless run of the real config with every plugin loaded, not from
-memory. Neovim's own defaults are left out unless the config changes them. It is a snapshot; the
-live sources below never go stale.
-
 ## Look it up live
 
 - Pause 2 s after any prefix (`<Space>`, `g`, `z`, `[`): which-key lists what can follow; after
@@ -28,8 +22,6 @@ Normal mode unless noted.
 | `<BS>` | enter debug mode, also from visual; `<Esc>` leaves (Debug) | debugmaster |
 | `<CR>` | server picker (Terminals & servers); quickfix and the cmdline window keep theirs | no-tmux |
 | `y` | `<C-w>`: `yv` `ys` split, `yh` `yj` `yk` `yl` move, `yq` close, `yo` only; visual `y` and `Y` still yank | config |
-| `<C-k>` `<C-j>` | jumplist back / forward | config |
-| `<C-o>`, `<Tab>`, `S`, visual `s` `S` | print `habit` | config |
 | `f` `F` `t` `T` | across lines, labels when several targets, the same key again for the next (also visual, operator) | flit |
 | `/` `?` `n` `N` `gn` `gN` | PCRE2 search (also visual, operator-pending) | pcre |
 | `*` `#` `g*` `g#` | PCRE2 word search; visual `*` `#` search the selection | pcre |
@@ -143,7 +135,6 @@ register (newlines become spaces), `<C-r><C-w>` word, `<C-r><C-a>` WORD, `<C-r><
 | Key / command | Does | From |
 | --- | --- | --- |
 | `f` `F` `t` `T` | to a char, across lines; labels when there are several (normal, visual); same key again for the next | flit + leap |
-| `<C-k>` `<C-j>` | jumplist back / forward | config |
 | `y` + a `<C-w>` key | window commands (`yv` `ys` `yh` `yj` `yk` `yl` `yq` `yo`) | config |
 | `<Space>n` | breadcrumbs (enclosing class, function) in the winbar | navic |
 | `:GoEnclosingFunction`, `:GoEnclosingClass` | the header of the enclosing function / class | config |
@@ -441,6 +432,3 @@ Automatic: brackets coloured by depth (files up to 1 MiB, rainbow-delimiters); t
 | vim-repeat | `.` repeats plugin actions | automatic |
 | which-key.nvim | the next keys after a 2 s pause | automatic, `:WhichKey` |
 | zk-nvim | zk notebooks; the `zk` CLI is missing | `:Zk…` |
-
-Not loaded: quicker.nvim is on disk but commented out in init.lua; `lua/plugins/ayu.lua`
-(neovim-ayu) is not in the `lazy.setup{}` list.

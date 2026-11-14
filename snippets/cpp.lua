@@ -16,7 +16,7 @@ return {
 
     {
         prefix = 'f',
-        body = "for (int $1 = $2; $1 < $3; ++$1) {\n\t$0\n}"
+        body = "for (size_t $1 = $2; $1 < $3; ++$1) {\n\t$0\n}"
     },
 
     {

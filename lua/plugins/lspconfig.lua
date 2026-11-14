@@ -177,7 +177,9 @@ return
                 null_ls.builtins.formatting.cmake_format,
                 null_ls.builtins.formatting.prettier,
                 null_ls.builtins.formatting.clang_format.with({
-                    command = { "ads-clang-format" },
+                    command = "ya",
+                    extra_args = { "tool", "ads-clang-format" },
+                    prepend_extra_args = true,
                 }),
                 -- python formatting is handled by ruff (ruff format, range-capable)
             }

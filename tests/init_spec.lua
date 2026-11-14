@@ -51,24 +51,12 @@ end)
 -- ------------------------------------------------------------------- keymaps
 
 test("habit-breaker keys are bound", function()
-    for _, key in ipairs({ "s", "S", "<C-o>" }) do
+    for _, key in ipairs({ "s", "S" }) do
         for _, mode in ipairs({ "n", "v" }) do
-            -- s/S are bound in both modes; <C-o> is normal-mode only
-            if not (key == "<C-o>" and mode == "v") then
-                local lhs = vim.api.nvim_replace_termcodes(key, true, false, true)
-                ok(vim.fn.maparg(lhs, mode) ~= "", ("%s not bound in %s mode"):format(key, mode))
-            end
+            local lhs = vim.api.nvim_replace_termcodes(key, true, false, true)
+            ok(vim.fn.maparg(lhs, mode) ~= "", ("%s not bound in %s mode"):format(key, mode))
         end
     end
-end)
-
-test("jump and window keys are remapped", function()
-    local function mapped(key)
-        return vim.fn.maparg(vim.api.nvim_replace_termcodes(key, true, false, true), "n") ~= ""
-    end
-    ok(mapped("<C-j>"), "<C-j> (jump forward) not mapped")
-    ok(mapped("<C-k>"), "<C-k> (jump back) not mapped")
-    ok(mapped("<Tab>"), "<Tab> (window prefix) not mapped")
 end)
 
 test("<C-l> switches russian in its buffer only, a new buffer starts latin", function()
@@ -170,6 +158,53 @@ test("every require(\"plugins.*\") in the list reached lazy", function()
         "comment.nvim", "lazygit.nvim", "flit.nvim", "fzf-lua", "lualine.nvim", "nvim-dap" }) do
         ok(names[name], name .. " is not in lazy's plugin list")
     end
+end)
+
+-- ---------------------------------------------------------------- formatting
+
+test("C++ formatting invokes ya with filename and range arguments", function()
+    local generator
+    for _, source in ipairs(require("null-ls.sources").get_all()) do
+        if source.name == "clang_format" then generator = source.generator end
+    end
+    ok(generator, "C++ formatter is not registered")
+    local buf = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, { "int x;", "int  y;" })
+    local loop = require("null-ls.loop")
+    local spawn = loop.spawn
+    local calls = {}
+    loop.spawn = function(command, args, opts)
+        table.insert(calls, { command = command, args = args, input = opts.input })
+        opts.handler(nil, "int x;\nint y;\n")
+    end
+    local passed, err = pcall(function()
+        local methods = require("null-ls.methods").internal
+        for _, method in ipairs({ methods.FORMATTING, methods.RANGE_FORMATTING }) do
+            local result
+            generator.fn({
+                bufnr = buf,
+                bufname = "/tmp/format.cpp",
+                method = method,
+                range = { row = 2, col = 1, end_row = 2, end_col = 8 },
+            }, function(edits) result = edits end)
+            eq(result, { { text = "int x;\nint y;\n" } })
+        end
+        eq(calls, {
+            {
+                command = "ya",
+                args = { "tool", "ads-clang-format", "-assume-filename", "/tmp/format.cpp" },
+                input = "int x;\nint  y;\n",
+            },
+            {
+                command = "ya",
+                args = { "tool", "ads-clang-format", "-assume-filename", "/tmp/format.cpp", "--offset", "7", "--length", "7" },
+                input = "int x;\nint  y;\n",
+            },
+        })
+    end)
+    loop.spawn = spawn
+    vim.api.nvim_buf_delete(buf, { force = true })
+    if not passed then error(err, 0) end
 end)
 
 -- ------------------------------------------------------- autosave, end to end

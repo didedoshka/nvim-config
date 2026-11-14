@@ -116,15 +116,11 @@ vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
 
 -- working with buffers
 vim.keymap.set("n", "<leader>q", "<cmd>bp<bar>sp<bar>bn<bar>bd<cr>", { desc = "close buffer" })
-vim.keymap.set("n", "<C-j>", "<C-i>", { desc = "" })
-vim.keymap.set("n", "<C-k>", "<C-o>", { desc = "" })
-vim.keymap.set("n", "<C-o>", function() print("habit") end, { desc = "" })
 vim.keymap.set("n", "y", "<C-w>", { desc = "Window commands *CTRL-W*" })
 vim.keymap.set("n", "<leader>t", "<cmd>terminal<cr>", { desc = "(t)erminal" })
 -- vim.keymap.set("n", "gm", "m", { desc = "set mark" })
 
 -- habits
-vim.keymap.set("n", "<tab>", function() print("habit") end, { desc = "" })
 vim.keymap.set("n", "s", function() print("habit") end, { desc = "" })
 vim.keymap.set("v", "s", function() print("habit") end, { desc = "" })
 vim.keymap.set("n", "S", function() print("habit") end, { desc = "" })
@@ -443,26 +439,6 @@ require("lazy").setup({
         config = function()
             vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<cr>", { desc = "(u)ndotree" })
             vim.g.undotree_WindowLayout = 2
-        end
-    },
-
-    -- editable quickfix: dd + :w drops entries, edited text is written back to the files
-    {
-        "stevearc/quicker.nvim",
-        config = function()
-            require("quicker").setup({
-                -- the letters vim.diagnostic puts in the sign column, not nerd-font icons
-                type_icons = { E = "E", W = "W", I = "I", N = "N", H = "H" },
-                borders = {
-                    vert = "│",
-                    strong_header = "─",
-                    strong_cross = "┼",
-                    strong_end = "┤",
-                    soft_header = "╌",
-                    soft_cross = "┼",
-                    soft_end = "┤",
-                },
-            })
         end
     },
 
