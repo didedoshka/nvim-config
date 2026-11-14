@@ -205,6 +205,32 @@ end)
 
 -- ------------------------------------------------------------------ pickers
 
+test("ui.select finishes its callback on acceptance and cancellation", function()
+    local core = require("fzf-lua.core")
+    local exec = core.fzf_exec
+    local opts
+    core.fzf_exec = function(_, o) opts = o end
+    local passed, err = pcall(function()
+        for _, choice in ipairs({ "two", false }) do
+            local called, result = false, nil
+            vim.ui.select({ "one", "two" }, { prompt = "target:" }, function(value)
+                called, result = true, value
+            end)
+            for _, key in ipairs({ "enter", "esc" }) do
+                local action = opts.actions[key]
+                ok(not (type(action) == "table" and action.exec_silent),
+                    key .. " hides the picker instead of completing it")
+            end
+            opts.__CTX = { mode = "n" }
+            opts.fn_selected(choice and { "enter", "2. two" } or nil, opts)
+            ok(vim.wait(1000, function() return called end), "selection callback never ran")
+            eq(result, choice or nil)
+        end
+    end)
+    core.fzf_exec = exec
+    if not passed then error(err, 0) end
+end)
+
 test("file and grep mappings respect a local .ignore over inherited exclusions", function()
     local dir = vim.fn.tempname()
     vim.fn.mkdir(dir .. "/project/src/nested", "p")

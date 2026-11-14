@@ -98,7 +98,8 @@ return
             },
         })
 
-        fzf_lua.register_ui_select()
+        -- Hiding a selection dialog leaves liter's task waiting for its callback.
+        fzf_lua.register_ui_select({ no_hide = true })
 
         -- <C-f> inside the picker reopens it in the current buffer's directory,
         -- keeping the typed query (ported from the old telescope config).
